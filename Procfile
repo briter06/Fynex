@@ -1,0 +1,1 @@
+web: gunicorn Fynex.wsgi --log-file -
