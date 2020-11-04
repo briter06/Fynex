@@ -26,7 +26,7 @@ SECRET_KEY = '-u)i!gyx_#uob097y=q+*ygw0_wa2%-0t26im$qq90bd=ffzxv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['fynexapp.herokuapp.com']
+ALLOWED_HOSTS = ['fynexapp.herokuapp.com','localhost']
 
 
 # Application definition

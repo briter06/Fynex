@@ -908,8 +908,9 @@ input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover,
 .button:hover {
-  background-color: greenyellow;
+  background-color: #0088b6;
   text-decoration: none;
+  color:black;
 }
 
 input[type="submit"]:active,
@@ -1000,6 +1001,7 @@ input[type="reset"].special:hover,
 input[type="button"].special:hover,
 .button.special:hover {
   background-color: #444751;
+  color: white;
 }
 
 input[type="submit"].special:active,
