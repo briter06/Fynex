@@ -78,8 +78,19 @@ WSGI_APPLICATION = 'Fynex.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+        'ENGINE': 'django.db.backends.postgresql',
+
+        'NAME': os.environ['db_name_fynex'],
+
+        'USER': os.environ['db_user_fynex'],
+
+        'PASSWORD': os.environ['db_password_fynex'],
+
+        'HOST': os.environ['db_host_fynex'],
+
+        'PORT': os.environ['db_port_fynex'],
+
     }
 }
 
