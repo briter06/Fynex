@@ -1,0 +1,111 @@
+{% load static %}
+<html lang="en">
+
+<head>
+  <link rel="icon" href="{% static 'images/logo.png' %}">
+  <meta charset="UTF-8" />
+  <title>Fynex</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="//code.angularjs.org/snapshot/angular.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+
+  <script>
+    var v_style = "{% static 'css/style.css' %}";
+    var v_style_xlarge = "{% static 'css/style-xlarge.css' %}";
+    var v_style_large = "{% static 'css/style-large.css' %}";
+    var v_style_medium = "{% static 'css/style-medium.css' %}";
+    var v_style_small = "{% static 'css/style-small.css' %}";
+    var v_style_xsmall = "{% static 'css/style-xsmall.css' %}";
+  </script>
+
+
+  <script src="{% static 'js/skel.min.js' %}"></script>
+  <script src="{% static 'js/skel-layers.min.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+
+<body class="landing">
+  {% if messages %}
+  <ul class="messages" style="padding: 0 0 0 0;margin: 0 0 0 0;">
+    {% for message in messages %}
+    <div {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <div class="container-fluid" style="position: relative; padding: 0 0 0 0;">
+    <header class="container-fluid nav-menu-spo">
+      <nav class="navbar navbar-expand-md navbar-dark sticky-top" style="background-color: transparent;">
+        <div class="container-fluid" style="background-color: Transparent;">
+          <h3 class="title-nav">
+            <a href="#" class="noHover"><img src="{% static 'images/logo.png' %}" width="80px"/></a>
+          </h3>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive" style="background-color: Transparent;">
+            <ul class="navbar-nav ml-auto">
+              {% if session %}
+              <li>
+                <a href="#" class="button special">Account
+                </a>
+              </li>
+              <li>
+                <a href="#" class="button special">Log out
+                </a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a onclick="login_modal.show();" class="button special">Login</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="button special">Sign up
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Banner -->
+    <section id="banner">
+      <h2 class="main_title">Fynex</h2>
+      <div class="container-fluid">
+        <div class="row">
+          {% if session %}
+          <div class="column-md-6 mx-auto" style="margin-bottom: 10px;">
+            <a href="#" onclick="waitingDialog.show()" class="button big">Use my
+              playlists</a>
+          </div>
+          {% endif %}
+          <div class="column-md-6 mx-auto" style="margin-bottom: 10px;">
+            <a href="#" class="button big">Enter playlist URI</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>
+</body>
+
+<script id="login_script" src="{% static 'js/login-modals.js' %}" token='{%csrf_token%}'
+  forgot_url="#"></script>
+<script src="{% static 'js/include-html.js' %}"></script>
+<script src="{% static 'js/waitingDialog.js' %}"></script>
+
+
+</html>
