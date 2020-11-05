@@ -128,6 +128,12 @@ body.is-loading *:after {
   transition: none !important;
 }
 
+.body_pages{
+  background-color: #125570;
+}
+.main_section{
+  padding-top: 7%;
+}
 body,
 input,
 select,
@@ -1107,7 +1113,7 @@ body.landing #header nav a {
 
 #header nav > ul > li .button {
   background-color: #fff;
-  color: #444 !important;
+  color: #125570 !important;
   height: 2.25em;
   line-height: 2.25em;
   margin-bottom: 0;
