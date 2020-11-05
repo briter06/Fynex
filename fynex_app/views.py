@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 
 from .recommender.HybridRecommender import HybridRecommender
-from .recommender.ContentRecommender import ContentRecommender
 
 # Create your views here.
 
