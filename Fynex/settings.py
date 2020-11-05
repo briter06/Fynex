@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '-u)i!gyx_#uob097y=q+*ygw0_wa2%-0t26im$qq90bd=ffzxv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['fynexapp.herokuapp.com','localhost']
 
