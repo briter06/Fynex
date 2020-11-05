@@ -19,7 +19,7 @@ def login_user(request, template_name):
     return HttpResponseRedirect(reverse(template_name))
 
 def verify_auth(request,group_name):
-    if not request.user.groups.filter(name='administrator').exists():
+    if not request.user.groups.filter(name=group_name).exists():
         return False
     return True
 
@@ -43,16 +43,14 @@ def logout_user(request):
 def administrator_index(request):
     if not verify_auth(request,'administrator'):
         return HttpResponseRedirect(reverse('Fynex-index'))
-    if request.method=='POST':
-        return logout_user(request)
-    else:
-        heartRate = 90
-        glucose = 180
-        height = 1.65
-        weight = 65
-        age = 55
 
-        hr = HybridRecommender()
+    heartRate = 90
+    glucose = 180
+    height = 1.65
+    weight = 65
+    age = 55
 
-        result = hr.predict(heartRate,glucose,height,weight,age)
-        return render(request,'fynex_app/administrator/administrator_index.html',{"result":result['recommendations'].to_html(classes='table table-responsive')})
+    hr = HybridRecommender()
+
+    result = hr.predict(heartRate,glucose,height,weight,age)
+    return render(request,'fynex_app/administrator/administrator_index.html',{"result":result['recommendations'].to_html(classes='table table-responsive')})
