@@ -1,2 +1,6 @@
 start.bat
 .vscode
+fynex_app/recommender/__pycache__
+fynex_app/__pycache__
+fynex_app/migrations/__pycache__
+__pycache__
