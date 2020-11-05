@@ -38,7 +38,7 @@
     {% for message in messages %}
     <div {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
       <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-      <strong>{{ message }}</strong>
+      <strong {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} style="color:white" {% endif %}>{{ message }}</strong>
     </div>
     {% endfor %}
   </ul>

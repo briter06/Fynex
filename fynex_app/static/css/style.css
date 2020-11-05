@@ -132,7 +132,8 @@ body.is-loading *:after {
   background-color: #125570;
 }
 .main_section{
-  padding-top: 7%;
+  padding-top: 120px;
+  margin: auto auto;
 }
 body,
 input,
