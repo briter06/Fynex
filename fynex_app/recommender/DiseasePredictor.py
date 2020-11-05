@@ -7,8 +7,8 @@ from django.conf import settings
 class DiseasePredictor:
 
     def __init__(self):
-        self.model_diabetes = models.load_model(os.path.join(settings.RECOMMENDER_ROOT, 'Models\diabetes_model-tensor.h5'))
-        self.model_hypertension = pickle.load(open(os.path.join(settings.RECOMMENDER_ROOT, 'Models\hyper_logistic.fynex'),'rb'))
+        self.model_diabetes = models.load_model(os.path.join(settings.RECOMMENDER_ROOT, 'Models/diabetes_model-tensor.h5'))
+        self.model_hypertension = pickle.load(open(os.path.join(settings.RECOMMENDER_ROOT, 'Models/hyper_logistic.fynex'),'rb'))
     
     def predict_diabetes(self,glucose,bmi,age):
         pred_data = [[glucose,bmi,age]]
