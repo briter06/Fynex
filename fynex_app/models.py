@@ -26,25 +26,28 @@ class Auditoria(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 class PreexistenciaMedica(models.Model):
     descripcion = models.CharField(max_length=250)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class VariableSeguimiento(models.Model):
     nombre = models.CharField(max_length=30)
     intervalo_referencia = models.CharField(max_length=50)
     unidad = models.CharField(max_length=50)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class HistorialVariableSeguimiento(models.Model):
     variable_seguimiento = models.ForeignKey(VariableSeguimiento,on_delete=models.CASCADE)
     valor = models.FloatField()
     fecha = models.DateTimeField()
 class Examen(models.Model):
     nombre = models.CharField(max_length=50)
-    fecha = models.DateTimeField()
+    descripcion = models.CharField(max_length=500)
+    fecha_peticion = models.DateTimeField()
+    fecha_entrega = models.DateTimeField()
     documento_ruta = models.CharField(max_length=200)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class PlanNutricional(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
     fecha = models.DateTimeField()
     rating = models.FloatField
+    estado = models.CharField(max_length=1)
 class PartePlanNutricional(models.Model):
     plan_nutricional = models.ForeignKey(PlanNutricional,on_delete=models.CASCADE)
     parte = models.CharField(max_length=30)
