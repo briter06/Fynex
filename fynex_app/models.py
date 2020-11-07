@@ -57,3 +57,12 @@ class PartePlanNutricional(models.Model):
     proteinas = models.FloatField()
     carbohidratos = models.FloatField()
     grasas = models.FloatField()
+class Mensaje(models.Model):
+    fecha = models.DateTimeField(auto_now_add=True)
+    mensaje = models.TextField()
+    paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
+    medico = models.ForeignKey(Medico,on_delete=models.CASCADE)
+    paciente_emisor = models.IntegerField()
+
+class PlanActividadFisica(models.Model):
+    fecha = models.DateTimeField()

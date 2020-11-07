@@ -7,7 +7,7 @@ from django.conf import settings
 from os import listdir
 from os.path import isfile, join
 
-class ContentRecommender:
+class ContentRecommenderNutrition:
 
     def __init__(self):
         self.data = pickle.load(open(os.path.join(settings.RECOMMENDER_ROOT, 'Assets/data.fynex'),'rb'))

@@ -52,5 +52,5 @@ def administrator_index(request):
 
     hr = HybridRecommender()
 
-    result = hr.predict(heartRate,glucose,height,weight,age)
+    result = hr.predictNutrition(heartRate,glucose,height,weight,age)
     return render(request,'fynex_app/administrator/administrator_index.html',{"result":result['recommendations'].to_html(classes='table table-responsive')})
