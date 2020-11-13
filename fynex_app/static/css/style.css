@@ -31,6 +31,8 @@
 }
 
 @media all and (max-width: 800px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
   .nav-menu-spo {
     background-color: rgba(255, 255, 255, 0.2);
     position: absolute;
@@ -111,6 +113,7 @@
 
 body {
   background: #fff;
+  transition: margin-left .5s;
 }
 
 body.is-loading *,
@@ -133,6 +136,8 @@ body.is-loading *:after {
 }
 .main_section{
   padding-top: 120px;
+  padding-left: 50px;
+  padding-right: 50px;
   margin: auto auto;
 }
 body,
@@ -319,6 +324,7 @@ label {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="password"],
 input[type="email"],
 select,
@@ -339,6 +345,7 @@ textarea {
 }
 
 input[type="text"]:invalid,
+input[type="number"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
 select:invalid,
@@ -347,6 +354,7 @@ textarea:invalid {
 }
 
 input[type="text"]:focus,
+input[type="number"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 select:focus,
@@ -388,6 +396,7 @@ textarea:focus {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="password"],
 input[type="email"],
 select {
@@ -1475,4 +1484,60 @@ body.landing #header nav a {
   width: 250px;
   max-height: 400px;
   border-radius: 25px
+}
+
+/*Side Nav*/
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #4682b4;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav::-webkit-scrollbar {
+  display: none;
+}
+
+.sidenav .option {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a {
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #696969;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+hr.solid {
+  border-top: 3px solid #bbb;
+}
+
+.edit_button{
+
 }

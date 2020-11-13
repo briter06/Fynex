@@ -50,6 +50,7 @@
           <h3 class="title-nav">
             <a href="{% url 'Fynex-index' %}" class="noHover"><img src="{% static 'images/logo.png' %}" width="80px"/></a>
           </h3>
+          <!--
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -71,6 +72,7 @@
               {% endif %}
             </ul>
           </div>
+          -->
         </div>
       </nav>
     </header>
@@ -87,7 +89,18 @@
           </div>
           {% endif %}
           <div class="column-md-6 mx-auto" style="margin-bottom: 10px;">
-            <a href="#" class="button big">Solicitar información</a>
+            <table>
+              <tr>
+                <td align="center" style="padding-bottom: 20px;">
+                  <a onclick="login_modal.show();" class="button big special">Iniciar sesión</a>
+                </td>
+              </tr>
+              <tr>
+                <td align="center">
+                  <a href="#" class="button big">Solicitar información</a>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
 

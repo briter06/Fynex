@@ -22,7 +22,10 @@ class DiseasePredictor:
     def predictDisease(self,heartRate,glucose,bmi,age):
         pred_diabetes = self.predict_diabetes(glucose,bmi,age)
         pred_hypertension = self.predict_hypertension(heartRate,bmi,age)
-        res = pd.DataFrame([['diabetes',pred_diabetes],['hypertension',pred_hypertension]],columns=['Disease','Proba']).sort_values(by='Proba',ascending=False)
+        values = [['diabetes',pred_diabetes],['hypertension',pred_hypertension]]
+        values.append(['obesity',1 if bmi>30 else 0])
+        values.append(['anorexy',1 if bmi<18.5 else 0])
+        res = pd.DataFrame(values,columns=['Disease','Proba']).sort_values(by='Proba',ascending=False)
         return res
 
 

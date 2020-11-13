@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 #Falta -> PlaneActividadFisica
 
 class CentroMedico(models.Model):
-    dirección = models.CharField(max_length=50)
+    direccion = models.CharField(max_length=50)
     telefono = models.CharField(max_length=30)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
@@ -64,5 +64,7 @@ class Mensaje(models.Model):
     medico = models.ForeignKey(Medico,on_delete=models.CASCADE)
     paciente_emisor = models.IntegerField()
 
-class PlanActividadFisica(models.Model):
-    fecha = models.DateTimeField()
+class Solicitud(models.Model):
+    paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
+    tipo_solicitud = models.CharField(max_length=1)
+    estado = models.CharField(max_length=1)

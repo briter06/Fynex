@@ -86,44 +86,45 @@
       </header>
   </div>
 
-  <div w3-include-html="{% static 'helpers/SideNavs/admin.html' %}"></div>
+  <div w3-include-html="{% static 'helpers/SideNavs/medico.html' %}"></div>
 
 
   <div class="container-fluid main_section">
-    <h1 style="margin-bottom: 50px;">CENTROS MÉDICOS</h1>
+    <h1 style="margin-bottom: 50px;">PACIENTES</h1>
     <div style="width: 100%; text-align: right;">
-      <button onclick="add_modal.show('Agregar Centro Medico');" style="margin-bottom: 20px;" class="button">Agregar centro médico</button>
+      <button onclick="add_modal.show('Agregar Medico');" style="margin-bottom: 20px;" class="button">Agregar paciente</button>
     </div>
     <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
       <thead>
           <tr id="titulos">
               <th field = "first_name" type="text" max="150">Nombre</th>
               <th field = "username" type="email" max="150">Email</th>
-              <th field = "direccion" type="text" max="50">Dirección</th>
+              <th field = "identificacion" type="number" max="30">Documento de identificación</th>
               <th field = "telefono" type="number" max="30">Telefono</th>
               <th>Acciones</th>
           </tr>
       </thead>
       <tbody>
-        {% for centro in centros %}
-          <tr id="{{centro.user.username | replace_email}}">
-              <td>{{centro.user.first_name}}</td>
-              <td>{{centro.user.username}}</td>
-              <td>{{centro.direccion}}</td>
-              <td>{{centro.telefono}}</td>
+        {% for paciente in pacientes %}
+          <tr id="{{paciente.user.username | replace_email}}">
+              <td>{{paciente.user.first_name}}</td>
+              <td>{{paciente.user.username}}</td>
+              <td>{{paciente.documento_identificacion}}</td>
+              <td>{{paciente.telefono}}</td>
               <td>
-                <input type="image" class="edit_button" src="{% static 'images/edit.png' %}" width="40" onclick="edit_modal.show('Editar Centro Medico','{{centro.user.username | replace_email}}');"/>
-                <input type="image" src="{% static 'images/delete.png' %}" width="40" onclick="delete_modal.show('Eliminar Centro Medico','{{centro.user.username | replace_email}}');"/>
+                <input type="image" class="edit_button" src="{% static 'images/edit.png' %}" width="40" onclick="edit_modal.show('Editar Paciente','{{paciente.user.username | replace_email}}');"/>
+                <input type="image" src="{% static 'images/delete.png' %}" width="40" onclick="delete_modal.show('Eliminar Paciente','{{paciente.user.username | replace_email}}');"/>
+                <input type="image" src="{% static 'images/lupa.png' %}" width="40" onclick=""/>
               </td>
           </tr>
           {% endfor %}
       </tbody>
       <tfoot>
           <tr>
-            <th>Email</th>
-            <th>Nombre</th>
-            <th>Dirección</th>
-            <th>Telefono</th>
+            <th field = "first_name" type="text" max="150">Nombre</th>
+            <th field = "username" type="email" max="150">Email</th>
+            <th field = "identificacion" type="number" max="30">Documento de identificación</th>
+            <th field = "telefono" type="number" max="30">Telefono</th>
             <th>Acciones</th>
           </tr>
       </tfoot>
