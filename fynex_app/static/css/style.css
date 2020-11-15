@@ -4,7 +4,7 @@
   font-family: CustomFont;
   src: url(../fonts/fontawesome-webfont.woff);
 }
-@media all and (min-width: 800px) and (max-width: 1980px) {
+@media all and (min-width: 1400px) and (max-width: 1980px) {
   .nav-menu-spo {
     background-color: rgba(255, 255, 255, 0);
     position: absolute;
@@ -27,6 +27,50 @@
   .main_title{
     font-family: CustomFont;
     font-size: 150px !important;
+  }
+  #banner {
+    background-image: url(../images/background_index.jpg);
+    background-position: center center;
+    background-size: cover;
+    color: #ffffff;
+    padding-top: 10%;
+    padding-bottom:10%;
+    text-align: center;
+  }
+}
+
+@media all and (min-width: 800px) and (max-width: 1400px) {
+  .nav-menu-spo {
+    background-color: rgba(255, 255, 255, 0);
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+  .title-nav {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 0px;
+  }
+  #banner h2 {
+    color: #ffffff;
+    font-size: 4em;
+    line-height: 1.25em;
+    margin: 0 0 0.5em 0;
+    padding: 0;
+  }
+  .main_title{
+    font-family: CustomFont;
+    font-size: 120px !important;
+  }
+  #banner {
+    background-image: url(../images/background_index.jpg);
+    background-position: center center;
+    background-size: cover;
+    color: #ffffff;
+    padding-top: 10%;
+    padding-bottom:10%;
+    text-align: center;
   }
 }
 
@@ -65,7 +109,37 @@
     font-family: CustomFont;
     font-size: 100px !important;
   }
+  #banner {
+    background-image: url(../images/background_index.jpg);
+    background-position: center center;
+    background-size: cover;
+    color: #ffffff;
+    padding-top: 45%;
+    padding-bottom:45%;
+    text-align: center;
+  }
+  .button{
+    font-size: 20px !important;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .nav-menu-spo-inner {
   background-color: #202020;
@@ -135,7 +209,7 @@ body.is-loading *:after {
   background-color: #125570;
 }
 .main_section{
-  padding-top: 120px;
+  padding-top: 50px;
   padding-left: 50px;
   padding-right: 50px;
   margin: auto auto;
@@ -1147,14 +1221,7 @@ body.landing #header nav a {
 
 /* Banner */
 
-#banner {
-  background-image: url(../images/background_index.jpg);
-  background-position: center center;
-  background-size: cover;
-  color: #ffffff;
-  padding: 14em 0em 14em;
-  text-align: center;
-}
+
 
 
 
@@ -1538,6 +1605,6 @@ hr.solid {
   border-top: 3px solid #bbb;
 }
 
-.edit_button{
-
+.header{
+  background-color: #125570 !important;
 }

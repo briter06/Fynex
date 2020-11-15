@@ -50,29 +50,16 @@
           <h3 class="title-nav">
             <a href="{% url 'Fynex-index' %}" class="noHover"><img src="{% static 'images/logo.png' %}" width="80px"/></a>
           </h3>
-          <!--
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive" style="background-color: Transparent;">
             <ul class="navbar-nav ml-auto">
-              {% if session %}
-              <li>
-                <a href="#" class="button special">Cuenta
-                </a>
-              </li>
-              <li>
-                <a href="#" class="button special">Cerra sesión
-                </a>
-              </li>
-              {% else %}
               <li class="nav-item">
                 <a onclick="login_modal.show();" class="button special">Iniciar sesión</a>
               </li>
-              {% endif %}
             </ul>
           </div>
-          -->
         </div>
       </nav>
     </header>

@@ -23,5 +23,5 @@ urlpatterns = [
     path('', include('fynex_app.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-#handler404 = 'recommender.views.page_not_found'
-#handler500 = 'recommender.views.server_error'
+handler404 = 'fynex_app.views.page_not_found'
+#handler500 = 'fynex_app.views.server_error'

@@ -8,6 +8,20 @@ from .classes.Administrator import Administrator
 from .classes.CentroMedico import CentroMedicoHelper
 from .classes.Medico import MedicoHelper
 
+def page_not_found(request, *args, **argv):
+    response = render(request, 'fynex_app/404.html')
+    response.status_code = 404
+    return response
+
+
+def server_error(request, *args, **argv):
+    response = render(request, 'fynex_app/500.html')
+    response.status_code = 500
+    return response
+
+def privacy_policy(request):
+    return render(request, 'fynex_app/privacy-policy.html')
+
 # Create your views here.
 
 def login_user(request, template_name):
