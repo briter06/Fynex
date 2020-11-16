@@ -61,29 +61,10 @@
   {% endif %}
   <!-- Header -->
   <div class="container-fluid header">
-    <header class="container-fluid nav-menu-spo" style="padding: 0 0 0 0 !important">
-        <nav class="navbar navbar-expand-md navbar-dark sticky-top body_pages">
-          <div class="container-fluid body_pages" style="padding: 0 0 0 0 !important">
-            <h3 class="title-nav">
-              <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
-              <a href="{% url 'Fynex-index' %}" class="noHover"><img src="{% static 'images/logo.png' %}" width="80px"/></a>
-            </h3>
-            <!--
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive" style="background-color: Transparent;">
-              <ul class="navbar-nav ml-auto">
-                <li>
-                  <a href="{% url 'Logout-index' %}" class="button special">Cerrar sesión
-                  </a>
-                </li>
-              </ul>
-            </div>
-            -->
-          </div>
-        </nav>
-      </header>
+    <h3 class="title-nav">
+      <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+      <a href="{% url 'Fynex-index' %}" class="noHover"><img src="{% static 'images/logo.png' %}" width="80px"/></a>
+    </h3>
   </div>
 
   <div w3-include-html="{% static 'helpers/SideNavs/centro_medico.html' %}"></div>
@@ -120,16 +101,6 @@
           </tr>
           {% endfor %}
       </tbody>
-      <tfoot>
-          <tr>
-            <th field = "first_name" type="text" max="150">Nombre</th>
-            <th field = "username" type="email" max="150">Email</th>
-            <th field = "identificacion" type="text" max="30">Documento de identificación</th>
-            <th field = "especialidad" type="text" max="250">Especialidad</th>
-            <th field = "telefono" type="number" max="30">Telefono</th>
-            <th>Acciones</th>
-          </tr>
-      </tfoot>
     </table>
   </div>
 

@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from .recommender.HybridRecommender import HybridRecommender
+from .recommender.ContentRecommenderExercise import ContentRecommenderExercise
 from .classes.Administrator import Administrator
 from .classes.CentroMedico import CentroMedicoHelper
 from .classes.Medico import MedicoHelper
@@ -41,6 +42,7 @@ def verify_auth(request,group_name):
     return True
 
 def index(request):
+    test_systems()
     if request.method == 'POST':
         if 'login' in request.POST:
             return login_user(request, 'Fynex-index')
@@ -195,20 +197,16 @@ def medico_index(request):
 
 
         
-'''
-def administrator_index(request):
-    if not verify_auth(request,'administrator'):
-        return HttpResponseRedirect(reverse('Fynex-index'))
-
-    heartRate = 60
-    glucose = 180
+def test_systems():
+    heartRate = 80
+    glucose = 190
     height = 1.65
-    weight = 85
+    weight = 65
     age = 55
 
     hr = HybridRecommender()
 
-    result = hr.predictNutrition(heartRate,glucose,height,weight,age)
-    print(result)
-    return render(request,'fynex_app/administrator/administrator_index.html',{"result":result['recommendations'].to_html(classes='table table-responsive')})
-'''
+    result1 = hr.predictNutrition(heartRate,glucose,height,weight,age)
+    print(result1)
+    result2 = hr.predictExercise(heartRate,glucose,height,weight,age)
+    print(result2)
