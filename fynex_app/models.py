@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 #Falta -> PlaneActividadFisica
 
@@ -18,9 +19,10 @@ class Paciente(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
     documento_identificacion = models.CharField(max_length=30)
     telefono = models.CharField(max_length=30)
+    fecha_nacimiento = models.DateField(default=now, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 class Auditoria(models.Model):
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateField(auto_now_add=True)
     descripcion = models.CharField(max_length=250)
     direccion_ip = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -35,17 +37,17 @@ class VariableSeguimiento(models.Model):
 class HistorialVariableSeguimiento(models.Model):
     variable_seguimiento = models.ForeignKey(VariableSeguimiento,on_delete=models.CASCADE)
     valor = models.FloatField()
-    fecha = models.DateTimeField()
+    fecha = models.DateField()
 class Examen(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=500)
-    fecha_peticion = models.DateTimeField()
-    fecha_entrega = models.DateTimeField()
+    fecha_peticion = models.DateField()
+    fecha_entrega = models.DateField()
     documento_ruta = models.CharField(max_length=200)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class PlanNutricional(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
-    fecha = models.DateTimeField()
+    fecha = models.DateField()
     rating = models.FloatField
     estado = models.CharField(max_length=1)
 class PartePlanNutricional(models.Model):
@@ -58,7 +60,7 @@ class PartePlanNutricional(models.Model):
     carbohidratos = models.FloatField()
     grasas = models.FloatField()
 class Mensaje(models.Model):
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateField(auto_now_add=True)
     mensaje = models.TextField()
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
     medico = models.ForeignKey(Medico,on_delete=models.CASCADE)

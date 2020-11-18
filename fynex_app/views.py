@@ -8,6 +8,7 @@ from .recommender.ContentRecommenderExercise import ContentRecommenderExercise
 from .classes.Administrator import Administrator
 from .classes.CentroMedico import CentroMedicoHelper
 from .classes.Medico import MedicoHelper
+import datetime
 
 def page_not_found(request, *args, **argv):
     response = render(request, 'fynex_app/404.html')
@@ -160,9 +161,11 @@ def medico_index(request):
             id_prev = request.POST['id'].replace(':','@')
             username = request.POST['username']
             first_name = request.POST['first_name']
+            fecha_nac = request.POST['fecha_nacimiento']
+            fecha_nacimiento = datetime.datetime.strptime(fecha_nac, "%Y-%m-%d").date()
             documento_identificacion = request.POST['identificacion']
             telefono = request.POST['telefono']
-            paciente = medico.modificar_paciente(id_prev,username,first_name,documento_identificacion,telefono)
+            paciente = medico.modificar_paciente(id_prev,username,first_name,fecha_nacimiento,documento_identificacion,telefono)
             if paciente == None:
                 messages.error(request, 'El paciente no se ha editado correctamente')
             else:
@@ -171,9 +174,11 @@ def medico_index(request):
         elif 'add' in request.POST:
             username = request.POST['username']
             first_name = request.POST['first_name']
+            fecha_nac = request.POST['fecha_nacimiento']
+            fecha_nacimiento = datetime.datetime.strptime(fecha_nac, "%Y-%m-%d").date()
             documento_identificacion = request.POST['identificacion']
             telefono = request.POST['telefono']
-            paciente = medico.registrar_paciente(username,username.split('@')[0],first_name,documento_identificacion,telefono)
+            paciente = medico.registrar_paciente(username,username.split('@')[0],first_name,fecha_nacimiento,documento_identificacion,telefono)
             if paciente == None:
                 messages.error(request, 'El paciente no se ha agregado correctamente')
             else:
@@ -193,7 +198,33 @@ def medico_index(request):
         context['pacientes'] = medico.getPacientes()
         return render(request,'fynex_app/medico/medico_index.html',context)
 
+def verify_paciente(request,cod_paciente):
+    medico = MedicoHelper(request.user)
+    res = medico.verifyPaciente(cod_paciente)
+    return res.count() != 0
 
+def medico_paciente(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        medico = MedicoHelper(request.user)
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        return render(request,'fynex_app/medico/medico_paciente.html',context)
+
+
+def medico_nutricion(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        medico = MedicoHelper(request.user)
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        return render(request,'fynex_app/medico/nutrition_recommendations_index.html',context)
 
 
         

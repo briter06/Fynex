@@ -9,4 +9,6 @@ urlpatterns = [
     path('administrator', views.administrator_index, name="Administrator-index"),
     path('CentroMedico', views.centroMedico_index, name="CentroMedico-index"),
     path('Medico', views.medico_index, name="Medico-index"),
+    path('Medico/<int:cod_paciente>/paciente', views.medico_paciente, name="Medico-paciente-index"),
+    path('Medico/<int:cod_paciente>/nutrition_recommendations', views.medico_nutricion, name="Medico-nutricion-index"),
 ]
