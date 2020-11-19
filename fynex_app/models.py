@@ -30,9 +30,10 @@ class PreexistenciaMedica(models.Model):
     descripcion = models.CharField(max_length=250)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class VariableSeguimiento(models.Model):
-    nombre = models.CharField(max_length=30)
-    intervalo_referencia = models.CharField(max_length=50)
-    unidad = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=50)
+    intervalo_referencia = models.CharField(max_length=150)
+    unidad = models.CharField(max_length=150)
+    obligatorio = models.IntegerField()
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class HistorialVariableSeguimiento(models.Model):
     variable_seguimiento = models.ForeignKey(VariableSeguimiento,on_delete=models.CASCADE)
@@ -47,8 +48,8 @@ class Examen(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class PlanNutricional(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
-    fecha = models.DateField()
-    rating = models.FloatField
+    fecha = models.DateField(auto_now_add=True)
+    rating = models.FloatField()
     estado = models.CharField(max_length=1)
 class PartePlanNutricional(models.Model):
     plan_nutricional = models.ForeignKey(PlanNutricional,on_delete=models.CASCADE)
@@ -59,6 +60,17 @@ class PartePlanNutricional(models.Model):
     proteinas = models.FloatField()
     carbohidratos = models.FloatField()
     grasas = models.FloatField()
+class PlanEjercicio(models.Model):
+    paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
+    fecha = models.DateField()
+    rating = models.FloatField()
+    estado = models.CharField(max_length=1)
+    tipo_ejercicio = models.CharField(max_length=50)
+    ejercicio = models.CharField(max_length=50)
+    info = models.CharField(max_length=200)
+    dias = models.CharField(max_length=50)
+    tiempo = models.CharField(max_length=50)
+
 class Mensaje(models.Model):
     fecha = models.DateField(auto_now_add=True)
     mensaje = models.TextField()

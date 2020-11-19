@@ -10,6 +10,8 @@ from .classes.CentroMedico import CentroMedicoHelper
 from .classes.Medico import MedicoHelper
 import datetime
 
+from .models import PlanNutricional
+
 def page_not_found(request, *args, **argv):
     response = render(request, 'fynex_app/404.html')
     response.status_code = 404
@@ -43,7 +45,6 @@ def verify_auth(request,group_name):
     return True
 
 def index(request):
-    test_systems()
     if request.method == 'POST':
         if 'login' in request.POST:
             return login_user(request, 'Fynex-index')
@@ -203,6 +204,11 @@ def verify_paciente(request,cod_paciente):
     res = medico.verifyPaciente(cod_paciente)
     return res.count() != 0
 
+def verify_planNutricional(request,cod_paciente,cod_plan):
+    medico = MedicoHelper(request.user)
+    res = medico.verifyPlanNutricional(cod_paciente,cod_plan)
+    return res.count() != 0
+
 def medico_paciente(request,cod_paciente):
     if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
         return HttpResponseRedirect(reverse('Fynex-index'))
@@ -215,29 +221,126 @@ def medico_paciente(request,cod_paciente):
         return render(request,'fynex_app/medico/medico_paciente.html',context)
 
 
-def medico_nutricion(request,cod_paciente):
+
+
+def medico_variables(request,cod_paciente):
     if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
         return HttpResponseRedirect(reverse('Fynex-index'))
     if request.method == 'POST':
-        pass
+        medico = MedicoHelper(request.user)
+        if 'edit' in request.POST:
+            id_prev = request.POST['id']
+            nombre = request.POST['nombre']
+            intervalo_referencia = request.POST['intervalo_referencia']
+            unidad = request.POST['unidad']
+            paciente = medico.getPaciente(cod_paciente)
+            paciente = medico.modificarVariable(id_prev,nombre,intervalo_referencia,unidad)
+            if paciente == None:
+                messages.error(request, 'La variable no se ha editado correctamente')
+            else:
+                messages.success(request, 'La variable se ha editado correctamente')
+            return HttpResponseRedirect(reverse('Medico-variables-index', kwargs={'cod_paciente': cod_paciente}))
+        elif 'add' in request.POST:
+            nombre = request.POST['nombre']
+            intervalo_referencia = request.POST['intervalo_referencia']
+            unidad = request.POST['unidad']
+            paciente = medico.getPaciente(cod_paciente)
+            variable = medico.addVariableSeguimiento(nombre,intervalo_referencia,unidad,paciente,0)
+            if variable == None:
+                messages.error(request, 'La variable no se ha agregado correctamente')
+            else:
+                messages.success(request, 'La variable se ha agregado correctamente')
+            return HttpResponseRedirect(reverse('Medico-variables-index', kwargs={'cod_paciente': cod_paciente}))
+        elif 'delete' in request.POST:
+            id_prev = request.POST['id']
+            variable = medico.eliminarVariable(id_prev)
+            if variable == False:
+                messages.error(request, 'La variable no se ha eliminado correctamente')
+            else:
+                messages.success(request, 'La variable se ha eliminado correctamente')
+            return HttpResponseRedirect(reverse('Medico-variables-index', kwargs={'cod_paciente': cod_paciente}))
     else:
         context = {}
         medico = MedicoHelper(request.user)
         context['paciente'] = medico.getPaciente(cod_paciente)
+        context['variables'] = medico.getVariablesSeguimiento(cod_paciente)
+        return render(request,'fynex_app/medico/medico_variables.html',context)
+
+def medico_nutricion(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        medico = MedicoHelper(request.user)
+        if 'delete' in request.POST:
+            id_prev = request.POST['id']
+            plan = medico.eliminarPlanNutricional(id_prev)
+            if plan == False:
+                messages.error(request, 'El plan nutricional no se ha eliminado correctamente')
+            else:
+                messages.success(request, 'El plan nutricional se ha eliminado correctamente')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+    else:
+        context = {}
+        medico = MedicoHelper(request.user)
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        context['planes'] = medico.getPlanesNutricionales(cod_paciente)
         return render(request,'fynex_app/medico/nutrition_recommendations_index.html',context)
+    
 
 
-        
-def test_systems():
-    heartRate = 80
-    glucose = 190
-    height = 1.65
-    weight = 65
-    age = 55
+def medico_generar_nutricion(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        medico = MedicoHelper(request.user)
+        if 'save' in request.POST:
+            id_p = request.POST['id']
+            rating = request.POST['rate'] if 'rate' in request.POST else 0
+            estado = "A" if 'estado' in request.POST else "I"
+            plan = medico.modificarPlanNutricional(id_p,rating,estado)
+            if plan == False:
+                messages.error(request, 'El plan nutricional no se ha modificado correctamente')
+            else:
+                messages.success(request, 'El plan nutricional se ha modificado correctamente')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+    else:
+        heartRate = 90
+        glucose = 180
+        height = 1.65
+        weight = 65
+        age = 55
 
-    hr = HybridRecommender()
+        hr = HybridRecommender()
+        result = hr.predictNutrition(heartRate,glucose,height,weight,age)
 
-    result1 = hr.predictNutrition(heartRate,glucose,height,weight,age)
-    print(result1)
-    result2 = hr.predictExercise(heartRate,glucose,height,weight,age)
-    print(result2)
+        medico = MedicoHelper(request.user)
+        plan = medico.guardarRecomendacionNutricion(result['recommendations'],cod_paciente)
+        context = {}
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        context['plan'] = plan
+        context['partes'] = medico.getPartesDePlanNutricional(plan)
+        return render(request,'fynex_app/medico/nutrition_recommendations_generation.html',context)
+
+def medico_detail_nutricion(request,cod_paciente,cod_plan):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente) or not verify_planNutricional(request,cod_paciente,cod_plan):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        medico = MedicoHelper(request.user)
+        if 'save' in request.POST:
+            id_p = request.POST['id']
+            rating = request.POST['rate'] if 'rate' in request.POST else 0
+            estado = "A" if 'estado' in request.POST else "I"
+            plan = medico.modificarPlanNutricional(id_p,rating,estado)
+            if plan == False:
+                messages.error(request, 'El plan nutricional no se ha modificado correctamente')
+            else:
+                messages.success(request, 'El plan nutricional se ha modificado correctamente')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+    else:
+        medico = MedicoHelper(request.user)
+        context = {}
+        plan = medico.getPlanNutricional(cod_plan)
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        context['plan'] = plan
+        context['partes'] = medico.getPartesDePlanNutricional(plan)
+        return render(request,'fynex_app/medico/nutrition_recommendations_generation.html',context)
