@@ -1,5 +1,5 @@
 {% load static %}
-{% load replace_email %}
+{% load disease %}
 <!DOCTYPE html>
 <!--
 	Transit by TEMPLATED
@@ -81,7 +81,14 @@
 
 
   <div class="container-fluid main_section">
-    <h1 style="margin-bottom: 50px;">Plan generado para {{paciente.user.first_name}}</h1>
+    <h1 style="margin-bottom: 50px;">Plan generado para {{paciente.user.first_name}} 
+    {% if nueva %}
+      <a style="margin-left: 15px;" data-placement="bottom" data-toggle="popover" title="Información utilizada:"
+          data-content="Altura: {{height}} metros<br>Peso: {{weight}} kilogramos<br>Ritmo cardíaco: {{heartRate}} latidos/m<br>Nivel de glucosa: {{glucose}} mg/dl<br> Posibles enfermedades: <br> {% for di in diseases %} - <strong>{{di | disease}}</strong> <br> {% endfor %}"><i
+            class="fa fa-question-circle"></i></a>
+    {% endif %}
+    </h1>
+    
     <div style="width: 100%;">
       <form method='POST'>
         {%csrf_token%}
@@ -158,6 +165,10 @@
 <script src="{% static 'js/include-html.js' %}"></script>
 <script src="{% static 'js/sidenav_js.js' %}"></script>
 <script src="{% static 'js/datatable.js' %}"></script>
-
+<script>
+  $(document).ready(function () {
+    $('[data-toggle="popover"]').popover({ html: true });
+  });
+</script>
 
 </html>

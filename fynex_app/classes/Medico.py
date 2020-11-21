@@ -1,16 +1,59 @@
 from ..models import Medico
 from ..models import Paciente
 from ..models import VariableSeguimiento
+from ..models import HistorialVariableSeguimiento
 from ..models import PlanNutricional
 from ..models import PartePlanNutricional
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 import pandas as pd
+import datetime
+from dateutil.relativedelta import relativedelta
 
 class MedicoHelper:
 
     def __init__(self,user):
         self.medico = Medico.objects.all().get(user=user)
+    
+    def getEdad(self,cod_paciente):
+        try:
+            paciente = Paciente.objects.all().get(pk=cod_paciente)
+            res = relativedelta(datetime.date.today(), paciente.fecha_nacimiento).years
+            return res
+        except:
+            return 0
+
+    def getRitmoCardiaco(self,cod_paciente):
+        try:
+            var = VariableSeguimiento.objects.all().get(paciente__id=cod_paciente,nombre = 'Ritmo Cardiaco')
+            historial = HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=var).order_by('fecha').last()
+            return historial
+        except:
+            return None
+    
+    def getGlucosa(self,cod_paciente):
+        try:
+            var = VariableSeguimiento.objects.all().get(paciente__id=cod_paciente,nombre = 'Nivel de glucosa')
+            historial = HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=var).order_by('fecha').last()
+            return historial
+        except:
+            return None
+
+    def getAltura(self,cod_paciente):
+        try:
+            var = VariableSeguimiento.objects.all().get(paciente__id=cod_paciente,nombre = 'Altura')
+            historial = HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=var).order_by('fecha').last()
+            return historial
+        except:
+            return None
+    
+    def getPeso(self,cod_paciente):
+        try:
+            var = VariableSeguimiento.objects.all().get(paciente__id=cod_paciente,nombre = 'Peso')
+            historial = HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=var).order_by('fecha').last()
+            return historial
+        except:
+            return None
     
     def eliminarPlanNutricional(self,cod_plan):
         try:
@@ -21,7 +64,7 @@ class MedicoHelper:
             return False
     def getPlanesNutricionales(self,cod_paciente):
         paciente = Paciente.objects.all().get(pk=cod_paciente)
-        planes = PlanNutricional.objects.all().filter(paciente=paciente)
+        planes = PlanNutricional.objects.all().filter(paciente=paciente).order_by('id')
         return planes
 
     def getPartesDePlanNutricional(self,plan):
@@ -64,6 +107,43 @@ class MedicoHelper:
         except Exception as e:
             print (e)
             return None
+    def guardarHistorialVariable(self,variable,fecha,valor):
+        try:
+            historico = HistorialVariableSeguimiento()
+            historico.variable_seguimiento = variable
+            historico.fecha = fecha
+            historico.valor = valor
+            historico.save()
+            return historico
+        except:
+            return None
+    def modificarHistorialVariable(self,cod_historico,fecha,valor):
+        try:
+            historico = HistorialVariableSeguimiento.objects.all().get(pk=cod_historico)
+            historico.fecha = fecha
+            historico.valor = valor
+            historico.save()
+            return historico
+        except:
+            return None
+    
+    def eliminarHistorialVariable(self,cod_historico):
+        try:
+            historico = HistorialVariableSeguimiento.objects.all().get(pk=cod_historico)
+            historico.delete()
+            return True
+        except:
+            return False
+
+    def getHistoricoVariable(self,variable):
+        return HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=variable)
+
+    def getVariable(self,cod_variable):
+        try:
+            return VariableSeguimiento.objects.all().get(pk=cod_variable)
+        except:
+            return None
+
 
     def modificarVariable(self,cod_variable,nombre,intervalo_referencia,unidad):
         try:
@@ -84,8 +164,11 @@ class MedicoHelper:
             return False
     def addVariableSeguimiento(self,nombre,intervalo_referencia,unidad,paciente,obligatorio):
         try:
+            res = VariableSeguimiento.objects.all().filter(nombre = nombre.strip()).count()
+            if res !=0:
+                return None
             variable = VariableSeguimiento()
-            variable.nombre = nombre
+            variable.nombre = nombre.strip()
             variable.intervalo_referencia = intervalo_referencia
             variable.unidad = unidad
             variable.paciente = paciente

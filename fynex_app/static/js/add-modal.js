@@ -55,7 +55,11 @@ var add_modal =
         for (var i = 0; i < titulos.length-1; i++) {
           var elem = titulos[i];
           content = content + '<label for="'+elem.getAttribute('field')+'">'+elem.innerHTML+'</label>' + "\n";
-          content = content + '<input required type="'+elem.getAttribute('type')+'" name="'+elem.getAttribute('field')+'" maxlength="'+elem.getAttribute('max')+'"/>' + "\n";
+          var step = 'maxlength';
+          if (elem.getAttribute('type')=='number'){
+            step = 'step';
+          }
+          content = content + '<input required type="'+elem.getAttribute('type')+'" name="'+elem.getAttribute('field')+'" '+step+'="'+elem.getAttribute('max')+'"/>' + "\n";
 
         }
         $dialog.find('#content_edit').html(content);

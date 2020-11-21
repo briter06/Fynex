@@ -1,4 +1,5 @@
 {% load static %}
+{% load replace_email %}
 {% load date_get %}
 <!DOCTYPE html>
 <!--
@@ -67,33 +68,31 @@
     </h3>
   </div>
 
-  <input type="hidden" id="cod_paciente" value="{{paciente.id}}"/>
-  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
+  
+  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente-level2.html' %}"></div>
 
 
   <div class="container-fluid main_section">
-    <h1 style="margin-bottom: 50px;">Planes nutricionales de {{paciente.user.first_name}}</h1>
+    <h1 style="margin-bottom: 50px;">{{variable.nombre}} de {{paciente.user.first_name}}</h1>
     <div style="width: 100%; text-align: right;">
-      <button onclick="location.href = 'plan_nutricion/generar';" style="margin-bottom: 20px;" class="button">Generar nueva recomendación</button>
+      <button onclick="add_modal.show('Agregar Valor de {{variable.nombre}}');" style="margin-bottom: 20px;" class="button">Agregar valor de {{variable.nombre}}</button>
     </div>
     <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
       <thead>
           <tr id="titulos">
-              <th>Fecha</th>
-              <th>Rating</th>
-              <th>Estado</th>
+              <th field = "fecha" type="date" max="50">Fecha</th>
+              <th field = "valor" type="number" max=".00001">Valor</th>
               <th>Acciones</th>
           </tr>
       </thead>
       <tbody>
-        {% for plan in planes reversed %}
-          <tr id="{{plan.id}}">
-              <td>{{plan.fecha | date_get}}</td>
-              <td>{{plan.rating}}</td>
-              <td>{{plan.estado}}</td>
+        {% for h in historico %}
+          <tr id="{{h.id}}">
+              <td>{{h.fecha | date_get}}</td>
+              <td>{{h.valor}}</td>
               <td>
-                <input type="image" src="{% static 'images/delete.png' %}" width="40" onclick="delete_modal.show('Eliminar Plan Nutricional','{{plan.id}}');"/>
-                <input type="image" src="{% static 'images/lupa.png' %}" width="40" onclick="location.href = 'plan_nutricion/{{plan.id}}';"/>
+                <input type="image" class="edit_button" src="{% static 'images/edit.png' %}" width="40" onclick="edit_modal.show('Editar Valor de {{variable.nombre}}','{{h.id}}');"/>
+                <input type="image" src="{% static 'images/delete.png' %}" width="40" onclick="delete_modal.show('Eliminar Valor de {{variable.nombre}}','{{h.id}}');"/>
               </td>
           </tr>
           {% endfor %}

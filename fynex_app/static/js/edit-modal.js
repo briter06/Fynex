@@ -57,7 +57,11 @@ var edit_modal =
           var elem = titulos[i];
           var val = fila[i];
           content = content + '<label for="'+elem.getAttribute('field')+'">'+elem.innerHTML+'</label>' + "\n";
-          content = content + '<input required type="'+elem.getAttribute('type')+'" name="'+elem.getAttribute('field')+'" maxlength="'+elem.getAttribute('max')+'" value="'+val.innerHTML+'"/>' + "\n";
+          var step = 'maxlength';
+          if (elem.getAttribute('type')=='number'){
+            step = 'step';
+          }
+          content = content + '<input required type="'+elem.getAttribute('type')+'" name="'+elem.getAttribute('field')+'" '+step+'="'+elem.getAttribute('max')+'" value="'+val.innerHTML+'"/>' + "\n";
 
         }
         $dialog.find('#content_edit').html(content);
