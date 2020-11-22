@@ -164,7 +164,7 @@ class MedicoHelper:
             return False
     def addVariableSeguimiento(self,nombre,intervalo_referencia,unidad,paciente,obligatorio):
         try:
-            res = VariableSeguimiento.objects.all().filter(nombre = nombre.strip()).count()
+            res = VariableSeguimiento.objects.all().filter(nombre = nombre.strip(),paciente=paciente).count()
             if res !=0:
                 return None
             variable = VariableSeguimiento()
@@ -175,7 +175,8 @@ class MedicoHelper:
             variable.obligatorio = obligatorio
             variable.save()
             return variable
-        except:
+        except Exception as e:
+            print(e)
             return None
     
     def registrar_paciente(self,username,password,first_name,fecha_nacimiento,documento_identificacion,telefono):

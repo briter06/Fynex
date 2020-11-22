@@ -12,3 +12,5 @@ def disease(value):
         return 'Diabetes'
     if value == 'hypertension':
         return 'Hipertensión arterial'
+    if value == 'normal':
+        return 'No tiene enfermedades'

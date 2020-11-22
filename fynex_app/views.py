@@ -380,7 +380,6 @@ def medico_generar_nutricion(request,cod_paciente):
 
         hr = HybridRecommender()
         result = hr.predictNutrition(heartRate,glucose,height,weight,age)
-
         
         plan = medico.guardarRecomendacionNutricion(result['recommendations'],cod_paciente)
         context = {}
