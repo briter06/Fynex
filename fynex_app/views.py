@@ -43,6 +43,8 @@ def verify_auth(request,group_name):
         return False
     return True
 
+
+
 def index(request):
     if request.method == 'POST':
         if 'login' in request.POST:
@@ -58,6 +60,7 @@ def index(request):
             else:
                 return logout_user(request)
         else:
+            
             return render(request, 'fynex_app/index.html')
 
 def logout_user(request):
