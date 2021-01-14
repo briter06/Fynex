@@ -425,7 +425,7 @@ def medico_detail_nutricion(request,cod_paciente,cod_plan):
 
 
 
-def chat(request, room_name):
-    return render(request, 'fynex_app/chat.html', {
-        'room_name': room_name
+def chat(request, cod_paciente):
+    return render(request, 'fynex_app/medico/chat.html', {
+        'room_name': str(cod_paciente)
     })

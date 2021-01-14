@@ -18,5 +18,5 @@ urlpatterns = [
 
 
     
-    path('<str:room_name>', views.chat, name="chat"),
+    path('Medico/<int:cod_paciente>/chat', views.chat, name="chat"),
 ]
