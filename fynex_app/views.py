@@ -463,3 +463,30 @@ def paciente_index(request):
         pacienteHelper = PacienteHelper(request.user)
         context['paciente'] = pacienteHelper.paciente
         return render(request,'fynex_app/paciente/paciente_index.html',context)
+
+def paciente_nutricion(request):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        pacienteHelper = PacienteHelper(request.user)
+        context['paciente'] = pacienteHelper.paciente
+        context['planes'] = pacienteHelper.getPlanesNutricionales()
+        return render(request,'fynex_app/paciente/nutrition_recommendations_index.html',context)
+
+def paciente_detail_nutricion(request,cod_plan):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    
+    pacienteHelper = PacienteHelper(request.user)
+    paciente = pacienteHelper.paciente
+    context = {}
+    plan = pacienteHelper.getPlanNutricional(cod_plan)
+    if plan==None:
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    context['paciente'] = paciente
+    context['plan'] = plan
+    context['partes'] = pacienteHelper.getPartesDePlanNutricional(plan)
+    return render(request,'fynex_app/paciente/nutrition_recommendations_generation.html',context)
