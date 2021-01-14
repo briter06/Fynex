@@ -2,6 +2,7 @@ from ..models import CentroMedico
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 import pandas as pd
+from .tools import Tools
 
 class Administrator:
 
@@ -21,6 +22,9 @@ class Administrator:
             user.save()
             centro.save()
             group.user_set.add(user)
+            
+            res = Tools.sendEmailUserAdded(user,password)
+
             return centro
         except:
             return None
