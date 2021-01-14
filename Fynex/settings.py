@@ -13,6 +13,18 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'fynexhealth@gmail.com'
+EMAIL_DISPLAY_NAME = 'Fynex'
+DEFAULT_FROM_EMAIL = EMAIL_DISPLAY_NAME+' <'+EMAIL_HOST_USER+'>'
+EMAIL_HOST_PASSWORD = os.environ['FYNEX_EMAIL_PASSWORD']
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +36,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['secret_key_fynex']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['fynexapp.herokuapp.com','localhost','*']
 
@@ -32,6 +44,7 @@ ALLOWED_HOSTS = ['fynexapp.herokuapp.com','localhost','*']
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'fynex_app.apps.FynexAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -141,3 +154,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 RECOMMENDER_ROOT = os.path.join(BASE_DIR, 'fynex_app/recommender')
 
 
+ASGI_APPLICATION = "Fynex.routing.application"
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+    },
+}

@@ -421,3 +421,11 @@ def medico_detail_nutricion(request,cod_paciente,cod_plan):
         context['plan'] = plan
         context['partes'] = medico.getPartesDePlanNutricional(plan)
         return render(request,'fynex_app/medico/nutrition_recommendations_generation.html',context)
+
+
+
+
+def chat(request, room_name):
+    return render(request, 'fynex_app/chat.html', {
+        'room_name': room_name
+    })
