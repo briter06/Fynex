@@ -8,6 +8,7 @@ from .recommender.ContentRecommenderExercise import ContentRecommenderExercise
 from .classes.Administrator import Administrator
 from .classes.CentroMedico import CentroMedicoHelper
 from .classes.Medico import MedicoHelper
+from .classes.Paciente import PacienteHelper
 import datetime
 
 
@@ -57,6 +58,8 @@ def index(request):
                 return HttpResponseRedirect(reverse('CentroMedico-index'))
             elif request.user.groups.filter(name='medico').exists():
                 return HttpResponseRedirect(reverse('Medico-index'))
+            elif request.user.groups.filter(name='paciente').exists():
+                return HttpResponseRedirect(reverse('Paciente-index'))
             else:
                 return logout_user(request)
         else:
@@ -425,9 +428,38 @@ def medico_detail_nutricion(request,cod_paciente,cod_plan):
 
 
 
-def chat(request, cod_paciente):
+def medico_chat(request, cod_paciente):
     if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
         return HttpResponseRedirect(reverse('Fynex-index'))
-    return render(request, 'fynex_app/medico/chat.html', {
-        'room_name': str(cod_paciente)
+    
+    medico = MedicoHelper(request.user)
+    paciente = medico.getPaciente(cod_paciente)
+    return render(request, 'fynex_app/chat.html', {
+        'room_name': str(cod_paciente),
+        'sender_name' : request.user.first_name,
+        'receiver_name' : paciente.user.first_name
     })
+
+def paciente_chat(request):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    
+    pacienteHelper = PacienteHelper(request.user)
+    paciente = pacienteHelper.paciente
+    return render(request, 'fynex_app/chat.html', {
+        'room_name': str(paciente.id),
+        'sender_name' : paciente.user.first_name,
+        'receiver_name' : paciente.medico.user.first_name
+    })
+
+
+def paciente_index(request):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        pacienteHelper = PacienteHelper(request.user)
+        context['paciente'] = pacienteHelper.paciente
+        return render(request,'fynex_app/paciente/paciente_index.html',context)

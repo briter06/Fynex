@@ -1,0 +1,141 @@
+{% load static %}
+{% load replace_email %}
+{% load date_get %}
+<!DOCTYPE html>
+<!--
+	Transit by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+
+<head>
+  <link rel="icon" href="{% static 'images/logo.png' %}">
+  <meta charset="UTF-8" />
+  <title>Fynex</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="//code.angularjs.org/snapshot/angular.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <!--Data table-->
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css">
+
+  <script>
+    var v_style = "{% static 'css/style.css' %}";
+    var v_style_xlarge = "{% static 'css/style-xlarge.css' %}";
+    var v_style_large = "{% static 'css/style-large.css' %}";
+    var v_style_medium = "{% static 'css/style-medium.css' %}";
+    var v_style_small = "{% static 'css/style-small.css' %}";
+    var v_style_xsmall = "{% static 'css/style-xsmall.css' %}";
+  </script>
+
+
+  <script src="{% static 'js/skel.min.js' %}"></script>
+  <script src="{% static 'js/skel-layers.min.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+
+<body>
+  {% if messages %}
+  <ul class="messages" style="padding: 0 0 0 0;margin: 0 0 0 0;">
+    {% for message in messages %}
+    <div {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      <strong {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} style="color:white" {% endif %}>{{ message }}</strong>
+    </div>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <!-- Header -->
+  <div class="container-fluid header">
+    <h3 class="title-nav">
+      <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+      <a href="{% url 'Fynex-index' %}" class="noHover"><img src="{% static 'images/logo.png' %}" width="80px"/></a>
+    </h3>
+  </div>
+
+  <input type="hidden" id="cod_paciente" value="{{paciente.id}}"/>
+  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
+
+
+  <div class="container-fluid main_section">
+    <h1 style="margin-bottom: 50px;">Chat con {{receiver_name}}</h1>
+        <textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
+        <input id="chat-message-input" type="text" size="100"><br>
+        <input id="chat-message-submit" type="button" value="Send">
+        {{ room_name|json_script:"room-name" }}
+
+
+        <script>
+            const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    
+            if (window.location.protocol == "https:") {
+                var ws_scheme = "wss://";
+            } else {
+                var ws_scheme = "ws://"
+            };
+    
+            const chatSocket = new WebSocket(
+                ws_scheme
+                + window.location.host
+                + '/ws/chat/'
+                + roomName
+                + '/'
+            );
+    
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                document.querySelector('#chat-log').value += (data.sender + ' : ' + data.message + '\n');
+            };
+    
+            chatSocket.onclose = function(e) {
+                console.error('Chat socket closed unexpectedly');
+            };
+    
+            document.querySelector('#chat-message-input').focus();
+            document.querySelector('#chat-message-input').onkeyup = function(e) {
+                if (e.keyCode === 13) {  // enter, return
+                    document.querySelector('#chat-message-submit').click();
+                }
+            };
+    
+            document.querySelector('#chat-message-submit').onclick = function(e) {
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const message = messageInputDom.value;
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'sender' : '{{sender_name}}'
+                }));
+                messageInputDom.value = '';
+            };
+        </script>
+
+
+  </div>
+
+  <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>
+  <script id="edit_script" src="{% static 'js/edit-modal.js' %}" token='{%csrf_token%}'></script>
+  <script id="add_script" src="{% static 'js/add-modal.js' %}" token='{%csrf_token%}'></script>
+  <script id="delete_script" src="{% static 'js/delete-modal.js' %}" token='{%csrf_token%}'></script>
+</body>
+
+<script src="{% static 'js/include-html.js' %}"></script>
+<script src="{% static 'js/sidenav_js.js' %}"></script>
+<script src="{% static 'js/datatable.js' %}"></script>
+
+
+</html>

@@ -69,61 +69,16 @@
   </div>
 
   <input type="hidden" id="cod_paciente" value="{{paciente.id}}"/>
-  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
+  <div w3-include-html="{% static 'helpers/SideNavs/paciente.html' %}"></div>
 
 
   <div class="container-fluid main_section">
-    <h1 style="margin-bottom: 50px;">CHAT</h1>
-        <textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
-        <input id="chat-message-input" type="text" size="100"><br>
-        <input id="chat-message-submit" type="button" value="Send">
-        {{ room_name|json_script:"room-name" }}
-
-
-        <script>
-            const roomName = JSON.parse(document.getElementById('room-name').textContent);
-    
-            if (window.location.protocol == "https:") {
-                var ws_scheme = "wss://";
-            } else {
-                var ws_scheme = "ws://"
-            };
-    
-            const chatSocket = new WebSocket(
-                ws_scheme
-                + window.location.host
-                + '/ws/chat/'
-                + roomName
-                + '/'
-            );
-    
-            chatSocket.onmessage = function(e) {
-                const data = JSON.parse(e.data);
-                document.querySelector('#chat-log').value += (data.message + '\n');
-            };
-    
-            chatSocket.onclose = function(e) {
-                console.error('Chat socket closed unexpectedly');
-            };
-    
-            document.querySelector('#chat-message-input').focus();
-            document.querySelector('#chat-message-input').onkeyup = function(e) {
-                if (e.keyCode === 13) {  // enter, return
-                    document.querySelector('#chat-message-submit').click();
-                }
-            };
-    
-            document.querySelector('#chat-message-submit').onclick = function(e) {
-                const messageInputDom = document.querySelector('#chat-message-input');
-                const message = messageInputDom.value;
-                chatSocket.send(JSON.stringify({
-                    'message': message
-                }));
-                messageInputDom.value = '';
-            };
-        </script>
-
-
+    <h1 style="margin-bottom: 50px;">BIENVENIDO</h1>
+    <h2><strong>Nombre del paciente:</strong> {{paciente.user.first_name}}</h2>
+    <h2><strong>Email del paciente:</strong> {{paciente.user.username}}</h2>
+    <h2><strong>Fecha de nacimiento del paciente:</strong> {{paciente.fecha_nacimiento|date_get}}</h2>
+    <h2><strong>Documento de identificación del paciente:</strong> {{paciente.documento_identificacion}}</h2>
+    <h2><strong>Teléfono del paciente:</strong> {{paciente.telefono}}</h2>
   </div>
 
   <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>
