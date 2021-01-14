@@ -426,6 +426,8 @@ def medico_detail_nutricion(request,cod_paciente,cod_plan):
 
 
 def chat(request, cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
     return render(request, 'fynex_app/medico/chat.html', {
         'room_name': str(cod_paciente)
     })
