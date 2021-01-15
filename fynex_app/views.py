@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
@@ -9,8 +10,16 @@ from .classes.Administrator import Administrator
 from .classes.CentroMedico import CentroMedicoHelper
 from .classes.Medico import MedicoHelper
 from .classes.Paciente import PacienteHelper
+from .classes.tools import Tools
 import datetime
 
+
+def download_test(request,file_name):
+    file = Tools.cos.Object('fynex', file_name).get()
+
+    response = HttpResponse(file['Body'].read(), content_type=file['ContentType'])
+    response['Content-Disposition'] = 'attachment; filename={0}'.format(file_name)
+    return response
 
 def page_not_found(request, *args, **argv):
     response = render(request, 'fynex_app/404.html')

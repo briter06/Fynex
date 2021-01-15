@@ -24,4 +24,10 @@ urlpatterns = [
     
     path('Medico/<int:cod_paciente>/chat', views.medico_chat, name="Medico-chat"),
     path('Paciente/chat', views.paciente_chat, name="Paciente-chat"),
+
+
+
+
+    path('download/<str:file_name>', views.download_test, name="Download"),
+    
 ]
