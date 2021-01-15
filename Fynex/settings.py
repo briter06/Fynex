@@ -23,6 +23,10 @@ EMAIL_DISPLAY_NAME = 'Fynex'
 DEFAULT_FROM_EMAIL = EMAIL_DISPLAY_NAME+' <'+EMAIL_HOST_USER+'>'
 EMAIL_HOST_PASSWORD = os.environ['FYNEX_EMAIL_PASSWORD']
 
+COS_ENDPOINT = os.environ['COS_ENDPOINT']
+COS_API_KEY_ID = os.environ['COS_API_KEY_ID']
+COS_INSTANCE_CRN = os.environ['COS_INSTANCE_CRN']
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

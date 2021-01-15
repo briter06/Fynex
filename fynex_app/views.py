@@ -13,9 +13,17 @@ from .classes.Paciente import PacienteHelper
 from .classes.tools import Tools
 import datetime
 
+def upload_test(request):
+    if request.method == 'POST':
+        file = request.FILES['myfile']
+        file_content = file.read()
+        Tools.cos_upload.put_object(Body=file_content,Bucket='fynex',Key=str(file))
+        return render(request, 'fynex_app/file_upload.html')
+    else:
+        return render(request, 'fynex_app/file_upload.html')
 
 def download_test(request,file_name):
-    file = Tools.cos.Object('fynex', file_name).get()
+    file = Tools.cos_download.Object('fynex', file_name).get()
 
     response = HttpResponse(file['Body'].read(), content_type=file['ContentType'])
     response['Content-Disposition'] = 'attachment; filename={0}'.format(file_name)
