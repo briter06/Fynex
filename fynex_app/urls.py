@@ -24,6 +24,7 @@ urlpatterns = [
     
     path('Medico/<int:cod_paciente>/chat', views.medico_chat, name="Medico-chat"),
     path('Paciente/chat', views.paciente_chat, name="Paciente-chat"),
+    path('Paciente/variables', views.paciente_variables, name="Paciente-variables-index"),
 
 
 

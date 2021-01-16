@@ -12,6 +12,7 @@ from .classes.Medico import MedicoHelper
 from .classes.Paciente import PacienteHelper
 from .classes.tools import Tools
 import datetime
+import json
 
 def upload_test(request):
     if request.method == 'POST':
@@ -507,3 +508,26 @@ def paciente_detail_nutricion(request,cod_plan):
     context['plan'] = plan
     context['partes'] = pacienteHelper.getPartesDePlanNutricional(plan)
     return render(request,'fynex_app/paciente/nutrition_recommendations_generation.html',context)
+
+def paciente_variables(request):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        pacienteHelper = PacienteHelper(request.user)
+        context['paciente'] = pacienteHelper.paciente
+        vars = {}
+        variables = pacienteHelper.getVariablesSeguimiento()
+        for v in variables:
+            historico = pacienteHelper.getHistoricoVariable(v.id)
+            values = []
+            dates = []
+            for h in historico:
+                values.append(h.valor)
+                dates.append(str(h.fecha))
+            vars[v.nombre] = [values,dates]
+        context['variables'] = vars
+
+        return render(request,'fynex_app/paciente/grafico_variables.html',context)

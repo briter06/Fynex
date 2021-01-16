@@ -1,6 +1,7 @@
 from ..models import VariableSeguimiento
 from ..models import PlanNutricional
 from ..models import PartePlanNutricional
+from ..models import HistorialVariableSeguimiento
 from ..models import Paciente
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
@@ -24,4 +25,10 @@ class PacienteHelper:
         except:
             return None
     
+
+    def getVariablesSeguimiento(self):
+        res = VariableSeguimiento.objects.all().filter(paciente=self.paciente)
+        return res
     
+    def getHistoricoVariable(self,variable):
+        return HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=variable).order_by('fecha')
