@@ -219,6 +219,7 @@ def medico_index(request):
     else:
         context = {}
         medico = MedicoHelper(request.user)
+
         context['pacientes'] = medico.getPacientes()
         return render(request,'fynex_app/medico/medico_index.html',context)
 
@@ -405,7 +406,9 @@ def medico_generar_nutricion(request,cod_paciente):
         hr = HybridRecommender()
         result = hr.predictNutrition(heartRate,glucose,height,weight,age)
         
-        plan = medico.guardarRecomendacionNutricion(result['recommendations'],cod_paciente)
+        #plan = medico.guardarRecomendacionNutricion(result['recommendations'],cod_paciente)
+        plan = medico.getMemoryRecommendation(cod_paciente)
+
         context = {}
         context['paciente'] = medico.getPaciente(cod_paciente)
         context['plan'] = plan
@@ -417,6 +420,7 @@ def medico_generar_nutricion(request,cod_paciente):
         context['age'] = age
         context['nueva'] = True
         context['diseases'] = result['diseases']
+        
         return render(request,'fynex_app/medico/nutrition_recommendations_generation.html',context)
 
 def medico_detail_nutricion(request,cod_paciente,cod_plan):

@@ -4,6 +4,7 @@ import string
 from django.conf import settings
 import ibm_boto3
 from ibm_botocore.client import Config, ClientError
+from django.templatetags.static import static
 
 class Tools:
 
@@ -27,7 +28,7 @@ class Tools:
         return result_str
     
     @staticmethod
-    def sendEmail(user,password,subject, body):
+    def sendEmail(user,subject, body):
         try:
             email = EmailMessage(
                 subject, body,from_email=settings.DEFAULT_FROM_EMAIL, to=[user.username])
@@ -41,10 +42,21 @@ class Tools:
     def sendEmailUserAdded(user,password):
         subject = 'Bienvenido - Fynex'
         body = f'''
-            <h1>Fynex Health</h1></br>
-            <strong>Usuario:</strong> <p> {user.username} </p></br>
-            <strong>Contraseña temporal:</strong> <p> {password} </p></br>
+
+            <img src="{static('images/banner.jpg')}" align="center">
+            <br>
+            <br>
+            Bienvenido a Fynex {user.username}<br>
+            <br>
+            La contraseña temporal que ha sido asignada es : {password} <br>
+            <br>
+            Cuando inicie sesión podrá modificar la contraseña a la que desee.
+            <br>
+            <br>
+
+
+
             '''
-        res = Tools.sendEmail(user,password,subject,body)
+        res = Tools.sendEmail(user,subject,body)
         return res
 

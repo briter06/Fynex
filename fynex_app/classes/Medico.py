@@ -4,6 +4,8 @@ from ..models import VariableSeguimiento
 from ..models import HistorialVariableSeguimiento
 from ..models import PlanNutricional
 from ..models import PartePlanNutricional
+from ..models import RecomendadorMemoria
+from django.db.models import Max
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 import pandas as pd
@@ -245,3 +247,34 @@ class MedicoHelper:
         paciente = Paciente.objects.all().get(pk=cod_paciente)
         res = VariableSeguimiento.objects.all().filter(paciente=paciente)
         return res
+    
+    def getMemoryRecommendation(self,cod_paciente):
+        try:
+            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente).order_by('-similitud').first()
+            if similar==None:
+                return None
+            plan_prev = PlanNutricional.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
+            partes = self.getPartesDePlanNutricional(plan_prev)
+            
+            plan = PlanNutricional()
+            plan.paciente = Paciente.objects.all().get(pk=cod_paciente)
+            plan.rating = 0
+            plan.estado = "I"
+            plan.save()
+
+            for p in partes:
+                parte = PartePlanNutricional()
+                parte.plan_nutricional = plan
+                parte.parte = p.parte
+                parte.alimento = p.alimento
+                parte.nombre = p.nombre
+                parte.calorias = p.calorias
+                parte.proteinas = p.proteinas
+                parte.carbohidratos = p.carbohidratos
+                parte.grasas = p.grasas
+                parte.save()
+            
+            return plan
+        except:
+            return None
+        

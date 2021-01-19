@@ -82,3 +82,11 @@ class Solicitud(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
     tipo_solicitud = models.CharField(max_length=1)
     estado = models.CharField(max_length=1)
+
+
+class RecomendadorMemoria(models.Model):
+    user1 = models.IntegerField(primary_key=True)
+    user2 = models.IntegerField()
+    similitud = models.FloatField()
+    class Meta:
+        unique_together = (('user1', 'user2'),)

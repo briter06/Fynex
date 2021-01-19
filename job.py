@@ -31,7 +31,16 @@ df_s = pd.DataFrame(df['valor'].values,index=pd.MultiIndex.from_tuples(indexes, 
 df_s.columns = df_s.columns.get_level_values(1)
 df_s = df_s.transpose()
 
+df_corr = df_s.corr()
 
-print(df_s)
-print('--------------------')
-print(df_s.corr())
+RecomendadorMemoria.objects.all().delete()
+
+
+for i,r in df_corr.iterrows():
+    for n,x in r.iteritems():
+        if int(n) != int(i):
+            rec_reg = RecomendadorMemoria()
+            rec_reg.user1 = int(i)
+            rec_reg.user2 = int(n)
+            rec_reg.similitud = x
+            rec_reg.save()

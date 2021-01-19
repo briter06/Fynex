@@ -1,11 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
-    <script src="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
-  </head>
 <body>
 
 <h1>Show File-select Fields</h1>
@@ -19,59 +14,7 @@
 </form>
 
 
-<form>
-  <input type="radio" id="A" name="source_data" value="A" onclick="handleClick(this);" checked>
-  <label for="A">A</label><br>
-  <input type="radio" id="B" name="source_data" value="B" onclick="handleClick(this);">
-  <label for="B">B</label><br>
-</form>
 
-
-
-<div ng-controller="MyController" style="width: 50%;">
-  <canvas class="chart chart-line" chart-data="data" chart-labels="labels" 
-    chart-series="series" chart-click="onClick"></canvas> 
-</div>
-
-<script>
-
-data = {"A":[65, 59, 80, 81, 56, 55, 40],"B":[28, 48, 40, 19, 86, 27, 90]}
-
-angular.module('app', ['chart.js']);
-
-angular.module('app')
-  .controller('MyController', function ($scope, $timeout) {
-    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-    $scope.series = 'A';
-    $scope.data = [data['A']];
-    $scope.onClick = function (points, evt) {
-      console.log(points, evt);
-    };
-
-
-    
-  });
-
-angular.element(document).ready(function(){
-  angular.bootstrap(document, ['app']);
-});
-
-function handleClick(cb) {
-    
-    var val = document.querySelector('input[name="source_data"]:checked').value;
-
-    var appElement = document.querySelector('[ng-controller=MyController]');
-    var $scope = angular.element(appElement).scope();
-    $scope.$apply(function() {
-      $scope.series = val;
-      $scope.data = [data[val]];
-    });
-}
-
-
-
-   
-</script>
 
 </body>
 </html>
