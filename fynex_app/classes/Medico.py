@@ -250,7 +250,7 @@ class MedicoHelper:
     
     def getMemoryRecommendation(self,cod_paciente):
         try:
-            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente).order_by('-similitud').first()
+            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado=False).order_by('-similitud').first()
             if similar==None:
                 return None
             plan_prev = PlanNutricional.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
@@ -273,7 +273,8 @@ class MedicoHelper:
                 parte.carbohidratos = p.carbohidratos
                 parte.grasas = p.grasas
                 parte.save()
-            
+            similar.usado = True
+            similar.save()
             return plan
         except:
             return None

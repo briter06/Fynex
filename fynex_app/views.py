@@ -408,6 +408,8 @@ def medico_generar_nutricion(request,cod_paciente):
         
         #plan = medico.guardarRecomendacionNutricion(result['recommendations'],cod_paciente)
         plan = medico.getMemoryRecommendation(cod_paciente)
+        if plan == None:
+            plan = medico.guardarRecomendacionNutricion(result['recommendations'],cod_paciente)
 
         context = {}
         context['paciente'] = medico.getPaciente(cod_paciente)

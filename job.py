@@ -43,4 +43,5 @@ for i,r in df_corr.iterrows():
             rec_reg.user1 = int(i)
             rec_reg.user2 = int(n)
             rec_reg.similitud = x
+            rec_reg.usado = False
             rec_reg.save()

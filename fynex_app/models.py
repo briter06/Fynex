@@ -88,5 +88,6 @@ class RecomendadorMemoria(models.Model):
     user1 = models.IntegerField(primary_key=True)
     user2 = models.IntegerField()
     similitud = models.FloatField()
+    usado = models.BooleanField()
     class Meta:
         unique_together = (('user1', 'user2'),)
