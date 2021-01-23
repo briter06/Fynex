@@ -27,14 +27,15 @@ df['nombre'] = df['nombre'].apply(lambda x: x.lower().strip())
 
 indexes = list(zip(*df[['paciente_id','nombre']].transpose().values))
 
-df_s = pd.DataFrame(df['valor'].values,index=pd.MultiIndex.from_tuples(indexes, names=["paciente_id", "nombre"]),columns=['valor']).unstack()
+df_s = pd.DataFrame(df['valor'].values,index=pd.MultiIndex.from_tuples(indexes, names=["paciente_id", "nombre"]),columns=['valor'])
+
+df_s = df_s.unstack()
 df_s.columns = df_s.columns.get_level_values(1)
 df_s = df_s.transpose()
 
 df_corr = df_s.corr()
 
 RecomendadorMemoria.objects.all().delete()
-
 
 for i,r in df_corr.iterrows():
     for n,x in r.iteritems():
