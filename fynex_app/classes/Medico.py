@@ -11,6 +11,7 @@ from django.contrib.auth.models import Group
 import pandas as pd
 import datetime
 from dateutil.relativedelta import relativedelta
+from .tools import Tools
 
 class MedicoHelper:
 
@@ -196,6 +197,7 @@ class MedicoHelper:
             user.save()
             paciente.save()
             group.user_set.add(user)
+            res = Tools.sendEmailUserAdded(user,password)
             self.addVariableSeguimiento('Ritmo Cardiaco','Normal: [60-100]','latidos/minuto',paciente,1)
             self.addVariableSeguimiento('Nivel de glucosa','Normal: [70-100] en ayunas, [70-140] despues de comer','mg/dl',paciente,1)
             self.addVariableSeguimiento('Altura','','Metros',paciente,1)

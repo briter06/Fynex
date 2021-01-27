@@ -60,3 +60,40 @@ class Tools:
         res = Tools.sendEmail(user,subject,body)
         return res
 
+    @staticmethod
+    def sendEmailUserPasswd(user,password):
+        subject = 'Recuperar contraseña'
+        body = f'''
+
+            <img src="{static('images/banner.jpg')}" align="center">
+            <br>
+            <br>
+            Bienvenido {user.username}<br>
+            <br>
+            La contraseña de su cuenta es : {user.password} <br>
+            <br>
+
+
+
+            '''
+        res = Tools.sendEmail(user,subject,body)
+        return res
+
+    @staticmethod
+    def sendEmailUserMsg(user):
+        subject = 'Alerta nuevo mensaje'
+        body = f'''
+
+            <img src="{static('images/banner.jpg')}" align="center">
+            <br>
+            <br>
+            {user.username}<br>
+            <br>
+            Tienes un nuevo mensaje <br>
+            <br>
+
+
+
+            '''
+        res = Tools.sendEmail(user,subject,body)
+        return res
