@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
-
+'''
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -23,11 +23,30 @@ EMAIL_DISPLAY_NAME = 'Fynex'
 DEFAULT_FROM_EMAIL = EMAIL_DISPLAY_NAME+' <'+EMAIL_HOST_USER+'>'
 EMAIL_HOST_PASSWORD = os.environ['FYNEX_EMAIL_PASSWORD']
 
+
+'''
+
+EMAIL_HOST = os.environ['MAILGUN_SMTP_SERVER']
+EMAIL_PORT = os.environ['MAILGUN_SMTP_PORT']
+EMAIL_HOST_USER = os.environ['MAILGUN_SMTP_LOGIN']
+EMAIL_HOST_PASSWORD = os.environ['MAILGUN_SMTP_PASSWORD']
+EMAIL_USE_TLS = True
+EMAIL_DISPLAY_NAME = 'Fynex'
+DEFAULT_FROM_EMAIL = EMAIL_DISPLAY_NAME+' <'+EMAIL_HOST_USER+'>'
+
+
+
+
+
+
+
+
+
+
+
 COS_ENDPOINT = os.environ['COS_ENDPOINT']
 COS_API_KEY_ID = os.environ['COS_API_KEY_ID']
 COS_INSTANCE_CRN = os.environ['COS_INSTANCE_CRN']
-
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,7 +59,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['secret_key_fynex']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['fynexapp.herokuapp.com','localhost','*']
 
@@ -169,3 +188,8 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+from django.core.mail import send_mail
+
+send_mail('subject', 'body of the message', 'noreply@fynex.com', ['btg.developers@gmail.com'])
