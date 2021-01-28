@@ -26,7 +26,8 @@ class Administrator:
             res = Tools.sendEmailUserAdded(user,password)
 
             return centro
-        except:
+        except Exception as e:
+            print(e)
             return None
     def modificar_centro(self,username,newusername,first_name,direccion,telefono):
         try:
