@@ -42,19 +42,22 @@ class Tools:
     def sendEmailUserAdded(user,password):
         subject = 'Bienvenido - Fynex'
         body = f'''
-
-            <img src="{static('images/banner.jpg')}" align="center">
-            <br>
-            <br>
-            Bienvenido a Fynex {user.username}<br>
-            <br>
-            La contraseña temporal que ha sido asignada es : {password} <br>
-            <br>
-            Cuando inicie sesión podrá modificar la contraseña a la que desee.
-            <br>
-            <br>
-
-
+                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
+                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
+                    <br>
+                    <br>
+                    <strong style="font-size: 30px">Bienvenido a Fynex</strong><br>
+                    <strong style="font-size: 30px">{user.username}</strong><br><br>
+                    <br>
+                    La contraseña temporal que ha sido asignada es :  <br>
+                    <strong>{password}</strong><br>
+                    <br>
+                    Cuando inicie sesión podrá modificar la contraseña a la que desee.
+                    <br>
+                    <br>
+                    <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
+                    <br>
+                </div>
 
             '''
         res = Tools.sendEmail(user,subject,body)
