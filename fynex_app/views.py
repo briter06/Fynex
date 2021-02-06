@@ -62,7 +62,10 @@ def verify_auth(request,group_name):
         return False
     return True
 
-
+##def passwd(request):
+  ##  username = request.POST['user_name']
+    ##Tools.sendEmailUserPasswd(username)
+    ##return 
 
 def index(request):
     if request.method == 'POST':

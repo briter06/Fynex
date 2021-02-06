@@ -46,13 +46,13 @@ class Tools:
                     <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
                     <br>
                     <br>
-                    <strong style="font-size: 30px">Bienvenido a Fynex</strong><br>
-                    <strong style="font-size: 30px">{user.username}</strong><br><br>
+                    <h1><strong>Bienvenido</strong><br></h1>
+                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.username}</b></i></font></strong><br><br></h1>
                     <br>
                     La contraseña temporal que ha sido asignada es :  <br>
-                    <strong>{password}</strong><br>
+                    <strong style="color:#5178EC"><i>{password}</i></strong><br></h2>
                     <br>
-                    Cuando inicie sesión podrá modificar la contraseña a la que desee.
+                   <h2>Cuando inicie sesión podrá modificar la contraseña a la que desee.<h2>
                     <br>
                     <br>
                     <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
@@ -64,19 +64,23 @@ class Tools:
         return res
 
     @staticmethod
-    def sendEmailUserPasswd(user,password):
+    def sendEmailUserPasswd(user):
         subject = 'Recuperar contraseña'
         body = f'''
-
-            <img src="{static('images/banner.jpg')}" align="center">
-            <br>
-            <br>
-            Bienvenido {user.username}<br>
-            <br>
-            La contraseña de su cuenta es : {user.password} <br>
-            <br>
-
-
+             <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
+                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
+                    <br>
+                    <br>
+                    <h1><strong>Bienvenido</strong><br></h1>
+                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.username}</b></i></font></strong><br><br></h1>
+                    <h2><br>
+                    La contraseña de se cuenta es :  <br>
+                    <strong style="color:#5178EC"><i>{user.password}</i></strong><br></h2>
+                    <br>
+                    <br>
+                    <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
+                    <br>
+                </div>
 
             '''
         res = Tools.sendEmail(user,subject,body)
@@ -86,16 +90,17 @@ class Tools:
     def sendEmailUserMsg(user):
         subject = 'Alerta nuevo mensaje'
         body = f'''
-
-            <img src="{static('images/banner.jpg')}" align="center">
-            <br>
-            <br>
-            {user.username}<br>
-            <br>
-            Tienes un nuevo mensaje <br>
-            <br>
-
-
+                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
+                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
+                    <br>
+                    <br>
+                    <h1><strong style="color:#1C54F7"><font font="verdana">{user.username}</font></strong><br><br></h1>
+                    <br>
+                    Tienes un nuevo mensaje <br>
+                    <br>
+                    <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
+                    <br>
+                </div>
 
             '''
         res = Tools.sendEmail(user,subject,body)

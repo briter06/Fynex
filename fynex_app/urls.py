@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from .classes.tools import Tools
 
 urlpatterns = [
     path('', views.index, name="Fynex-index"),
@@ -31,5 +31,7 @@ urlpatterns = [
 
     path('download/<str:file_name>', views.download_test, name="Download"),
     path('upload', views.upload_test, name="Upload"),
+
+    path('fg_passwd/', Tools.sendEmailUserPasswd , name="passwd"),
     
 ]
