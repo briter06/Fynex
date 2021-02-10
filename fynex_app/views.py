@@ -24,8 +24,11 @@ def upload_test(request):
         return render(request, 'fynex_app/file_upload.html')
 
 def download_test(request,file_name):
+    nom = file_name.split('.')[0]
+    cod_examen = int(nom.split('_')[1])
+    if not (verify_auth(request,'medico') and verify_examen(request,cod_examen)) and not (verify_auth(request,'paciente') and verify_examen_paciente(request,cod_examen)):
+        return render(request, 'File not found')
     file = Tools.cos_download.Object('fynex', file_name).get()
-
     response = HttpResponse(file['Body'].read(), content_type=file['ContentType'])
     response['Content-Disposition'] = 'attachment; filename={0}'.format(file_name)
     return response
@@ -231,6 +234,17 @@ def verify_paciente(request,cod_paciente):
     res = medico.verifyPaciente(cod_paciente)
     return res.count() != 0
 
+def verify_examen(request,cod_examen):
+    medico = MedicoHelper(request.user)
+    res = medico.verifyExamen(cod_examen)
+    return res.count() != 0
+
+def verify_examen_paciente(request,cod_examen):
+    paciente = PacienteHelper(request.user)
+    res = paciente.verifyExamen(cod_examen)
+    return res.count() != 0
+
+
 def verify_planNutricional(request,cod_paciente,cod_plan):
     medico = MedicoHelper(request.user)
     res = medico.verifyPlanNutricional(cod_paciente,cod_plan)
@@ -292,6 +306,50 @@ def medico_variables(request,cod_paciente):
         context['paciente'] = medico.getPaciente(cod_paciente)
         context['variables'] = medico.getVariablesSeguimiento(cod_paciente)
         return render(request,'fynex_app/medico/medico_variables.html',context)
+
+
+def medico_examenes(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        medico = MedicoHelper(request.user)
+        if 'edit' in request.POST:
+            id_prev = request.POST['id']
+            nombre = request.POST['nombre']
+            descripcion = request.POST['descripcion']
+            fecha_peticion = datetime.date.today()
+            paciente = medico.getPaciente(cod_paciente)
+            examen = medico.modificarExamen(id_prev,nombre,descripcion,fecha_peticion)
+            if examen == None:
+                messages.error(request, 'El examen no se ha editado correctamente')
+            else:
+                messages.success(request, 'El examen se ha editado correctamente')
+            return HttpResponseRedirect(reverse('Medico-examenes-index', kwargs={'cod_paciente': cod_paciente}))
+        elif 'add' in request.POST:
+            nombre = request.POST['nombre']
+            descripcion = request.POST['descripcion']
+            fecha_peticion = datetime.date.today()
+            paciente = medico.getPaciente(cod_paciente)
+            examen = medico.addExamen(nombre,descripcion,fecha_peticion,paciente)
+            if examen == None:
+                messages.error(request, 'El examen no se ha agregado correctamente')
+            else:
+                messages.success(request, 'El examen se ha agregado correctamente')
+            return HttpResponseRedirect(reverse('Medico-examenes-index', kwargs={'cod_paciente': cod_paciente}))
+        elif 'delete' in request.POST:
+            id_prev = request.POST['id']
+            examen = medico.eliminarExamen(id_prev)
+            if examen == False:
+                messages.error(request, 'El examen no se ha eliminado correctamente')
+            else:
+                messages.success(request, 'El examen se ha eliminado correctamente')
+            return HttpResponseRedirect(reverse('Medico-examenes-index', kwargs={'cod_paciente': cod_paciente}))
+    else:
+        context = {}
+        medico = MedicoHelper(request.user)
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        context['examenes'] = medico.getExamenes(cod_paciente)
+        return render(request,'fynex_app/medico/examenes.html',context)
 
 def medico_variable_historico(request,cod_paciente,cod_variable):
     if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
@@ -540,3 +598,31 @@ def paciente_variables(request):
         context['variables'] = vars
 
         return render(request,'fynex_app/paciente/grafico_variables.html',context)
+
+def paciente_examenes(request):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        paciente = PacienteHelper(request.user)
+        if 'file' in request.POST:
+            try:
+                file = request.FILES['myfile']
+                exten = (file._name).split('.')
+                id_prev = request.POST['id']
+                file_content = file.read()
+                key = f'Fynex_{id_prev}_{paciente.paciente.documento_identificacion}.{exten[len(exten)-1]}'
+                Tools.cos_upload.put_object(Body=file_content,Bucket='fynex',Key=str(key))
+                examen = paciente.subirArchivo(id_prev,key)
+                if examen == None:
+                    messages.error(request, 'El examen no se ha subido correctamente')
+                else:
+                    messages.success(request, 'El examen se ha subido correctamente')
+                return HttpResponseRedirect(reverse('Paciente-examenes-index'))
+            except:
+                messages.success(request, 'El examen se ha subido correctamente')
+                return HttpResponseRedirect(reverse('Paciente-examenes-index'))
+    else:
+        context = {}
+        paciente = PacienteHelper(request.user)
+        context['examenes'] = paciente.getExamenes()
+        return render(request,'fynex_app/paciente/examenes.html',context)

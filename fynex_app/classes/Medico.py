@@ -5,6 +5,7 @@ from ..models import HistorialVariableSeguimiento
 from ..models import PlanNutricional
 from ..models import PartePlanNutricional
 from ..models import RecomendadorMemoria
+from ..models import Examen
 from django.db.models import Max
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
@@ -241,6 +242,10 @@ class MedicoHelper:
     def verifyPaciente(self,cod_paciente):
         res = Paciente.objects.all().filter(medico=self.medico,pk=cod_paciente)
         return res
+    def verifyExamen(self,cod_examen):
+        pacientes = Paciente.objects.all().filter(medico=self.medico)
+        res = Examen.objects.all().filter(paciente__in=pacientes,pk=cod_examen)
+        return res
     def verifyPlanNutricional(self,cod_paciente,cod_plan):
         res = PlanNutricional.objects.all().filter(pk=cod_plan,paciente__id=cod_paciente,paciente__medico=self.medico)
         return res
@@ -250,6 +255,41 @@ class MedicoHelper:
         res = VariableSeguimiento.objects.all().filter(paciente=paciente)
         return res
     
+    def getExamenes(self,cod_paciente):
+        paciente = Paciente.objects.all().get(pk=cod_paciente)
+        res = Examen.objects.all().filter(paciente=paciente)
+        return res
+    def addExamen(self,nombre,descripcion,fecha_peticion,paciente):
+        try:
+            examen = Examen()
+            examen.nombre = nombre.strip()
+            examen.descripcion = descripcion.strip()
+            examen.fecha_peticion = fecha_peticion
+            examen.paciente = paciente
+            examen.save()
+            return examen
+        except Exception as e:
+            print(e)
+            return None
+    def modificarExamen(self,cod_examen,nombre,descripcion,fecha_peticion):
+        try:
+            examen = Examen.objects.all().get(pk=cod_examen)
+            examen.nombre = nombre
+            examen.descripcion = descripcion
+            examen.fecha_peticion = fecha_peticion
+            examen.save()
+            return examen
+        except:
+            return None
+
+    def eliminarExamen(self,cod_examen):
+        try:
+            examen = Examen.objects.all().get(pk=cod_examen)
+            examen.delete()
+            return True
+        except:
+            return False
+
     def getMemoryRecommendation(self,cod_paciente):
         try:
             similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado=False).order_by('-similitud').first()

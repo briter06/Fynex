@@ -1,5 +1,5 @@
-var add_modal =
-  add_modal ||
+var file_modal =
+  file_modal ||
   (function ($) {
     'use strict';
 
@@ -9,16 +9,17 @@ var add_modal =
       '<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:1%; overflow-y:visible;">' +
       '<div class="modal-dialog modal-m">' +
       '<div class="modal-content">' +
-      '<div class="modal-header"><h3 style="margin:0;"></h3><button style="background-color: Transparent;border: none;" onclick="add_modal.hide();">X</button></div>' +
+      '<div class="modal-header"><h3 style="margin:0;"></h3><button style="background-color: Transparent;border: none;" onclick="file_modal.hide();">X</button></div>' +
       '<div class="modal-body" align="center">' +
-      '<form method="POST">' +
-      $('#add_script').attr('token') +
-      '<input type="hidden" name="add" value="add"/>' +
+      '<form method="POST" enctype="multipart/form-data">' +
+      $('#file_script').attr('token') +
+      '<input type="hidden" name="file" value="file"/>' +
+      '<input type="file" name="myfile" id="myfile"/>' +
       '<div id="content_edit">'+
       '</div>'+
       '<div class="row">' +
       '</div><div class="row"><div class="column-md-12 mx-auto">' +
-      '<input style="margin-top:20px" type="submit" value="Agregar"></input>' +
+      '<input style="margin-top:20px" type="submit" value="Subir"></input>' +
       '</div></div>' +
       '</form>' +
       '</div>' +
@@ -33,7 +34,7 @@ var add_modal =
        * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
        * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
        */
-      show: function (message) {
+      show: function (message,result) {
         // Assigning defaults
         
         var options = {};
@@ -50,19 +51,7 @@ var add_modal =
         );
 
         $dialog.find('h3').text(message);
-        var titulos = $('#titulos th[field]');
-        console.log(titulos);
-        var content = '';
-        for (var i = 0; i < titulos.length; i++) {
-          var elem = titulos[i];
-          content = content + '<label for="'+elem.getAttribute('field')+'">'+elem.innerHTML+'</label>' + "\n";
-          var step = 'maxlength';
-          if (elem.getAttribute('type')=='number'){
-            step = 'step';
-          }
-          content = content + '<input required type="'+elem.getAttribute('type')+'" name="'+elem.getAttribute('field')+'" '+step+'="'+elem.getAttribute('max')+'"/>' + "\n";
-
-        }
+        var content = '<input type="hidden" name="id" value="'+result+'"/>\n';
         $dialog.find('#content_edit').html(content);
         
         

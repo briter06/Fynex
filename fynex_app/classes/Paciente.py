@@ -3,9 +3,11 @@ from ..models import PlanNutricional
 from ..models import PartePlanNutricional
 from ..models import HistorialVariableSeguimiento
 from ..models import Paciente
+from ..models import Examen
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 import pandas as pd
+import datetime
 
 class PacienteHelper:
 
@@ -32,3 +34,20 @@ class PacienteHelper:
     
     def getHistoricoVariable(self,variable):
         return HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=variable).order_by('fecha')
+
+    def verifyExamen(self,cod_examen):
+        res = Examen.objects.all().filter(paciente=self.paciente,pk=cod_examen)
+        return res
+    
+    def getExamenes(self):
+        res = Examen.objects.all().filter(paciente=self.paciente)
+        return res
+    def subirArchivo(self,cod_examen,ruta):
+        try:
+            res = Examen.objects.all().get(pk=cod_examen)
+            res.fecha_entrega = datetime.date.today()
+            res.documento_ruta = ruta
+            res.save()
+            return res
+        except:
+            return None

@@ -17,6 +17,7 @@ urlpatterns = [
     path('Medico/<int:cod_paciente>/variables/<int:cod_variable>', views.medico_variable_historico, name="Medico-variables-historial-index"),
     path('Medico/<int:cod_paciente>/plan_nutricion/generar', views.medico_generar_nutricion, name="Medico-nutrition-generate-index"),
     path('Medico/<int:cod_paciente>/plan_nutricion/<int:cod_plan>', views.medico_detail_nutricion, name="Medico-nutrition-plan-index"),
+    path('Medico/<int:cod_paciente>/examenes', views.medico_examenes, name="Medico-examenes-index"),
 
     path('Paciente/info', views.paciente_index, name="Paciente-index"),
     path('Paciente/nutrition_recommendations', views.paciente_nutricion, name="Paciente-nutrition-index"),
@@ -25,6 +26,7 @@ urlpatterns = [
     path('Medico/<int:cod_paciente>/chat', views.medico_chat, name="Medico-chat"),
     path('Paciente/chat', views.paciente_chat, name="Paciente-chat"),
     path('Paciente/variables', views.paciente_variables, name="Paciente-variables-index"),
+    path('Paciente/examenes', views.paciente_examenes, name="Paciente-examenes-index"),
 
 
 

@@ -50,10 +50,10 @@ var edit_modal =
         );
 
         $dialog.find('h3').text(message);
-        var titulos = $('#titulos').children();
+        var titulos = $('#titulos th[field]');
         var fila = document.getElementById(result).children;
         var content = '<input type="hidden" name="id" value="'+result+'"/>\n';
-        for (var i = 0; i < titulos.length-1; i++) {
+        for (var i = 0; i < titulos.length; i++) {
           var elem = titulos[i];
           var val = fila[i];
           content = content + '<label for="'+elem.getAttribute('field')+'">'+elem.innerHTML+'</label>' + "\n";

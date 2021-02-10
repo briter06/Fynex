@@ -43,7 +43,7 @@ class Examen(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=500)
     fecha_peticion = models.DateField()
-    fecha_entrega = models.DateField()
+    fecha_entrega = models.DateField(default=None, blank=True, null=True)
     documento_ruta = models.CharField(max_length=200)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class PlanNutricional(models.Model):

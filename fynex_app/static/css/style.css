@@ -402,6 +402,7 @@ input[type="number"],
 input[type="date"],
 input[type="password"],
 input[type="email"],
+input[type="file"],
 select,
 textarea {
   -moz-appearance: none;
@@ -477,6 +478,7 @@ input[type="number"],
 input[type="date"],
 input[type="password"],
 input[type="email"],
+input[type="file"],
 select {
   height: 2.75em;
 }
@@ -1310,6 +1312,7 @@ body.landing #header nav a {
 .wrapper.style3 input[type="text"],
 .wrapper.style3 input[type="password"],
 .wrapper.style3 input[type="email"],
+.wrapper.style3 input[type="file"],
 .wrapper.style3 select,
 .wrapper.style3 textarea {
   background-color: #fff;
