@@ -13,6 +13,7 @@ from .classes.Paciente import PacienteHelper
 from .classes.tools import Tools
 import datetime
 import json
+from fynex_app.forms import CaptchaTestModelForm
 
 def upload_test(request):
     if request.method == 'POST':
@@ -50,15 +51,21 @@ def privacy_policy(request):
 # Create your views here.
 
 def login_user(request, template_name):
-    username = request.POST['user_name']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is None:
-        messages.error(
-            request, 'El usuario o la contraseña son incorrectos')
+    form = CaptchaTestModelForm(request.POST)
+    if form.is_valid():
+        username = request.POST['user_name']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is None:
+            messages.error(
+                request, 'El usuario o la contraseña son incorrectos')
+        else:
+            login(request, user)
+        return HttpResponseRedirect(reverse(template_name))
     else:
-        login(request, user)
-    return HttpResponseRedirect(reverse(template_name))
+        messages.error(
+                request, 'Por favor complete el Captcha')
+        return HttpResponseRedirect(reverse(template_name))
 
 def verify_auth(request,group_name):
     if not request.user.groups.filter(name=group_name).exists():
@@ -87,8 +94,8 @@ def index(request):
             else:
                 return logout_user(request)
         else:
-            
-            return render(request, 'fynex_app/index.html')
+            form = CaptchaTestModelForm()
+            return render(request, 'fynex_app/index.html', {'form': form})
 
 def logout_user(request):
     logout(request)

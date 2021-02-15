@@ -100,7 +100,7 @@
   <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>
 </body>
 
-<script id="login_script" src="{% static 'js/login-modals.js' %}" token='{%csrf_token%}'
+<script id="login_script" captcha='{{ form }}' src="{% static 'js/login-modals.js' %}" token='{%csrf_token%}'
   forgot_url="#"></script>
 <script src="{% static 'js/include-html.js' %}"></script>
 <script src="{% static 'js/waitingDialog.js' %}"></script>

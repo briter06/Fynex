@@ -24,24 +24,6 @@ DEFAULT_FROM_EMAIL = EMAIL_DISPLAY_NAME+' <'+EMAIL_HOST_USER+'>'
 EMAIL_HOST_PASSWORD = os.environ['FYNEX_EMAIL_PASSWORD']
 
 
-'''
-
-EMAIL_HOST = os.environ['MAILGUN_SMTP_SERVER']
-EMAIL_PORT = os.environ['MAILGUN_SMTP_PORT']
-EMAIL_HOST_USER = os.environ['MAILGUN_SMTP_LOGIN']
-EMAIL_HOST_PASSWORD = os.environ['MAILGUN_SMTP_PASSWORD']
-EMAIL_USE_TLS = True
-EMAIL_DISPLAY_NAME = 'Fynex'
-DEFAULT_FROM_EMAIL = EMAIL_DISPLAY_NAME+' <'+EMAIL_HOST_USER+'>'
-'''
-
-
-
-
-
-
-
-
 
 
 COS_ENDPOINT = os.environ['COS_ENDPOINT']
@@ -67,6 +49,7 @@ ALLOWED_HOSTS = ['fynexapp.herokuapp.com','localhost','*']
 # Application definition
 
 INSTALLED_APPS = [
+    'captcha',
     'channels',
     'fynex_app.apps.FynexAppConfig',
     'django.contrib.admin',
@@ -189,8 +172,5 @@ CHANNEL_LAYERS = {
     },
 }
 
-'''
-from django.core.mail import send_mail
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
 
-send_mail('subject', 'body of the message', 'noreply@fynex.com', ['btg.developers@gmail.com'])
-'''

@@ -20,6 +20,9 @@ var login_modal =
       '<div class="row">' +
       '<a href="' + $('#login_script').attr('forgot_url') + '">¿Olvidó su contraseña?</a>' +
       '</div><div class="row"><div class="column-md-12 mx-auto">' +
+      '<div id="captcha_div">'+
+      $('#login_script').attr('captcha') +
+      '</div>'+
       '<input style="margin-top:20px" type="submit" value="Entrar"></input>' +
       '</div></div>' +
       '</form>' +

@@ -1642,3 +1642,25 @@ hr.solid {
 .rate > label:hover ~ input:checked ~ label {
   color: #c59b08;
 }
+
+/*Captcha*/
+
+#captcha_div img{
+  width:50%;
+  margin-bottom: 10px;
+}
+#captcha_div input[text]{
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -o-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  background: rgba(144, 144, 144, 0.075);
+  border-radius: 4px;
+  color: inherit;
+  display: block;
+  outline: 0;
+  padding: 0 1em;
+  text-decoration: none;
+  width: 100%;
+}
