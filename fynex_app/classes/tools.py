@@ -47,7 +47,10 @@ class Tools:
                     <br>
                     <br>
                     <h1><strong>Bienvenido</strong><br></h1>
-                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.username}</b></i></font></strong><br><br></h1>
+                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.first_name}</b></i></font></strong><br><br></h1>
+                    <br>
+                    Su correo es: <br>
+                    <font font="verdana"><i><b>{user.username}</b></i></font>
                     <br>
                     La contraseña temporal que ha sido asignada es :  <br>
                     <strong style="color:#5178EC"><i>{password}</i></strong><br></h2>
@@ -71,9 +74,12 @@ class Tools:
                     <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
                     <br>
                     <br>
-                    <h1><strong>Bienvenido</strong><br></h1>
-                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.username}</b></i></font></strong><br><br></h1>
-                    <h2><br>
+                    <h1><strong>Recuperar contraseña</strong><br></h1>
+                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.first_name}</b></i></font></strong><br><br></h1>
+                    <br>
+                    Su correo es: <br>
+                    <font font="verdana"><i><b>{user.username}</b></i></font>
+                    <br>
                     La contraseña de se cuenta es :  <br>
                     <strong style="color:#5178EC"><i>{user.password}</i></strong><br></h2>
                     <br>
@@ -94,7 +100,7 @@ class Tools:
                     <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
                     <br>
                     <br>
-                    <h1><strong style="color:#1C54F7"><font font="verdana">{user.username}</font></strong><br><br></h1>
+                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.first_name}</b></i></font></strong><br><br></h1>
                     <br>
                     Tienes un nuevo mensaje <br>
                     <br>

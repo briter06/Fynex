@@ -14,7 +14,7 @@ var file_modal =
       '<form method="POST" enctype="multipart/form-data">' +
       $('#file_script').attr('token') +
       '<input type="hidden" name="file" value="file"/>' +
-      '<input type="file" name="myfile" id="myfile"/>' +
+      '<input type="file" name="myfile" id="myfile" accept="application/pdf, image/png, image/jpeg"/>' +
       '<div id="content_edit">'+
       '</div>'+
       '<div class="row">' +

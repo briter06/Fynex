@@ -614,17 +614,22 @@ def paciente_examenes(request):
         if 'file' in request.POST:
             try:
                 file = request.FILES['myfile']
-                exten = (file._name).split('.')
-                id_prev = request.POST['id']
-                file_content = file.read()
-                key = f'Fynex_{id_prev}_{paciente.paciente.documento_identificacion}.{exten[len(exten)-1]}'
-                Tools.cos_upload.put_object(Body=file_content,Bucket='fynex',Key=str(key))
-                examen = paciente.subirArchivo(id_prev,key)
-                if examen == None:
-                    messages.error(request, 'El examen no se ha subido correctamente')
+                contents = ['application/pdf','image/png','image/jpeg']
+                if file.content_type in contents:
+                    exten = (file._name).split('.')
+                    id_prev = request.POST['id']
+                    file_content = file.read()
+                    key = f'Fynex_{id_prev}_{paciente.paciente.documento_identificacion}.{exten[len(exten)-1]}'
+                    Tools.cos_upload.put_object(Body=file_content,Bucket='fynex',Key=str(key))
+                    examen = paciente.subirArchivo(id_prev,key)
+                    if examen == None:
+                        messages.error(request, 'El examen no se ha subido correctamente')
+                    else:
+                        messages.success(request, 'El examen se ha subido correctamente')
+                    return HttpResponseRedirect(reverse('Paciente-examenes-index'))
                 else:
-                    messages.success(request, 'El examen se ha subido correctamente')
-                return HttpResponseRedirect(reverse('Paciente-examenes-index'))
+                    messages.error(request, 'Solo se aceptan imagenes PNG, JEPG o archivos PDF')
+                    return HttpResponseRedirect(reverse('Paciente-examenes-index'))
             except:
                 messages.success(request, 'El examen se ha subido correctamente')
                 return HttpResponseRedirect(reverse('Paciente-examenes-index'))
