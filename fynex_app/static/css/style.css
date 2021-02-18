@@ -1664,3 +1664,36 @@ hr.solid {
   text-decoration: none;
   width: 100%;
 }
+
+.chat_div{
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: auto;
+  width:100%;
+  height: 60vh;
+  background-color: #F7F7F7;
+  border: 2px solid black;
+  border-radius: 8px;
+  padding:20px 20px 20px 20px;
+}
+.chat_div::-webkit-scrollbar {
+  width: 5px;
+  padding-right: 10px;
+}
+
+/* Track */
+.chat_div::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px grey; 
+  border-radius: 10px;
+}
+
+/* Handle */
+.chat_div::-webkit-scrollbar-thumb {
+  background: rgb(7, 7, 7); 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.chat_div::-webkit-scrollbar-thumb:hover {
+  background: #009eb3; 
+}

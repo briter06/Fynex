@@ -3,6 +3,4 @@ $(document).ready(function() {
         responsive: true,
         "order": [] 
     } );
- 
-    new $.fn.dataTable.FixedHeader( table );
 } );

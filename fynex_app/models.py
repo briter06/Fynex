@@ -72,11 +72,12 @@ class PlanEjercicio(models.Model):
     tiempo = models.CharField(max_length=50)
 
 class Mensaje(models.Model):
-    fecha = models.DateField(auto_now_add=True)
+    fecha = models.DateTimeField(auto_now_add=True)
     mensaje = models.TextField()
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
     medico = models.ForeignKey(Medico,on_delete=models.CASCADE)
     paciente_emisor = models.IntegerField()
+    notificado_email = models.BooleanField()
 
 class Solicitud(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)

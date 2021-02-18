@@ -10,6 +10,7 @@ from .classes.Administrator import Administrator
 from .classes.CentroMedico import CentroMedicoHelper
 from .classes.Medico import MedicoHelper
 from .classes.Paciente import PacienteHelper
+from .classes.Mensaje import MensajeHelper
 from .classes.tools import Tools
 import datetime
 import json
@@ -526,10 +527,14 @@ def medico_chat(request, cod_paciente):
     
     medico = MedicoHelper(request.user)
     paciente = medico.getPaciente(cod_paciente)
+    mensajesHelper = MensajeHelper()
+    mensajes = mensajesHelper.getMensajesMedico(request.user)
     return render(request, 'fynex_app/chat.html', {
         'room_name': str(cod_paciente),
         'sender_name' : request.user.first_name,
-        'receiver_name' : paciente.user.first_name
+        'receiver_name' : paciente.user.first_name,
+        'paciente_sender' : False,
+        'mensajes' : mensajes
     })
 
 def paciente_chat(request):
@@ -538,10 +543,14 @@ def paciente_chat(request):
     
     pacienteHelper = PacienteHelper(request.user)
     paciente = pacienteHelper.paciente
+    mensajesHelper = MensajeHelper()
+    mensajes = mensajesHelper.getMensajesPaciente(request.user)
     return render(request, 'fynex_app/chat.html', {
         'room_name': str(paciente.id),
         'sender_name' : paciente.user.first_name,
-        'receiver_name' : paciente.medico.user.first_name
+        'receiver_name' : paciente.medico.user.first_name,
+        'paciente_sender' : True,
+        'mensajes' : mensajes
     })
 
 

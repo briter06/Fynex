@@ -74,13 +74,30 @@
 
   <div class="container-fluid main_section">
     <h1 style="margin-bottom: 50px;">Chat con {{receiver_name}}</h1>
-        <textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
+        <div id="chat-log" class="chat_div">
+          {% for mensaje in mensajes %}
+            {% if mensaje.paciente_emisor %}
+              <div>{{mensaje.paciente.user.first_name}} : {{mensaje.mensaje}}</div>
+            {% else %}
+              <div>{{mensaje.medico.user.first_name}} : {{mensaje.mensaje}}</div>
+            {% endif %}
+          {% endfor %}
+          
+        </div><br>
+        <!-- <textarea readonly id="chat-log" cols="100" rows="20">
+
+        </textarea><br> -->
         <input id="chat-message-input" type="text" size="100"><br>
         <input id="chat-message-submit" type="button" value="Send">
         {{ room_name|json_script:"room-name" }}
 
 
-        <script id="chat_script" src="{% static 'js/chat.js' %}" sender_name="{{sender_name}}"></script>
+        <script src="{% static 'js/chat.js' %}"></script>
+        {% if paciente_sender %}
+        <script id="chat_script" src="{% static 'js/chat_paciente.js' %}" sender_name="{{sender_name}}"></script>
+        {% else %}
+        <script id="chat_script" src="{% static 'js/chat_medico.js' %}" sender_name="{{sender_name}}"></script>
+        {% endif %}
 
 
   </div>
