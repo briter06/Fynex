@@ -23,9 +23,9 @@ class MensajeHelper:
         paciente = Paciente.objects.all().get(pk=cod_paciente)
         return paciente
     
-    def getMensajesMedico(self,user):
+    def getMensajesMedico(self,user,paciente):
         medico = Medico.objects.all().get(user=user)
-        mensajes = Mensaje.objects.all().filter(medico=medico).order_by('-fecha')
+        mensajes = Mensaje.objects.all().filter(medico=medico,paciente=paciente).order_by('-fecha')
         return mensajes
     def getMensajesPaciente(self,user):
         paciente = Paciente.objects.all().get(user=user)

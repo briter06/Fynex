@@ -528,7 +528,7 @@ def medico_chat(request, cod_paciente):
     medico = MedicoHelper(request.user)
     paciente = medico.getPaciente(cod_paciente)
     mensajesHelper = MensajeHelper()
-    mensajes = mensajesHelper.getMensajesMedico(request.user)
+    mensajes = mensajesHelper.getMensajesMedico(request.user,paciente)
     return render(request, 'fynex_app/chat.html', {
         'room_name': str(cod_paciente),
         'sender_name' : request.user.first_name,
