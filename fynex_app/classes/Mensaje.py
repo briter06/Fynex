@@ -25,9 +25,9 @@ class MensajeHelper:
     
     def getMensajesMedico(self,user):
         medico = Medico.objects.all().get(user=user)
-        mensajes = Mensaje.objects.all().filter(medico=medico).order_by('fecha')
+        mensajes = Mensaje.objects.all().filter(medico=medico).order_by('-fecha')
         return mensajes
     def getMensajesPaciente(self,user):
         paciente = Paciente.objects.all().get(user=user)
-        mensajes = Mensaje.objects.all().filter(paciente=paciente).order_by('fecha')
+        mensajes = Mensaje.objects.all().filter(paciente=paciente).order_by('-fecha')
         return mensajes

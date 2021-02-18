@@ -16,7 +16,7 @@ const chatSocket = new WebSocket(
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    $('#chat-log').append('<div>'+data.sender+' : '+data.message+'</div>')
+    $('#chat-log').prepend('<div>'+data.sender+' : '+data.message+'</div>')
 };
 
 chatSocket.onclose = function(e) {
