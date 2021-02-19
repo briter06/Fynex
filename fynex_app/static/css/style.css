@@ -1697,3 +1697,116 @@ hr.solid {
 .chat_div::-webkit-scrollbar-thumb:hover {
   background: #009eb3; 
 }
+
+/*Chat Cards*/
+.message_container_left {
+  clear: both;
+  margin-left: 20px !important;
+  position: relative;
+}
+
+.message_container_right {
+  clear: both;
+  margin-right: 20px !important;
+  position: relative;
+}
+
+.message_container_right, .message_container_left{
+  margin-bottom: 10px;
+}
+
+.message_container_left .arrow {
+  width: 12px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+  float: left;
+  top: 6px;
+  right: -1px;
+}
+
+.message_container_right .arrow {
+  width: 12px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+  float: right;
+  top: 6px;
+  left: -1px;
+}
+
+.message_container_left .arrow .outer {
+  width: 0;
+  height: 0;
+  border-right: 20px solid #000000;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.message_container_right .arrow .outer {
+  width: 0;
+  height: 0;
+  border-left: 20px solid #000000;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.message_container_left .arrow .inner {
+  width: 0;
+  height: 0;
+  border-right: 20px solid #ffffff;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  position: absolute;
+  top: 0;
+  left: 2px;
+}
+
+.message_container_right .arrow .inner {
+  width: 0;
+  height: 0;
+  border-left: 20px solid #ffffff;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  position: absolute;
+  top: 0;
+  right: 2px;
+}
+
+.message_container_left .message-body {
+  float: left;
+  width: 300px;
+  height: auto;
+  border: 1px solid #CCC;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  padding: 6px 8px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.message_container_right .message-body {
+  float: right;
+  width: 300px;
+  height: auto;
+  border: 1px solid #CCC;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  padding: 6px 8px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.message_container_left .message-body p, .message_container_right .message-body p {
+  margin: 0;
+}

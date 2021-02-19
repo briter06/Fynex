@@ -14,10 +14,7 @@ const chatSocket = new WebSocket(
     + '/'
 );
 
-chatSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
-    $('#chat-log').prepend('<div>'+data.sender+' : '+data.message+'</div>')
-};
+
 
 chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');

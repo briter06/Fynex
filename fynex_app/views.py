@@ -534,7 +534,8 @@ def medico_chat(request, cod_paciente):
         'sender_name' : request.user.first_name,
         'receiver_name' : paciente.user.first_name,
         'paciente_sender' : False,
-        'mensajes' : mensajes
+        'mensajes' : mensajes,
+        'is_paciente' : False 
     })
 
 def paciente_chat(request):
@@ -550,7 +551,8 @@ def paciente_chat(request):
         'sender_name' : paciente.user.first_name,
         'receiver_name' : paciente.medico.user.first_name,
         'paciente_sender' : True,
-        'mensajes' : mensajes
+        'mensajes' : mensajes,
+        'is_paciente' : True 
     })
 
 
