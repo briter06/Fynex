@@ -424,6 +424,26 @@ def medico_nutricion(request,cod_paciente):
         context['paciente'] = medico.getPaciente(cod_paciente)
         context['planes'] = medico.getPlanesNutricionales(cod_paciente)
         return render(request,'fynex_app/medico/nutrition_recommendations_index.html',context)
+
+def medico_ejercicio(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        medico = MedicoHelper(request.user)
+        if 'delete' in request.POST:
+            id_prev = request.POST['id']
+            plan = medico.eliminarPlanNutricional(id_prev)
+            if plan == False:
+                messages.error(request, 'El plan nutricional no se ha eliminado correctamente')
+            else:
+                messages.success(request, 'El plan nutricional se ha eliminado correctamente')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+    else:
+        context = {}
+        medico = MedicoHelper(request.user)
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        context['planes'] = medico.getPlanesEjercicio(cod_paciente)
+        return render(request,'fynex_app/medico/exercise_recommendations_index.html',context)
     
 
 

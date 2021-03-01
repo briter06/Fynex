@@ -4,6 +4,7 @@ from ..models import VariableSeguimiento
 from ..models import HistorialVariableSeguimiento
 from ..models import PlanNutricional
 from ..models import PartePlanNutricional
+from ..models import PlanEjercicio
 from ..models import RecomendadorMemoria
 from ..models import Examen
 from django.db.models import Max
@@ -69,6 +70,11 @@ class MedicoHelper:
     def getPlanesNutricionales(self,cod_paciente):
         paciente = Paciente.objects.all().get(pk=cod_paciente)
         planes = PlanNutricional.objects.all().filter(paciente=paciente).order_by('id')
+        return planes
+    
+    def getPlanesEjercicio(self,cod_paciente):
+        paciente = Paciente.objects.all().get(pk=cod_paciente)
+        planes = PlanEjercicio.objects.all().filter(paciente=paciente).order_by('id')
         return planes
 
     def getPartesDePlanNutricional(self,plan):

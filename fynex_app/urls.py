@@ -13,6 +13,8 @@ urlpatterns = [
     path('Medico', views.medico_index, name="Medico-index"),
     path('Medico/<int:cod_paciente>/paciente', views.medico_paciente, name="Medico-paciente-index"),
     path('Medico/<int:cod_paciente>/nutrition_recommendations', views.medico_nutricion, name="Medico-nutricion-index"),
+    path('Medico/<int:cod_paciente>/exercise_recommendations', views.medico_ejercicio, name="Medico-ejercicio-index"),
+    
     path('Medico/<int:cod_paciente>/variables', views.medico_variables, name="Medico-variables-index"),
     path('Medico/<int:cod_paciente>/variables/<int:cod_variable>', views.medico_variable_historico, name="Medico-variables-historial-index"),
     path('Medico/<int:cod_paciente>/plan_nutricion/generar', views.medico_generar_nutricion, name="Medico-nutrition-generate-index"),
