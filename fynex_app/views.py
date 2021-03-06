@@ -325,9 +325,8 @@ def medico_examenes(request,cod_paciente):
             id_prev = request.POST['id']
             nombre = request.POST['nombre']
             descripcion = request.POST['descripcion']
-            fecha_peticion = datetime.date.today()
             paciente = medico.getPaciente(cod_paciente)
-            examen = medico.modificarExamen(id_prev,nombre,descripcion,fecha_peticion)
+            examen = medico.modificarExamen(id_prev,nombre,descripcion)
             if examen == None:
                 messages.error(request, 'El examen no se ha editado correctamente')
             else:
@@ -336,7 +335,7 @@ def medico_examenes(request,cod_paciente):
         elif 'add' in request.POST:
             nombre = request.POST['nombre']
             descripcion = request.POST['descripcion']
-            fecha_peticion = datetime.date.today()
+            fecha_peticion = datetime.date.today() - datetime.timedelta(hours=5)
             paciente = medico.getPaciente(cod_paciente)
             examen = medico.addExamen(nombre,descripcion,fecha_peticion,paciente)
             if examen == None:
@@ -444,6 +443,72 @@ def medico_ejercicio(request,cod_paciente):
         context['paciente'] = medico.getPaciente(cod_paciente)
         context['planes'] = medico.getPlanesEjercicio(cod_paciente)
         return render(request,'fynex_app/medico/exercise_recommendations_index.html',context)
+
+def medico_generar_ejercicio(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        medico = MedicoHelper(request.user)
+        if 'save' in request.POST:
+            id_p = request.POST['id']
+            rating = request.POST['rate'] if 'rate' in request.POST else 0
+            estado = "A" if 'estado' in request.POST else "I"
+            plan = medico.modificarPlanNutricional(id_p,rating,estado)
+            if plan == False:
+                messages.error(request, 'El plan nutricional no se ha modificado correctamente')
+            else:
+                messages.success(request, 'El plan nutricional se ha modificado correctamente')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+    else:
+        medico = MedicoHelper(request.user)
+
+        heartRate = medico.getRitmoCardiaco(cod_paciente)
+        if heartRate == None:
+            messages.error(request, 'Por favor registre un valor en la variable: Ritmo cardíaco')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+        else:
+            heartRate = heartRate.valor
+        glucose = medico.getGlucosa(cod_paciente)
+        if glucose == None:
+            messages.error(request, 'Por favor registre un valor en la variable: Nivel de glucosa')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+        else:
+            glucose = glucose.valor
+        height = medico.getAltura(cod_paciente)
+        if height == None:
+            messages.error(request, 'Por favor registre un valor en la variable: Altura')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+        else:
+            height = height.valor
+        weight = medico.getPeso(cod_paciente)
+        if weight == None:
+            messages.error(request, 'Por favor registre un valor en la variable: Peso')
+            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+        else:
+            weight = weight.valor
+        age = medico.getEdad(cod_paciente)
+        
+
+        hr = HybridRecommender()
+        result = hr.predictExercise(heartRate,glucose,height,weight,age)
+        
+        plan = medico.guardarRecomendacionEjercicio(result['recommendations'],cod_paciente)
+        #plan = medico.getMemoryRecommendation(cod_paciente)
+        if plan == None:
+            plan = medico.guardarRecomendacionEjercicio(result['recommendations'],cod_paciente)
+
+        context = {}
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        context['plan'] = plan
+        context['heartRate'] = heartRate
+        context['glucose'] = glucose
+        context['height'] = height
+        context['weight'] = weight
+        context['age'] = age
+        context['nueva'] = True
+        context['diseases'] = result['diseases']
+        print(context)
+        return render(request,'fynex_app/medico/exercise_recommendations_generation.html',context)
     
 
 

@@ -1,6 +1,5 @@
 {% load static %}
-{% load date_get %}
-{% load state_n %}
+{% load disease %}
 <!DOCTYPE html>
 <!--
 	Transit by TEMPLATED
@@ -32,6 +31,10 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css">
 
+  <!--Toogle button-->
+  <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
   <script>
     var v_style = "{% static 'css/style.css' %}";
     var v_style_xlarge = "{% static 'css/style-xlarge.css' %}";
@@ -47,6 +50,11 @@
   <script src="{% static 'js/init.js' %}"></script>
 
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <style>
+    input[type="radio"]{
+      border: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -69,37 +77,62 @@
   </div>
 
   <input type="hidden" id="cod_paciente" value="{{paciente.id}}"/>
-  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
+  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente-level2.html' %}"></div>
 
 
   <div class="container-fluid main_section">
-    <h1 style="margin-bottom: 50px;">Planes de ejercicio de {{paciente.user.first_name}}</h1>
-    <div style="width: 100%; text-align: right;">
-      <button onclick="location.href = 'plan_ejercicio/generar';" style="margin-bottom: 20px;" class="button">Generar nueva recomendación</button>
+    <h1 style="margin-bottom: 50px;">Plan generado para {{paciente.user.first_name}} 
+    {% if nueva %}
+      <a style="margin-left: 15px;" data-placement="bottom" data-toggle="popover" title="Información utilizada:"
+          data-content="Altura: {{height}} metros<br>Peso: {{weight}} kilogramos<br>Ritmo cardíaco: {{heartRate}} latidos/m<br>Nivel de glucosa: {{glucose}} mg/dl<br> Posibles enfermedades: <br> {% for di in diseases %} - <strong>{{di | disease}}</strong> <br> {% endfor %}"><i
+            class="fa fa-question-circle"></i></a>
+    {% endif %}
+    </h1>
+    
+    <div style="width: 100%;">
+      <form method='POST'>
+        {%csrf_token%}
+        <input type="hidden" name="save" value="save"/>
+        <input type="hidden" name="id" value="{{plan.id}}"/>
+        <table style="width: 100%;">
+          
+          <tr style="width: 100%;">
+            <td style="width: 100%;" colspan="2">
+              <div class="rate">
+                <input {% if plan.rating == 5.0 %} checked {% endif %} type="radio" id="star5" name="rate" value="5" />
+                <label for="star5" title="text">5 stars</label>
+                <input {% if plan.rating == 4.0 %} checked {% endif %} type="radio" id="star4" name="rate" value="4" />
+                <label for="star4" title="text">4 stars</label>
+                <input {% if plan.rating == 3.0 %} checked {% endif %} type="radio" id="star3" name="rate" value="3" />
+                <label for="star3" title="text">3 stars</label>
+                <input {% if plan.rating == 2.0 %} checked {% endif %} type="radio" id="star2" name="rate" value="2" />
+                <label for="star2" title="text">2 stars</label>
+                <input {% if plan.rating == 1.0 %} checked {% endif %} type="radio" id="star1" name="rate" value="1" />
+                <label for="star1" title="text">1 star</label>
+              </div>
+            </td>
+            
+          </tr>
+          <tr style="width: 100%; padding-top: 10px;">
+            <td style="width: 100%;">
+              <input name="estado" type="checkbox" {% if plan.estado == "A" %} checked {% endif %} data-toggle="toggle" data-on="Activo" data-off="Inactivo" data-onstyle="success" data-offstyle="danger">
+            </td>
+            <td style="width: 100%;">
+              <input type="submit" style="margin-bottom: 20px;" class="button" value="Guardar"/>
+            </td>
+          </tr>
+        </table>
+
+
+          
+      </form>
     </div>
-    <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
-      <thead>
-          <tr id="titulos">
-              <th>Fecha</th>
-              <th>Rating</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-          </tr>
-      </thead>
-      <tbody>
-        {% for plan in planes reversed %}
-          <tr id="{{plan.id}}">
-              <td>{{plan.fecha | date_get}}</td>
-              <td>{{plan.rating}}</td>
-              <td>{{plan.estado | state_n}}</td>
-              <td>
-                <input type="image" src="{% static 'images/delete.png' %}" width="40" onclick="delete_modal.show('Eliminar Plan de Ejercicio','{{plan.id}}');"/>
-                <input type="image" src="{% static 'images/lupa.png' %}" width="40" onclick="location.href = 'plan_nutricion/{{plan.id}}';"/>
-              </td>
-          </tr>
-          {% endfor %}
-      </tbody>
-    </table>
+              
+      <h2>{{plan.tipo_ejercicio}}</h2>
+      <h2>{{plan.ejercicio}}</h2>
+      <h2>{{plan.info}}</h2>
+      <h2>{{plan.dias}}</h2>
+      <h2>{{plan.tiempo}}</h2>
   </div>
 
   <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>
@@ -111,6 +144,10 @@
 <script src="{% static 'js/include-html.js' %}"></script>
 <script src="{% static 'js/sidenav_js.js' %}"></script>
 <script src="{% static 'js/datatable.js' %}"></script>
-
+<script>
+  $(document).ready(function () {
+    $('[data-toggle="popover"]').popover({ html: true });
+  });
+</script>
 
 </html>

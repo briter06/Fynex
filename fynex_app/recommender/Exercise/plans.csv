@@ -1,2 +1,5 @@
 ﻿disease;days;exercise;time
 diabetes;4,5;aerobic;30,inf
+hypertension;4,5;aerobic;30,inf
+anorexia;4,5;aerobic;30,inf
+obesity;4,5;aerobic;30,inf

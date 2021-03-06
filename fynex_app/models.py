@@ -62,7 +62,7 @@ class PartePlanNutricional(models.Model):
     grasas = models.FloatField()
 class PlanEjercicio(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now_add=True)
     rating = models.FloatField()
     estado = models.CharField(max_length=1)
     tipo_ejercicio = models.CharField(max_length=50)

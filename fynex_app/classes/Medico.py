@@ -117,6 +117,22 @@ class MedicoHelper:
         except Exception as e:
             print (e)
             return None
+    def guardarRecomendacionEjercicio(self,df,cod_paciente):
+        try:
+            plan = PlanEjercicio()
+            plan.paciente = Paciente.objects.all().get(pk=cod_paciente)
+            plan.rating = 0
+            plan.estado = "I"
+            plan.tipo_ejercicio = df['type'][0]
+            plan.ejercicio = df['sport'][0]
+            plan.info = df['info'][0]
+            plan.dias = df['days'][0]
+            plan.tiempo = df['time'][0]
+            plan.save()
+            return plan
+        except Exception as e:
+            print (e)
+            return None
     def guardarHistorialVariable(self,variable,fecha,valor):
         try:
             historico = HistorialVariableSeguimiento()
@@ -277,12 +293,11 @@ class MedicoHelper:
         except Exception as e:
             print(e)
             return None
-    def modificarExamen(self,cod_examen,nombre,descripcion,fecha_peticion):
+    def modificarExamen(self,cod_examen,nombre,descripcion):
         try:
             examen = Examen.objects.all().get(pk=cod_examen)
             examen.nombre = nombre
             examen.descripcion = descripcion
-            examen.fecha_peticion = fecha_peticion
             examen.save()
             return examen
         except:

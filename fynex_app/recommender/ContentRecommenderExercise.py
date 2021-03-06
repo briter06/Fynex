@@ -14,4 +14,5 @@ class ContentRecommenderExercise:
         ex_type = df_disease_plan['exercise']
         df_disease_sports = self.df_sports[self.df_sports['type']==ex_type]
         res = pd.DataFrame([random.choice(df_disease_sports.values)],columns=df_disease_sports.columns)
-        return res
+        res = res.set_index(self.df_plans.loc[[disease]].index.values)
+        return pd.concat([res,self.df_plans.loc[[disease]]], axis=1)
