@@ -69,7 +69,7 @@
   </div>
 
   
-  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
+  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente-level2.html' %}"></div>
 
 
   <div class="container-fluid main_section">
@@ -97,7 +97,7 @@
                 <input type="image" class="edit_button" src="{% static 'images/edit.png' %}" width="40" onclick="edit_modal.show('Editar Variable','{{variable.id}}');"/>
                 <input type="image" src="{% static 'images/delete.png' %}" width="40" onclick="delete_modal.show('Eliminar Variable','{{variable.id}}');"/>
                 {% endif %}
-                <input type="image" src="{% static 'images/lupa.png' %}" width="40" onclick="location.href = 'variables/{{variable.id}}';"/>
+                <input type="image" src="{% static 'images/lupa.png' %}" width="40" onclick="location.href = '{{variable.id}}';"/>
               </td>
           </tr>
           {% endfor %}

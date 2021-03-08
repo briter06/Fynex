@@ -77,7 +77,10 @@
   <div w3-include-html="{% static 'helpers/SideNavs/paciente.html' %}"></div>
 
   <div class="container-fluid main_section" ng-controller="ChartController">
-    <h1 style="margin-bottom: 50px;">Variables</h1>
+    <h1 style="margin-bottom: 50px;">Variables de {{paciente.user.first_name}}</h1>
+    <div style="width: 100%; text-align: right;">
+      <button onclick="location.href = 'variables/gestion';" style="margin-bottom: 20px;" class="button">Gestionar variables</button>
+    </div>
     <div class = "row">
       <div class="col-md-12">
         <ul class="nav nav-tabs nice_scroll scroll"><!--scrollable-tabs-->

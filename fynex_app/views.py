@@ -258,6 +258,11 @@ def verify_planNutricional(request,cod_paciente,cod_plan):
     res = medico.verifyPlanNutricional(cod_paciente,cod_plan)
     return res.count() != 0
 
+def verify_planEjercicio(request,cod_paciente,cod_plan):
+    medico = MedicoHelper(request.user)
+    res = medico.verifyPlanEjercicio(cod_paciente,cod_plan)
+    return res.count() != 0
+
 def medico_paciente(request,cod_paciente):
     if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
         return HttpResponseRedirect(reverse('Fynex-index'))
@@ -270,7 +275,28 @@ def medico_paciente(request,cod_paciente):
         return render(request,'fynex_app/medico/medico_paciente.html',context)
 
 
+def medico_grafico_variables(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        medico = MedicoHelper(request.user)
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        vars = {}
+        variables = medico.getVariablesSeguimiento(cod_paciente)
+        for v in variables:
+            historico = medico.getHistoricoVariable(v.id)
+            values = []
+            dates = []
+            for h in historico:
+                values.append({'x':str(h.fecha),'y':h.valor})
+                dates.append(str(h.fecha))
+            vars[v.nombre] = [values,dates]
+        context['variables'] = vars
 
+        return render(request,'fynex_app/medico/grafico_variables.html',context)
 
 def medico_variables(request,cod_paciente):
     if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
@@ -431,12 +457,12 @@ def medico_ejercicio(request,cod_paciente):
         medico = MedicoHelper(request.user)
         if 'delete' in request.POST:
             id_prev = request.POST['id']
-            plan = medico.eliminarPlanNutricional(id_prev)
+            plan = medico.eliminarPlanEjercicio(id_prev)
             if plan == False:
-                messages.error(request, 'El plan nutricional no se ha eliminado correctamente')
+                messages.error(request, 'El plan de ejercicio no se ha eliminado correctamente')
             else:
-                messages.success(request, 'El plan nutricional se ha eliminado correctamente')
-            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+                messages.success(request, 'El plan de ejercicio se ha eliminado correctamente')
+            return HttpResponseRedirect(reverse('Medico-ejercicio-index', kwargs={'cod_paciente': cod_paciente}))
     else:
         context = {}
         medico = MedicoHelper(request.user)
@@ -453,37 +479,37 @@ def medico_generar_ejercicio(request,cod_paciente):
             id_p = request.POST['id']
             rating = request.POST['rate'] if 'rate' in request.POST else 0
             estado = "A" if 'estado' in request.POST else "I"
-            plan = medico.modificarPlanNutricional(id_p,rating,estado)
+            plan = medico.modificarPlanEjercicio(id_p,rating,estado)
             if plan == False:
-                messages.error(request, 'El plan nutricional no se ha modificado correctamente')
+                messages.error(request, 'El plan de ejercicio no se ha modificado correctamente')
             else:
-                messages.success(request, 'El plan nutricional se ha modificado correctamente')
-            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+                messages.success(request, 'El plan de ejercicio se ha modificado correctamente')
+            return HttpResponseRedirect(reverse('Medico-ejercicio-index', kwargs={'cod_paciente': cod_paciente}))
     else:
         medico = MedicoHelper(request.user)
 
         heartRate = medico.getRitmoCardiaco(cod_paciente)
         if heartRate == None:
             messages.error(request, 'Por favor registre un valor en la variable: Ritmo cardíaco')
-            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+            return HttpResponseRedirect(reverse('Medico-ejercicio-index', kwargs={'cod_paciente': cod_paciente}))
         else:
             heartRate = heartRate.valor
         glucose = medico.getGlucosa(cod_paciente)
         if glucose == None:
             messages.error(request, 'Por favor registre un valor en la variable: Nivel de glucosa')
-            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+            return HttpResponseRedirect(reverse('Medico-ejercicio-index', kwargs={'cod_paciente': cod_paciente}))
         else:
             glucose = glucose.valor
         height = medico.getAltura(cod_paciente)
         if height == None:
             messages.error(request, 'Por favor registre un valor en la variable: Altura')
-            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+            return HttpResponseRedirect(reverse('Medico-ejercicio-index', kwargs={'cod_paciente': cod_paciente}))
         else:
             height = height.valor
         weight = medico.getPeso(cod_paciente)
         if weight == None:
             messages.error(request, 'Por favor registre un valor en la variable: Peso')
-            return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
+            return HttpResponseRedirect(reverse('Medico-ejercicio-index', kwargs={'cod_paciente': cod_paciente}))
         else:
             weight = weight.valor
         age = medico.getEdad(cod_paciente)
@@ -510,7 +536,28 @@ def medico_generar_ejercicio(request,cod_paciente):
         print(context)
         return render(request,'fynex_app/medico/exercise_recommendations_generation.html',context)
     
-
+def medico_detail_ejercicio(request,cod_paciente,cod_plan):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente) or not verify_planEjercicio(request,cod_paciente,cod_plan):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        medico = MedicoHelper(request.user)
+        if 'save' in request.POST:
+            id_p = request.POST['id']
+            rating = request.POST['rate'] if 'rate' in request.POST else 0
+            estado = "A" if 'estado' in request.POST else "I"
+            plan = medico.modificarPlanEjercicio(id_p,rating,estado)
+            if plan == False:
+                messages.error(request, 'El plan de ejercicio no se ha modificado correctamente')
+            else:
+                messages.success(request, 'El plan de ejercicio se ha modificado correctamente')
+            return HttpResponseRedirect(reverse('Medico-ejercicio-index', kwargs={'cod_paciente': cod_paciente}))
+    else:
+        medico = MedicoHelper(request.user)
+        context = {}
+        plan = medico.getPlanEjercicio(cod_plan)
+        context['paciente'] = medico.getPaciente(cod_paciente)
+        context['plan'] = plan
+        return render(request,'fynex_app/medico/exercise_recommendations_generation.html',context)
 
 def medico_generar_nutricion(request,cod_paciente):
     if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
@@ -695,7 +742,7 @@ def paciente_variables(request):
             values = []
             dates = []
             for h in historico:
-                values.append(h.valor)
+                values.append({'x':str(h.fecha),'y':h.valor})
                 dates.append(str(h.fecha))
             vars[v.nombre] = [values,dates]
         context['variables'] = vars

@@ -76,6 +76,14 @@ class MedicoHelper:
         paciente = Paciente.objects.all().get(pk=cod_paciente)
         planes = PlanEjercicio.objects.all().filter(paciente=paciente).order_by('id')
         return planes
+    
+    def eliminarPlanEjercicio(self,cod_plan):
+        try:
+            plan = PlanEjercicio.objects.all().get(pk=cod_plan)
+            plan.delete()
+            return True
+        except:
+            return False
 
     def getPartesDePlanNutricional(self,plan):
         return PartePlanNutricional.objects.all().filter(plan_nutricional=plan)
@@ -85,7 +93,6 @@ class MedicoHelper:
             return PlanNutricional.objects.all().get(pk=cod_plan)
         except:
             return None
-    
     def modificarPlanNutricional(self,id,rating,estado):
         try:
             plan = PlanNutricional.objects.all().get(pk=id)
@@ -133,6 +140,20 @@ class MedicoHelper:
         except Exception as e:
             print (e)
             return None
+    def modificarPlanEjercicio(self,id,rating,estado):
+        try:
+            plan = PlanEjercicio.objects.all().get(pk=id)
+            plan.rating = rating
+            plan.estado = estado
+            plan.save()
+            return plan
+        except:
+            return None
+    def getPlanEjercicio(self,cod_plan):
+        try:
+            return PlanEjercicio.objects.all().get(pk=cod_plan)
+        except:
+            return None
     def guardarHistorialVariable(self,variable,fecha,valor):
         try:
             historico = HistorialVariableSeguimiento()
@@ -162,7 +183,7 @@ class MedicoHelper:
             return False
 
     def getHistoricoVariable(self,variable):
-        return HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=variable)
+        return HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=variable).order_by('fecha')
 
     def getVariable(self,cod_variable):
         try:
@@ -271,7 +292,9 @@ class MedicoHelper:
     def verifyPlanNutricional(self,cod_paciente,cod_plan):
         res = PlanNutricional.objects.all().filter(pk=cod_plan,paciente__id=cod_paciente,paciente__medico=self.medico)
         return res
-    
+    def verifyPlanEjercicio(self,cod_paciente,cod_plan):
+        res = PlanEjercicio.objects.all().filter(pk=cod_plan,paciente__id=cod_paciente,paciente__medico=self.medico)
+        return res
     def getVariablesSeguimiento(self,cod_paciente):
         paciente = Paciente.objects.all().get(pk=cod_paciente)
         res = VariableSeguimiento.objects.all().filter(paciente=paciente)
