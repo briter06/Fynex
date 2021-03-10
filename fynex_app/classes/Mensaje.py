@@ -11,6 +11,7 @@ class MensajeHelper:
         try:
             mensaje = Mensaje()
             mensaje.mensaje = message
+            mensaje.fecha = Tools.getToday(True)
             mensaje.paciente = paciente
             mensaje.medico = paciente.medico
             mensaje.paciente_emisor = paciente_sender

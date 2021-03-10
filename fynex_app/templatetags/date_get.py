@@ -4,4 +4,7 @@ register = template.Library()
 
 @register.filter
 def date_get(value):
-    return str(value)
+    try:
+        return str(value.date())
+    except:
+        return str(value)

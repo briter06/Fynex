@@ -5,6 +5,9 @@ from django.conf import settings
 import ibm_boto3
 from ibm_botocore.client import Config, ClientError
 from django.templatetags.static import static
+from django.conf import settings
+import pytz
+import datetime
 
 class Tools:
 
@@ -20,6 +23,14 @@ class Tools:
         config=Config(signature_version="oauth"),
         endpoint_url=settings.COS_ENDPOINT
     )
+
+    @staticmethod
+    def getToday(time=False):
+        date = datetime.datetime.now(pytz.timezone(settings.TIME_ZONE))
+        if time:
+            return date
+        else:
+            return date.date()
 
     @staticmethod
     def get_random_string(length):
@@ -110,4 +121,24 @@ class Tools:
 
             '''
         res = Tools.sendEmail(user,subject,body)
+        return res
+
+    @staticmethod
+    def sendEmailNewRecommendationFood(paciente):
+        subject = 'Solicitud de nueva recomendación'
+        body = f'''
+                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
+                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
+                    <br>
+                    <br>
+                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>Nueva recomendación</b></i></font></strong><br><br></h1>
+                    <br>
+                    <h3>El paciente {paciente.user.first_name} desea una nueva recomendación nutricional</h3> <br>
+                    <br>
+                    <a href="https://fynexapp.herokuapp.com/Medico/{paciente.id}/nutrition_recommendations"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
+                    <br>
+                </div>
+
+            '''
+        res = Tools.sendEmail(paciente.medico.user,subject,body)
         return res

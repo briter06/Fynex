@@ -361,7 +361,7 @@ def medico_examenes(request,cod_paciente):
         elif 'add' in request.POST:
             nombre = request.POST['nombre']
             descripcion = request.POST['descripcion']
-            fecha_peticion = datetime.date.today() - datetime.timedelta(hours=5)
+            fecha_peticion = Tools.getToday()
             paciente = medico.getPaciente(cod_paciente)
             examen = medico.addExamen(nombre,descripcion,fecha_peticion,paciente)
             if examen == None:
@@ -533,7 +533,6 @@ def medico_generar_ejercicio(request,cod_paciente):
         context['age'] = age
         context['nueva'] = True
         context['diseases'] = result['diseases']
-        print(context)
         return render(request,'fynex_app/medico/exercise_recommendations_generation.html',context)
     
 def medico_detail_ejercicio(request,cod_paciente,cod_plan):
@@ -781,3 +780,13 @@ def paciente_examenes(request):
         paciente = PacienteHelper(request.user)
         context['examenes'] = paciente.getExamenes()
         return render(request,'fynex_app/paciente/examenes.html',context)
+def paciente_nueva_nutricion(request):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    try:
+        paciente = PacienteHelper(request.user)
+        Tools.sendEmailNewRecommendationFood(paciente.paciente)
+        messages.success(request, 'Solicitud realizada')
+    except:
+        messages.error(request, 'Ha ocurrido un error')
+    return HttpResponseRedirect(reverse('Paciente-nutrition-index'))

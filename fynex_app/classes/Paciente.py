@@ -7,7 +7,7 @@ from ..models import Examen
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 import pandas as pd
-import datetime
+from .tools import Tools
 
 class PacienteHelper:
 
@@ -45,7 +45,7 @@ class PacienteHelper:
     def subirArchivo(self,cod_examen,ruta):
         try:
             res = Examen.objects.all().get(pk=cod_examen)
-            res.fecha_entrega = datetime.date.today() - datetime.timedelta(hours=5)
+            res.fecha_entrega = Tools.getToday()
             res.documento_ruta = ruta
             res.save()
             return res

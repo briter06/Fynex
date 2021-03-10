@@ -51,6 +51,7 @@ ALLOWED_HOSTS = ['fynexapp.herokuapp.com','localhost','*']
 INSTALLED_APPS = [
     'captcha',
     'channels',
+    'datetimeutc',
     'fynex_app.apps.FynexAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -174,3 +175,5 @@ CHANNEL_LAYERS = {
 
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
 
+TIME_ZONE = 'America/Bogota'
+USE_TZ = True

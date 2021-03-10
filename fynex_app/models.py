@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
+from datetimeutc.fields import DateTimeUTCField
 
 #Falta -> PlaneActividadFisica
 
@@ -72,7 +73,7 @@ class PlanEjercicio(models.Model):
     tiempo = models.CharField(max_length=50)
 
 class Mensaje(models.Model):
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = DateTimeUTCField()
     mensaje = models.TextField()
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
     medico = models.ForeignKey(Medico,on_delete=models.CASCADE)

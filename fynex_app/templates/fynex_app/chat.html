@@ -1,6 +1,7 @@
 {% load static %}
 {% load replace_email %}
 {% load date_get %}
+{% load i18n %}
 <!DOCTYPE html>
 <!--
 	Transit by TEMPLATED
@@ -74,23 +75,26 @@
 
   <div class="container-fluid main_section">
     <h1 style="margin-bottom: 50px;">Chat con {{receiver_name}}</h1>
-        <div id="chat-log" class="chat_div">  
-          {% for mensaje in mensajes %}
-            <div {% if is_paciente and mensaje.paciente_emisor or not is_paciente and not mensaje.paciente_emisor %} class="message_container_right" {% else %} class="message_container_left" {% endif %}>
-              <div class="arrow">
-                <div class="outer"></div>
-                <div class="inner"></div>
-              </div>
-              <div class="message-body">
-                <strong>{% if mensaje.paciente_emisor %}{{mensaje.paciente.user.first_name}}{% else %}{{mensaje.medico.user.first_name}}{% endif %}</strong>
-                <p>{{mensaje.mensaje}}</p>
-              </div>
+    {% language 'es' %}
+      <div id="chat-log" class="chat_div">  
+        {% for mensaje in mensajes %}
+          <div {% if is_paciente and mensaje.paciente_emisor or not is_paciente and not mensaje.paciente_emisor %} class="message_container_right" {% else %} class="message_container_left" {% endif %}>
+            <div class="arrow">
+              <div class="outer"></div>
+              <div class="inner"></div>
             </div>
-          {% endfor %}
-          
-          
+            <div class="message-body">
+              <strong>{% if mensaje.paciente_emisor %}{{mensaje.paciente.user.first_name}}{% else %}{{mensaje.medico.user.first_name}}{% endif %}</strong>
+              <p>{{mensaje.mensaje}}</p>
+              <p style="font-size: small;">{{mensaje.fecha | date_get}}</p>
+            </div>
+          </div>
+        {% endfor %}
+        
+        
 
-        </div><br>
+      </div><br>
+    {% endlanguage %}
         <input id="chat-message-input" type="text" size="100"><br>
         <input id="chat-message-submit" type="button" value="Enviar">
         {{ room_name|json_script:"room-name" }}

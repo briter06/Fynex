@@ -1,7 +1,5 @@
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    console.log(data.is_paciente);
-    console.log(data.paciente_sender);
     if(data.paciente_sender){
         $('#chat-log').prepend(`
         
@@ -13,6 +11,7 @@ chatSocket.onmessage = function(e) {
             <div class="message-body">
                 <strong>`+data.sender+`</strong>
                 <p>`+data.message+`</p>
+                <p style="font-size: small;">`+getDate()+`</p>
             </div>
         </div>
 
@@ -28,6 +27,7 @@ chatSocket.onmessage = function(e) {
             <div class="message-body">
                 <strong>`+data.sender+`</strong>
                 <p>`+data.message+`</p>
+                <p style="font-size: small;">`+getDate()+`</p>
             </div>
         </div>
 
@@ -47,5 +47,24 @@ document.querySelector('#chat-message-submit').onclick = function(e) {
         messageInputDom.value = '';
     }
 };
+
+function getDate(){
+    var event = new Date();
+    mes = event.getMonth()+1;
+    if(mes<10){
+    mes_s = "0"+mes;
+    }else{
+    mes_s = mes;
+    }
+    dia = event.getDate();
+    if(dia<10){
+    dia_s = "0"+dia;
+    }else{
+    dia_s = dia;
+    }
+
+    fecha = (event.getYear()+1900)+"-"+mes_s+"-"+dia_s;
+    return fecha;
+}
 
             
