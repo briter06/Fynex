@@ -32,6 +32,7 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json['message']
         sender = text_data_json['sender']
         paciente_sender = text_data_json['paciente_sender']
+        date = text_data_json['date']
         if self.paciente!=None:
             # Send message to room group
             async_to_sync(self.channel_layer.group_send)(
@@ -40,22 +41,25 @@ class ChatConsumer(WebsocketConsumer):
                     'type': 'chat_message',
                     'message': message,
                     'sender' : sender,
-                    'paciente_sender' : paciente_sender
+                    'paciente_sender' : paciente_sender,
+                    'date' : date
                 }
             )
-            self.mensajeHelper.agregarMensaje(message,self.paciente,paciente_sender)
+            self.mensajeHelper.agregarMensaje(message,self.paciente,paciente_sender,date)
 
     # Receive message from room group
     def chat_message(self, event):
         message = event['message']
         sender = event['sender']
         paciente_sender = event['paciente_sender']
+        date = event['date']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'message': message,
             'sender' : sender,
             'paciente_sender' : paciente_sender,
+            'date' : date,
             'room' : self.room_name
         }))
 

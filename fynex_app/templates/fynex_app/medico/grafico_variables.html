@@ -78,9 +78,20 @@
 
   <div class="container-fluid main_section" ng-controller="ChartController">
     <h1 style="margin-bottom: 50px;">Variables de {{paciente.user.first_name}}</h1>
-    <div style="width: 100%; text-align: right;">
-      <button onclick="location.href = 'variables/gestion';" style="margin-bottom: 20px;" class="button">Gestionar variables</button>
+    <div class="row" style="width: 100%;">
+      <div class="col-md-6 row" style="margin-bottom: 15px;">
+        <div class="col-md-6">
+          <input type="date" id="inicio" onchange="updateDatos();"/>
+        </div>
+        <div class="col-md-6">
+          <input type="date" id="fin" onchange="updateDatos();"/>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <button onclick="location.href = 'variables/gestion';" style="float:right;margin-bottom: 20px;" class="button">Gestionar variables</button>
+      </div>
     </div>
+    
     <div class = "row">
       <div class="col-md-12">
         <ul class="nav nav-tabs nice_scroll scroll"><!--scrollable-tabs-->
@@ -91,15 +102,15 @@
           {% endfor %}
         </ul>
       </div>
-    </div>   
+    </div> 
+    
     <div class = "row">
-      
       <div class="col-md-2"></div>
       <div class="col-md-8">
         <div style="width: 100%;">
-          <canvas chart-colors="colors" class="chart chart-line" chart-data="data" chart-labels="labels" 
+          <canvas chart-colors="colors" class="chart-base" chart-data="data" chart-labels="labels" 
             chart-series="series" chart-click="onClick" chart-options="options"
-            chart-dataset-override="datasetOverride"></canvas> 
+            chart-dataset-override="datasetOverride" chart-type="type"></canvas> 
         </div>
       </div>
     </div>
@@ -129,44 +140,107 @@
     $interpolateProvider.endSymbol('}]}');
   });
   app.controller('ChartController', function ($scope, $timeout) {
+      var hoy = getStrDate();
+      var antes = getStrDate(6);
+      $('#fin').val(hoy);
+      $('#inicio').val(antes);
       var first = Object.keys(data)[0];
       $scope.selected = first;
       $scope.colors = ['#45b7cd', '#ff6384', '#ff8e72'];
-      $scope.labels = data[first][1];
       $scope.series = [first];
-      $scope.data = [data[first][0]];
+      $scope.getData = getDataOut;
+      $scope.def_type = function(){
+        if($scope.labels.length>1){
+          return 'line';
+        }else{
+          return 'bar';
+        }
+      }
       $scope.options = {
         responsive:true,
         legend: {
             display: true,
+            labels: {
+                fontSize: 30
+            }
         },
         scales: {
+          xAxes:[
+            {
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Fecha',
+                fontSize:20
+              }
+            }
+          ],
           yAxes: [
             {
               id: 'y-axis-1',
               type: 'linear',
               display: true,
-              position: 'left'
-            },
-            // {
-            //   id: 'y-axis-2',
-            //   type: 'linear',
-            //   display: true,
-            //   position: 'right'
-            // }
+              position: 'left',
+              scaleLabel: {
+                display: true,
+                labelString:'',
+                fontSize:20
+              }
+            }
           ]
         }
       };
+      $scope.updateData = function(){
+        [$scope.labels,$scope.data,$scope.options.scales.yAxes[0].scaleLabel.labelString] = $scope.getData($scope.selected);
+        $scope.type = $scope.def_type();
+      }
       $scope.setNav = function(name){
         $scope.selected = name;
-        $scope.labels = data[name][1];
         $scope.series = [name];
-        $scope.data = [data[name][0]];
+        $scope.updateData();
       }
+      $scope.updateData();
     });
   
   angular.element(document).ready(function(){
     angular.bootstrap(document, ['app']);
   });
+  function getDataOut(selected,fecha_inicio){
+    var d_inicio = $('#inicio').val()||'0001-01-01';
+    var d_final = $('#fin').val()||'5000-01-01';
+    var labels = data[selected][1];
+    var data_x = data[selected][0];
+    var unidad = data[selected][2];
+    var final_labels = [];
+    var final_data = [];
+    for (index in labels){
+      var fecha = labels[index];
+      if (fecha>=d_inicio && fecha<=d_final){
+        final_labels.push(fecha);
+        final_data.push(data_x[index]);
+      }
+    }
+    if(final_data.length==0){
+      return [[0],[[0]]]
+    }
+    return [final_labels,[final_data],unidad]
+  }
+
+  function updateDatos(){
+    var appElement = document.querySelector('[ng-controller=ChartController]');
+    var $scope = angular.element(appElement).scope();
+    $scope.$apply(function() {
+      $scope.updateData();
+    });
+  }
+
+  function getStrDate(n=0){
+    var date = new Date();
+    date.setMonth(date.getMonth()-n)
+    var anio = date.getYear() + 1900;
+    var mes = ("0"+(date.getMonth()+1)).slice(-2);
+    var dia = ("0"+date.getDate()).slice(-2);
+    return anio+'-'+mes+'-'+dia
+  }
   </script>
 </html>

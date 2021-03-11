@@ -76,7 +76,6 @@ class Mensaje(models.Model):
     fecha = DateTimeUTCField()
     mensaje = models.TextField()
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
-    medico = models.ForeignKey(Medico,on_delete=models.CASCADE)
     paciente_emisor = models.IntegerField()
     notificado_email = models.BooleanField()
 

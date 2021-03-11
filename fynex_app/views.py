@@ -291,9 +291,9 @@ def medico_grafico_variables(request,cod_paciente):
             values = []
             dates = []
             for h in historico:
-                values.append({'x':str(h.fecha),'y':h.valor})
+                values.append(h.valor)
                 dates.append(str(h.fecha))
-            vars[v.nombre] = [values,dates]
+            vars[v.nombre] = [values,dates,v.unidad]
         context['variables'] = vars
 
         return render(request,'fynex_app/medico/grafico_variables.html',context)
@@ -741,7 +741,7 @@ def paciente_variables(request):
             values = []
             dates = []
             for h in historico:
-                values.append({'x':str(h.fecha),'y':h.valor})
+                values.append(h.valor)
                 dates.append(str(h.fecha))
             vars[v.nombre] = [values,dates]
         context['variables'] = vars

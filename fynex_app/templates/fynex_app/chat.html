@@ -70,8 +70,11 @@
   </div>
 
   <input type="hidden" id="cod_paciente" value="{{paciente.id}}"/>
+  {% if paciente_sender %}
+  <div w3-include-html="{% static 'helpers/SideNavs/paciente.html' %}"></div>
+  {% else %}
   <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
-
+  {% endif %}
 
   <div class="container-fluid main_section">
     <h1 style="margin-bottom: 50px;">Chat con {{receiver_name}}</h1>
@@ -84,9 +87,9 @@
               <div class="inner"></div>
             </div>
             <div class="message-body">
-              <strong>{% if mensaje.paciente_emisor %}{{mensaje.paciente.user.first_name}}{% else %}{{mensaje.medico.user.first_name}}{% endif %}</strong>
+              <strong>{% if mensaje.paciente_emisor %}{{mensaje.paciente.user.first_name}}{% else %}{{mensaje.paciente.medico.user.first_name}}{% endif %}</strong>
               <p>{{mensaje.mensaje}}</p>
-              <p style="font-size: small;">{{mensaje.fecha | date_get}}</p>
+              <p class="fecha_chat">{{mensaje.fecha}}</p>
             </div>
           </div>
         {% endfor %}

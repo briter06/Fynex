@@ -7,15 +7,29 @@ from .tools import Tools
 
 class MensajeHelper:
 
-    def agregarMensaje(self,message,paciente,paciente_sender):
+
+    def verify_email(self,fech,paciente,paciente_sender):
+        last_m = Mensaje.objects.all().filter(notificado_email=True,paciente=paciente,paciente_emisor=paciente_sender).order_by('-fecha').first()
+        if last_m is None:
+            Tools.sendEmailUserMsg(paciente,paciente_sender)
+            return True
+        else:
+            diff = fech - last_m.fecha
+            hours = (diff.total_seconds()/60)/60
+            if hours > 12:
+                Tools.sendEmailUserMsg(paciente,paciente_sender)
+                return True
+        return False
+    def agregarMensaje(self,message,paciente,paciente_sender,fecha):
         try:
+            fech = Tools.getTodayStr(fecha)
+            notificado_email = self.verify_email(fech,paciente,paciente_sender)
             mensaje = Mensaje()
             mensaje.mensaje = message
-            mensaje.fecha = Tools.getToday(True)
+            mensaje.fecha = fech
             mensaje.paciente = paciente
-            mensaje.medico = paciente.medico
             mensaje.paciente_emisor = paciente_sender
-            mensaje.notificado_email = False
+            mensaje.notificado_email = notificado_email
             mensaje.save()
             return mensaje
         except:
@@ -25,8 +39,7 @@ class MensajeHelper:
         return paciente
     
     def getMensajesMedico(self,user,paciente):
-        medico = Medico.objects.all().get(user=user)
-        mensajes = Mensaje.objects.all().filter(medico=medico,paciente=paciente).order_by('-fecha')
+        mensajes = Mensaje.objects.all().filter(paciente=paciente).order_by('-fecha')
         return mensajes
     def getMensajesPaciente(self,user):
         paciente = Paciente.objects.all().get(user=user)
