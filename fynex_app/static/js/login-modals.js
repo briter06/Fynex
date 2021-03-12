@@ -14,9 +14,9 @@ var login_modal =
       $('#login_script').attr('token') +
       '<input type="hidden" name="login" value="login"/>' +
       '<label for="user_name">Correo Electrónico</label>' +
-      '<input required type="email" id="user_name" name="user_name" max_length = 150>' +
+      '<input required type="email" id="user_name" name="user_name" maxlength = "150">' +
       '<label for="password">Contraseña</label>' +
-      '<input required type="password" id="password" name="password" max_length = 128>' +
+      '<input required type="password" id="password" name="password" maxlength = "128">' +
       '<div class="row">' +
       '<a href="' + $('#login_script').attr('forgot_url') + '">¿Olvidó su contraseña?</a>' +
       '</div><div class="row"><div class="column-md-12 mx-auto">' +

@@ -1,5 +1,6 @@
 from ..models import VariableSeguimiento
 from ..models import PlanNutricional
+from ..models import PlanEjercicio
 from ..models import PartePlanNutricional
 from ..models import HistorialVariableSeguimiento
 from ..models import Paciente
@@ -26,7 +27,12 @@ class PacienteHelper:
             return PlanNutricional.objects.all().get(pk=cod_plan,paciente=self.paciente)
         except:
             return None
-    
+
+    def getPlanEjercicio(self,cod_plan):
+        try:
+            return PlanEjercicio.objects.all().get(pk=cod_plan,paciente=self.paciente)
+        except:
+            return None
 
     def getVariablesSeguimiento(self):
         res = VariableSeguimiento.objects.all().filter(paciente=self.paciente)
@@ -51,3 +57,7 @@ class PacienteHelper:
             return res
         except:
             return None
+    
+    def getPlanesEjercicio(self):
+        planes = PlanEjercicio.objects.all().filter(paciente=self.paciente).order_by('id')
+        return planes

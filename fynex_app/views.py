@@ -12,6 +12,7 @@ from .classes.Medico import MedicoHelper
 from .classes.Paciente import PacienteHelper
 from .classes.Mensaje import MensajeHelper
 from .classes.tools import Tools
+from django.contrib.auth.forms import PasswordChangeForm
 import datetime
 import json
 from fynex_app.forms import CaptchaTestModelForm
@@ -295,8 +296,8 @@ def medico_grafico_variables(request,cod_paciente):
                 dates.append(str(h.fecha))
             vars[v.nombre] = [values,dates,v.unidad]
         context['variables'] = vars
-
-        return render(request,'fynex_app/medico/grafico_variables.html',context)
+        context['is_medico'] = True
+        return render(request,'fynex_app/grafico_variables.html',context)
 
 def medico_variables(request,cod_paciente):
     if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
@@ -696,6 +697,7 @@ def paciente_index(request):
         context = {}
         pacienteHelper = PacienteHelper(request.user)
         context['paciente'] = pacienteHelper.paciente
+        context['form'] = PasswordChangeForm(request.user)
         return render(request,'fynex_app/paciente/paciente_index.html',context)
 
 def paciente_nutricion(request):
@@ -745,8 +747,8 @@ def paciente_variables(request):
                 dates.append(str(h.fecha))
             vars[v.nombre] = [values,dates]
         context['variables'] = vars
-
-        return render(request,'fynex_app/paciente/grafico_variables.html',context)
+        context['is_medico'] = False
+        return render(request,'fynex_app/grafico_variables.html',context)
 
 def paciente_examenes(request):
     if not verify_auth(request,'paciente'):
@@ -790,3 +792,42 @@ def paciente_nueva_nutricion(request):
     except:
         messages.error(request, 'Ha ocurrido un error')
     return HttpResponseRedirect(reverse('Paciente-nutrition-index'))
+
+def paciente_ejercicio(request):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        paciente = PacienteHelper(request.user)
+        context['paciente'] = paciente.paciente
+        context['planes'] = paciente.getPlanesEjercicio()
+        return render(request,'fynex_app/paciente/exercise_recommendations_index.html',context)
+
+def paciente_detail_ejercicio(request,cod_plan):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        pacienteHelper = PacienteHelper(request.user)
+        paciente = pacienteHelper.paciente
+        context = {}
+        plan = pacienteHelper.getPlanEjercicio(cod_plan)
+        if plan==None:
+            return HttpResponseRedirect(reverse('Fynex-index'))
+        context['paciente'] = paciente
+        context['plan'] = plan
+        return render(request,'fynex_app/paciente/exercise_recommendations_generation.html',context)
+
+def paciente_nueva_ejercicio(request):
+    if not verify_auth(request,'paciente'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    try:
+        paciente = PacienteHelper(request.user)
+        Tools.sendEmailNewRecommendationExercise(paciente.paciente)
+        messages.success(request, 'Solicitud realizada')
+    except:
+        messages.error(request, 'Ha ocurrido un error')
+    return HttpResponseRedirect(reverse('Paciente-ejercicio-index'))

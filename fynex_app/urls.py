@@ -26,8 +26,11 @@ urlpatterns = [
 
     path('Paciente/info', views.paciente_index, name="Paciente-index"),
     path('Paciente/nutrition_recommendations', views.paciente_nutricion, name="Paciente-nutrition-index"),
+    path('Paciente/exercise_recommendations', views.paciente_ejercicio, name="Paciente-ejercicio-index"),
     path('Paciente/plan_nutricion/<int:cod_plan>', views.paciente_detail_nutricion, name="Paciente-nutrition-plan-index"),
+    path('Paciente/plan_ejercicio/<int:cod_plan>', views.paciente_detail_ejercicio, name="Paciente-exercise-plan-index"),
     path('Paciente/nutrition_recommendations/nueva', views.paciente_nueva_nutricion, name="Paciente-nutrition-nueva"),
+    path('Paciente/exercise_recommendations/nueva', views.paciente_nueva_ejercicio, name="Paciente-ejercicio-nueva"),
     
     path('Medico/<int:cod_paciente>/chat', views.medico_chat, name="Medico-chat"),
     path('Paciente/chat', views.paciente_chat, name="Paciente-chat"),

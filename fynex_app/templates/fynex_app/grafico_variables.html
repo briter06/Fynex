@@ -74,10 +74,18 @@
   </div>
 
   <input type="hidden" id="cod_paciente" value="{{paciente.id}}"/>
+  {% if is_medico %}
+  <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
+  {% else %}
   <div w3-include-html="{% static 'helpers/SideNavs/paciente.html' %}"></div>
+  {% endif %}
 
-  <div class="container-fluid main_section" ng-controller="ChartController">
+  <div class="container-fluid main_section"  ng-controller="ChartController">
+    {% if is_medico %}
     <h1 style="margin-bottom: 50px;">Variables de {{paciente.user.first_name}}</h1>
+    {% else %}
+    <h1 style="margin-bottom: 50px;">Mis variables</h1>
+    {% endif %}
     <div class="row" style="width: 100%;">
       <div class="col-md-6 row" style="margin-bottom: 15px;">
         <div class="col-md-6">
@@ -88,39 +96,45 @@
         </div>
       </div>
       <div class="col-md-6">
+        {% if is_medico %}
         <button onclick="location.href = 'variables/gestion';" style="float:right;margin-bottom: 20px;" class="button">Gestionar variables</button>
+        {% endif %}
       </div>
     </div>
     
     <div class = "row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <ul class="nav nav-tabs nice_scroll scroll"><!--scrollable-tabs-->
           {% for x in variables %}
           <li class="nav-item">
-            <a ng-click="setNav('{{x}}')" ng-attr-class="{[{ selected=='{{x}}' && 'nav-link active btn' || 'nav-link btn' }]}">{{x}}</a>
+            <a ng-click="chart_l.setNav('{{x}}')" ng-attr-class="{[{ chart_l.selected=='{{x}}' && 'nav-link active btn' || 'nav-link btn' }]}">{{x}}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <ul class="nav nav-tabs nice_scroll scroll"><!--scrollable-tabs-->
+          {% for x in variables %}
+          <li class="nav-item">
+            <a ng-click="chart_r.setNav('{{x}}')" ng-attr-class="{[{ chart_r.selected=='{{x}}' && 'nav-link active btn' || 'nav-link btn' }]}">{{x}}</a>
           </li>
           {% endfor %}
         </ul>
       </div>
     </div> 
     
-    <div class = "row">
-      <div class="col-md-2"></div>
-      <div class="col-md-8">
+    <div class = "row" style="margin-bottom: 20px;">
+      <div class="col-md-6">
         <div style="width: 100%;">
-          <canvas chart-colors="colors" class="chart-base" chart-data="data" chart-labels="labels" 
-            chart-series="series" chart-click="onClick" chart-options="options"
-            chart-dataset-override="datasetOverride" chart-type="type"></canvas> 
+          <canvas chart-colors="chart_l.colors" class="chart-base" chart-data="chart_l.data" chart-labels="chart_l.labels" chart-series="chart_l.series" chart-options="chart_l.options" chart-type="chart_l.type"></canvas> 
         </div>
       </div>
-    </div>
-
-    
-    
-    
-    
-    
-
+      <div class="col-md-6">
+        <div style="width: 100%;">
+          <canvas chart-colors="chart_r.colors" class="chart-base" chart-data="chart_r.data" chart-labels="chart_r.labels" chart-series="chart_r.series" chart-options="chart_r.options" chart-type="chart_r.type"></canvas> 
+        </div>
+      </div>
+    </div> 
   </div>
 
   <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>
@@ -145,23 +159,36 @@
       $('#fin').val(hoy);
       $('#inicio').val(antes);
       var first = Object.keys(data)[0];
-      $scope.selected = first;
-      $scope.colors = ['#45b7cd', '#ff6384', '#ff8e72'];
-      $scope.series = [first];
+      $scope.font_series = 25;
+      $scope.chart_l = {};
+      $scope.chart_r = {};
+      $scope.chart_l.selected = first;
+      $scope.chart_r.selected = first;
+      $scope.chart_l.colors = ['#45b7cd'];
+      $scope.chart_r.colors = ['#ff6384'];
+      $scope.chart_l.series = [first];
+      $scope.chart_r.series = [first];
       $scope.getData = getDataOut;
-      $scope.def_type = function(){
-        if($scope.labels.length>1){
+      $scope.chart_l.def_type = function(){
+        if($scope.chart_l.labels.length>1){
           return 'line';
         }else{
           return 'bar';
         }
       }
-      $scope.options = {
+      $scope.chart_r.def_type = function(){
+        if($scope.chart_r.labels.length>1){
+          return 'line';
+        }else{
+          return 'bar';
+        }
+      }
+      $scope.chart_l.options = {
         responsive:true,
         legend: {
             display: true,
             labels: {
-                fontSize: 30
+                fontSize: $scope.font_series
             }
         },
         scales: {
@@ -190,16 +217,60 @@
           ]
         }
       };
-      $scope.updateData = function(){
-        [$scope.labels,$scope.data,$scope.options.scales.yAxes[0].scaleLabel.labelString] = $scope.getData($scope.selected);
-        $scope.type = $scope.def_type();
+      $scope.chart_r.options = {
+        responsive:true,
+        legend: {
+            display: true,
+            labels: {
+                fontSize: $scope.font_series
+            }
+        },
+        scales: {
+          xAxes:[
+            {
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Fecha',
+                fontSize:20
+              }
+            }
+          ],
+          yAxes: [
+            {
+              id: 'y-axis-1',
+              type: 'linear',
+              display: true,
+              position: 'left',
+              scaleLabel: {
+                display: true,
+                labelString:'',
+                fontSize:20
+              }
+            }
+          ]
+        }
+      };
+      $scope.chart_l.updateData = function(){
+        [$scope.chart_l.labels,$scope.chart_l.data,$scope.chart_l.options.scales.yAxes[0].scaleLabel.labelString] = $scope.getData($scope.chart_l.selected);
+        $scope.chart_l.type = $scope.chart_l.def_type();
       }
-      $scope.setNav = function(name){
-        $scope.selected = name;
-        $scope.series = [name];
-        $scope.updateData();
+      $scope.chart_r.updateData = function(){
+        [$scope.chart_r.labels,$scope.chart_r.data,$scope.chart_r.options.scales.yAxes[0].scaleLabel.labelString] = $scope.getData($scope.chart_r.selected);
+        $scope.chart_r.type = $scope.chart_r.def_type();
       }
-      $scope.updateData();
+      $scope.chart_l.setNav = function(name){
+        $scope.chart_l.selected = name;
+        $scope.chart_l.series = [name];
+        $scope.chart_l.updateData();
+      }
+      $scope.chart_r.setNav = function(name){
+        $scope.chart_r.selected = name;
+        $scope.chart_r.series = [name];
+        $scope.chart_r.updateData();
+      }
+      $scope.chart_l.updateData();
+      $scope.chart_r.updateData();
     });
   
   angular.element(document).ready(function(){
@@ -230,7 +301,8 @@
     var appElement = document.querySelector('[ng-controller=ChartController]');
     var $scope = angular.element(appElement).scope();
     $scope.$apply(function() {
-      $scope.updateData();
+      $scope.chart_l.updateData();
+      $scope.chart_r.updateData();
     });
   }
 
