@@ -10,6 +10,7 @@
 <html lang="en">
 
 <head>
+  
   <link rel="icon" href="{% static 'images/logo.png' %}">
   <meta charset="UTF-8" />
   <title>Fynex</title>
@@ -50,6 +51,7 @@
 </head>
 
 <body>
+  
   {% if messages %}
   <ul class="messages" style="padding: 0 0 0 0;margin: 0 0 0 0;">
     {% for message in messages %}
@@ -71,14 +73,28 @@
   <input type="hidden" id="cod_paciente" value="{{paciente.id}}"/>
   <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
 
-
   <div class="container-fluid main_section">
-    <h1 style="margin-bottom: 50px;">PACIENTE</h1>
-    <h2><strong>Nombre del paciente:</strong> {{paciente.user.first_name}}</h2>
-    <h2><strong>Email del paciente:</strong> {{paciente.user.username}}</h2>
-    <h2><strong>Fecha de nacimiento del paciente:</strong> {{paciente.fecha_nacimiento|date_get}}</h2>
-    <h2><strong>Documento de identificación del paciente:</strong> {{paciente.documento_identificacion}}</h2>
-    <h2><strong>Teléfono del paciente:</strong> {{paciente.telefono}}</h2>
+
+  </div>
+
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col"> <h2><strong>Paciente </strong></h2> </div>
+      <div class="col"><h3>Email del paciente: {{paciente.user.username}}</h3></div>
+    </div>
+    <div class="row mb-3">
+      <div class="col"> <h2> <strong>{{paciente.user.first_name}} </strong></h2> </div>
+      <div class="col"><h3>Fecha de nacimiento del paciente: {{paciente.fecha_nacimiento|date_get}}</h3></div>
+    </div>
+    <div class="row mb-3">
+      <div class="col"> <h2>  </h2> </div>
+      <div class="col"><h3>Documento de identificación del paciente: {{paciente.documento_identificacion}}</h3></div>
+    </div>
+    <div class="row mb-3">
+      <div class="col"> <h2>  </h2> </div>
+      <div class="col"><h3>Teléfono del paciente: {{paciente.telefono}}</h3></div>
+    </div>
+    </div>
   </div>
 
   <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>
