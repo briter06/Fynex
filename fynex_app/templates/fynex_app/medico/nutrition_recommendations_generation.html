@@ -18,7 +18,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="//code.angularjs.org/snapshot/angular.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
 
 
@@ -54,37 +54,6 @@
     input[type="radio"]{
       border: none;
     }
-    .card {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  margin-bottom: 15px;
-  height: 100%;
-  border-radius: 25px;
- }
-
- .card .img_comida{
-   background-color: blueviolet;
-   border-radius: 25px;
- }
-
-.card img{
-  height: 250px;
-}
-  .card p{
-    overflow-wrap: break-word;
-  }
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-  .container{
-    width: 100%;
-    padding-top: 15px;
-  }
-
-  .card tr{
-    cursor: pointer;
-  }
   </style>
 </head>
 
@@ -121,7 +90,7 @@
     </h1>
     
     <div style="width: 100%;">
-      <form method='POST'>
+      <form method='POST' action="#">
         {%csrf_token%}
         <input type="hidden" name="save" value="save"/>
         <input type="hidden" name="id" value="{{plan.id}}"/>
@@ -152,89 +121,70 @@
               <input type="submit" style="margin-bottom: 20px;" class="button" value="Guardar"/>
             </td>
           </tr>
-        </table>
-
-
-          
+        </table>          
       </form>
-    </div>
-    <!-- <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
-      <thead>
-          <tr id="titulos">
-              <th>Parte</th>
-              <th>Nombre</th>
-              <th>Calorias totales</th>
-              <th>Proteinas (Gramos)</th>
-              <th>Carbohidratos (Gramos)</th>
-              <th>Grasas totales (Gramos)</th>
-          </tr>
-      </thead>
-      <tbody>
-        <td ROWSPAN=7> DESAYUNO </td>
-        {% for parte in partes %}
-         {% if parte.parte == "desayuno" %}
-          <tr>
-              <td>{{parte.nombre}}</td>
-              <td>{{parte.calorias}}</td>
-              <td>{{parte.proteinas}}</td>
-              <td>{{parte.carbohidratos}}</td>
-              <td>{{parte.grasas}}</td>
-          </tr>
-          {% endif %}
-          {% endfor %}
-      </tbody>
-    </table> -->
-   
+    </div>   
     <div class="row" >
-      <div class="col-md-4" >
-        <div class="card">
+      <div class="col-md-4 col_nutrition_card" >
+        <div class="nutrition_card">
           <div class="img_comida">
-          <img src="{% static 'images/desayuno2.png' %}" alt="Avatar" style="width:100%">
-        </div>
-          <div class="container">
-            <h4><b>DESAYUNO</b></h4> 
+            <img ng-if="desayuno_img==0" src="{% static 'images/desayuno1.png' %}">
+            <img ng-if="desayuno_img==1" src="{% static 'images/desayuno2.png' %}">
+          </div>
+          <div class="nutrition_container">
             <table class="table table-hover" >
-            {% for parte in partes %}
-            {% if parte.parte == "desayuno" %}
-            <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
-            <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.alimento}}"></detalle-nutricion>
-            {% endif %}
-          {% endfor %}
+              <thead>
+                <th><h4><b>DESAYUNO</b></h4></th>
+              </thead>
+              {% for parte in partes %}
+              {% if parte.parte == "desayuno" %}
+              <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
+              <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion>
+              {% endif %}
+              {% endfor %}
           </table>
           </div>
         </div>
       </div>
-      <div class="col-md-4" >
-        <div class="card">
+      <div class="col-md-4 col_nutrition_card" >
+        <div class="nutrition_card">
           <div class="img_comida">
-          <img src="{% static 'images/almuerzo1.png' %}" alt="Avatar" style="width:100%">
-        </div>
-          <div class="container">
-            <h4><b>ALMUERZO</b></h4> 
+            <img ng-if="almuerzo_img==0" src="{% static 'images/almuerzo1.png' %}">
+            <img ng-if="almuerzo_img==1" src="{% static 'images/almuerzo2.png' %}">
+          </div>
+          <div class="nutrition_container">
             <table class="table table-hover" >
-            {% for parte in partes %}
-            {% if parte.parte == "almuerzo" %}
-            <tr><td>{{parte.nombre}}</td></tr> 
-            {% endif %}
-          {% endfor %} 
-        </table>
+              <thead>
+                <th><h4><b>ALMUERZO</b></h4></th>
+              </thead>
+              {% for parte in partes %}
+              {% if parte.parte == "almuerzo" %}
+              <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
+              <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion> 
+              {% endif %}
+              {% endfor %} 
+            </table>
           </div>
         </div>
       </div>
-      <div class="col-md-4" >
-        <div class="card">
+      <div class="col-md-4 col_nutrition_card" >
+        <div class="nutrition_card">
           <div class="img_comida">
-          <img src="{% static 'images/comida1.png' %}" alt="Avatar" style="width:100%">
-        </div>
-          <div class="container">
-            <h4><b>COMIDA</b></h4> 
+            <img ng-if="comida_img==0" src="{% static 'images/comida1.png' %}">
+            <img ng-if="comida_img==1" src="{% static 'images/comida2.png' %}">
+          </div>
+          <div class="nutrition_container">
             <table class="table table-hover" >
-            {% for parte in partes %}
-            {% if parte.parte == "comida" %}
-            <tr><td>{{parte.nombre}} </td></tr>
-            {% endif %}
-          {% endfor %} 
-        </table>
+              <thead>
+                <th><h4><b>COMIDA</b></h4></th>
+              </thead>
+              {% for parte in partes %}
+              {% if parte.parte == "comida" %}
+              <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
+              <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion>
+              {% endif %}
+              {% endfor %} 
+            </table>
           </div>
         </div>
       </div>
@@ -249,39 +199,10 @@
 <script src="{% static 'js/include-html.js' %}"></script>
 <script src="{% static 'js/sidenav_js.js' %}"></script>
 <script src="{% static 'js/datatable.js' %}"></script>
+<script src="{% static 'js/nutrition-angular.js' %}"></script>
 <script>
   $(document).ready(function () {
     $('[data-toggle="popover"]').popover({ html: true });
-  });
-</script>
-<script>
-  var app = angular.module("app", []);
-  app.config(function($interpolateProvider) {
-    $interpolateProvider.startSymbol('{[{');
-    $interpolateProvider.endSymbol('}]}');
-  });
-  app.controller("controlador_nutricion", function($scope,$timeout){
-  });
-  app.directive("detalleNutricion", function(){
-    return { 
-      scope: {
-        id:'@',
-        alimento:'@'
-      },
-      template: `<div class="modal fade mensaje"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:1%; overflow-y:visible;">
-      <div class="modal-dialog modal-m">
-      <div class="modal-content">
-      <div class="modal-header"><h3 style="margin:0;"> Detalle nutricional </h3><button style="background-color: Transparent;border: none;" ng-click="esconder()">X</button></div>
-      <div class="modal-body" align="center">
-        <p> TIPO ALIMENTO: {[{alimento}]}</p>
-      </div>
-      </div></div></div>`,
-    link: function(scope, element, attrs) {
-      scope.esconder=function(){
-        $('#'+scope.id+' .mensaje').modal('hide')
-      }
-    }
-    }
   });
 </script>
 

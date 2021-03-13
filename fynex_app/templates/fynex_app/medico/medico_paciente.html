@@ -1,6 +1,7 @@
 {% load static %}
 {% load replace_email %}
 {% load date_get %}
+{% load i18n %}
 <!DOCTYPE html>
 <!--
 	Transit by TEMPLATED
@@ -78,23 +79,54 @@
   </div>
 
   <div class="container">
-    <div class="row mb-3">
+    <div id="personal_info">
+      {% language 'es' %}
+      <div class="row" style="margin-bottom: 35px;">
+        <div class="col-md-6">
+          <h2><strong>{{paciente.user.first_name}}  </strong></h2>
+        </div>
+        <div class="col-md-6">
+        </div>
+      </div>
+      <div class="row"  style="margin-bottom: 35px;">
+        <div class="col-md-6">
+          <h3><b>Correo electrónico:</b></h3>
+          <h3>{{paciente.user.username}}</h3>
+        </div>
+        <div class="col-md-6">
+          <h3><b>Documento de identificación:</b></h3>
+          <h3>{{paciente.documento_identificacion}}</h3>
+        </div>
+      </div>
+      <div class="row"  style="margin-bottom: 35px;">
+        <div class="col-md-6">
+          <h3><b>Fecha de naciemiento:</b></h3>
+          <h3>{{paciente.fecha_nacimiento}}</h3>
+        </div>
+        <div class="col-md-6">
+          <h3><b>Teléfono:</b></h3>
+          <h3>{{paciente.telefono}}</h3>
+        </div>
+      </div>
+      {% endlanguage %}
+    </div>
+    <!-- <div class="row mb-3">
       <div class="col"> <h2><strong>Paciente </strong></h2> </div>
-      <div class="col"><h3>Email del paciente: {{paciente.user.username}}</h3></div>
+      <div class="col"> <h2>  </h2> </div>
     </div>
     <div class="row mb-3">
       <div class="col"> <h2> <strong>{{paciente.user.first_name}} </strong></h2> </div>
-      <div class="col"><h3>Fecha de nacimiento del paciente: {{paciente.fecha_nacimiento|date_get}}</h3></div>
+      <div class="col"> <h2>  </h2> </div>
     </div>
     <div class="row mb-3">
-      <div class="col"> <h2>  </h2> </div>
+      <div class="col"><h3>Email del paciente: {{paciente.user.username}}</h3></div>
       <div class="col"><h3>Documento de identificación del paciente: {{paciente.documento_identificacion}}</h3></div>
     </div>
     <div class="row mb-3">
-      <div class="col"> <h2>  </h2> </div>
+      <div class="col"><h3>Fecha de nacimiento del paciente: {{paciente.fecha_nacimiento|date_get}}</h3></div>
       <div class="col"><h3>Teléfono del paciente: {{paciente.telefono}}</h3></div>
     </div>
-    </div>
+    </div> -->
   </div>
 
   <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>

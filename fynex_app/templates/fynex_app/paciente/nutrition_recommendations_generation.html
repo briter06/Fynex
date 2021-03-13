@@ -6,7 +6,7 @@
 	templated.co @templatedco
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 -->
-<html lang="en">
+<html lang="en" ng-app="app">
 
 <head>
   <link rel="icon" href="{% static 'images/logo.png' %}">
@@ -80,36 +80,75 @@
   <div w3-include-html="{% static 'helpers/SideNavs/paciente-level2.html' %}"></div>
 
 
-  <div class="container-fluid main_section">
+  <div class="container-fluid main_section" ng-controller="controlador_nutricion">
     <h1 style="margin-bottom: 50px;">Tu plan
     </h1>
     
-    <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
-      <thead>
-          <tr id="titulos">
-              <th>Parte</th>
-              <th>Alimento</th>
-              <th>Nombre</th>
-              <th>Calorias totales</th>
-              <th>Proteinas (Gramos)</th>
-              <th>Carbohidratos (Gramos)</th>
-              <th>Grasas totales (Gramos)</th>
-          </tr>
-      </thead>
-      <tbody>
-        {% for parte in partes %}
-          <tr>
-              <td>{{parte.parte}}</td>
-              <td>{{parte.alimento}}</td>
-              <td>{{parte.nombre}}</td>
-              <td>{{parte.calorias}}</td>
-              <td>{{parte.proteinas}}</td>
-              <td>{{parte.carbohidratos}}</td>
-              <td>{{parte.grasas}}</td>
-          </tr>
-          {% endfor %}
-      </tbody>
-    </table>
+    <div class="row" >
+      <div class="col-md-4 col_nutrition_card" >
+        <div class="nutrition_card">
+          <div class="img_comida">
+            <img ng-if="desayuno_img==0" src="{% static 'images/desayuno1.png' %}">
+            <img ng-if="desayuno_img==1" src="{% static 'images/desayuno2.png' %}">
+          </div>
+          <div class="nutrition_container">
+            <table class="table table-hover" >
+              <thead>
+                <th><h4><b>DESAYUNO</b></h4></th>
+              </thead>
+              {% for parte in partes %}
+              {% if parte.parte == "desayuno" %}
+              <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
+              <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion>
+              {% endif %}
+              {% endfor %}
+          </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col_nutrition_card" >
+        <div class="nutrition_card">
+          <div class="img_comida">
+            <img ng-if="almuerzo_img==0" src="{% static 'images/almuerzo1.png' %}">
+            <img ng-if="almuerzo_img==1" src="{% static 'images/almuerzo2.png' %}">
+          </div>
+          <div class="nutrition_container">
+            <table class="table table-hover" >
+              <thead>
+                <th><h4><b>ALMUERZO</b></h4></th>
+              </thead>
+              {% for parte in partes %}
+              {% if parte.parte == "almuerzo" %}
+              <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
+              <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion> 
+              {% endif %}
+              {% endfor %} 
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col_nutrition_card" >
+        <div class="nutrition_card">
+          <div class="img_comida">
+            <img ng-if="comida_img==0" src="{% static 'images/comida1.png' %}">
+            <img ng-if="comida_img==1" src="{% static 'images/comida2.png' %}">
+          </div>
+          <div class="nutrition_container">
+            <table class="table table-hover" >
+              <thead>
+                <th><h4><b>COMIDA</b></h4></th>
+              </thead>
+              {% for parte in partes %}
+              {% if parte.parte == "comida" %}
+              <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
+              <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion>
+              {% endif %}
+              {% endfor %} 
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
     
   </div>
 
@@ -122,6 +161,7 @@
 <script src="{% static 'js/include-html.js' %}"></script>
 <script src="{% static 'js/sidenav_js.js' %}"></script>
 <script src="{% static 'js/datatable.js' %}"></script>
+<script src="{% static 'js/nutrition-angular.js' %}"></script>
 <script>
   $(document).ready(function () {
     $('[data-toggle="popover"]').popover({ html: true });
