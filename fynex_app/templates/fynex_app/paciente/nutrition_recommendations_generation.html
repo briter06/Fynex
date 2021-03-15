@@ -94,9 +94,10 @@
           </div>
           <div class="nutrition_container">
             <table class="table table-hover" >
-              <thead>
+              <thead onclick="$('#menu_{{parte_nombre}} .mensaje').modal()">
                 <th><h4><b>{{parte_nombre | mayus}}</b></h4></th>
               </thead>
+              <detalle-parte id="menu_{{parte_nombre}}" parte="{{parte_nombre}}" proteinas="{{parte_valor.totals.proteinas}}" carbohidratos="{{parte_valor.totals.carbohidratos}}" grasas="{{parte_valor.totals.grasas}}"></detalle-parte>
               {% for parte in parte_valor.objects %}
               <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
               <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion>

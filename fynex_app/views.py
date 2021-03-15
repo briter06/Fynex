@@ -762,7 +762,18 @@ def paciente_detail_nutricion(request,cod_plan):
         return HttpResponseRedirect(reverse('Fynex-index'))
     context['paciente'] = paciente
     context['plan'] = plan
-    context['partes'] = pacienteHelper.getPartesDePlanNutricional(plan)
+    partes = pacienteHelper.getPartesDePlanNutricional(plan)
+    res = {}
+    totals_proteinas = json.loads(plan.dif_proteinas)
+    totals_carbohidratos = json.loads(plan.dif_carbohidratos)
+    totals_grasas = json.loads(plan.dif_grasas)
+    for x in partes:
+        if not x.parte in res:
+            res[x.parte] = {}
+            res[x.parte]['totals'] = {'proteinas':totals_proteinas[x.parte],'carbohidratos':totals_carbohidratos[x.parte],'grasas':totals_grasas[x.parte]}
+            res[x.parte]['objects'] = []
+        res[x.parte]['objects'].append(x)
+    context['partes'] = res
     return render(request,'fynex_app/paciente/nutrition_recommendations_generation.html',context)
 
 def paciente_variables(request):
