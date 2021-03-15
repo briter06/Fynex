@@ -14,6 +14,7 @@ import pandas as pd
 import datetime
 from dateutil.relativedelta import relativedelta
 from .tools import Tools
+import json
 
 class MedicoHelper:
 
@@ -102,12 +103,16 @@ class MedicoHelper:
             return plan
         except:
             return None
-    def guardarRecomendacionNutricion(self,df,cod_paciente):
+    def guardarRecomendacionNutricion(self,df,diff,cod_paciente):
         try:
             plan = PlanNutricional()
             plan.paciente = Paciente.objects.all().get(pk=cod_paciente)
             plan.rating = 0
             plan.estado = "I"
+            plan.fecha = Tools.getToday()
+            plan.dif_proteinas = json.dumps(diff['proteinas'])
+            plan.dif_carbohidratos = json.dumps(diff['carbohidratos'])
+            plan.dif_grasas = json.dumps(diff['grasas'])
             plan.save()
             for i,row in df.iterrows():
                 parte = PartePlanNutricional()
@@ -130,6 +135,7 @@ class MedicoHelper:
             plan.paciente = Paciente.objects.all().get(pk=cod_paciente)
             plan.rating = 0
             plan.estado = "I"
+            plan.fecha = Tools.getToday()
             plan.tipo_ejercicio = df['type'][0]
             plan.ejercicio = df['sport'][0]
             plan.info = df['info'][0]
@@ -334,18 +340,24 @@ class MedicoHelper:
         except:
             return False
 
-    def getMemoryRecommendation(self,cod_paciente):
+    def getMemoryRecommendationNutrition(self,cod_paciente):
         try:
-            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado=False).order_by('-similitud').first()
+            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado_nutricion=False).order_by('-similitud').first()
             if similar==None:
                 return None
             plan_prev = PlanNutricional.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
+            if plan_prev is None:
+                return None
             partes = self.getPartesDePlanNutricional(plan_prev)
             
             plan = PlanNutricional()
             plan.paciente = Paciente.objects.all().get(pk=cod_paciente)
             plan.rating = 0
             plan.estado = "I"
+            plan.fecha = Tools.getToday()
+            plan.dif_proteinas = plan_prev.dif_proteinas
+            plan.dif_carbohidratos = plan_prev.dif_carbohidratos
+            plan.dif_grasas = plan_prev.dif_grasas
             plan.save()
 
             for p in partes:
@@ -359,9 +371,36 @@ class MedicoHelper:
                 parte.carbohidratos = p.carbohidratos
                 parte.grasas = p.grasas
                 parte.save()
-            similar.usado = True
+            similar.usado_nutricion = True
             similar.save()
             return plan
+        except:
+            return None
+    
+    def getMemoryRecommendationExercise(self,cod_paciente):
+        try:
+            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado_ejercicio=False).order_by('-similitud').first()
+            if similar==None:
+                return None
+            plan_prev = PlanEjercicio.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
+            if plan_prev is None:
+                return None
+            plan = PlanEjercicio()
+            plan.paciente = Paciente.objects.all().get(pk=cod_paciente)
+            plan.rating = 0
+            plan.fecha = Tools.getToday()
+            plan.estado = "I"
+            plan.tipo_ejercicio = plan_prev.tipo_ejercicio
+            plan.ejercicio = plan_prev.ejercicio
+            plan.info = plan_prev.info
+            plan.dias = plan_prev.dias
+            plan.tiempo = plan_prev.tiempo
+            plan.save()
+
+            similar.usado_ejercicio = True
+            similar.save()
+            return plan
+
         except:
             return None
         

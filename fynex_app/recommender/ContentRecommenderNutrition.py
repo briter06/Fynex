@@ -56,17 +56,35 @@ class ContentRecommenderNutrition:
         menu = self.df_menu[diseases[0]]
         diet = self.get_diet(diseases)
         result = []
+        res_diff1 = {'proteinas':{'desayuno':0,'almuerzo':0,'comida':0},'carbohidratos':{'desayuno':0,'almuerzo':0,'comida':0},'grasas':{'desayuno':0,'almuerzo':0,'comida':0}}
+        res_diff2 = {'proteinas':{'desayuno':0,'almuerzo':0,'comida':0},'carbohidratos':{'desayuno':0,'almuerzo':0,'comida':0},'grasas':{'desayuno':0,'almuerzo':0,'comida':0}}
         for parte in self.partes_menu:
             df_parte = menu[menu['Parte']==parte]
             for alimentos in df_parte['Alimentos'].values:
                 alimento = self.getFood(alimentos)
                 point_current = diet.loc[[alimento]]
+                res_diff1['proteinas'][parte]+=point_current['Protein'][0]
+                res_diff1['carbohidratos'][parte]+=point_current['Carbohidrates'][0]
+                res_diff1['grasas'][parte]+=point_current['Fat'][0]
                 food = self.data[alimento]
                 data_food = food[['Proteina(g)','Carbohidratos(g)','GrasaTotal(g)']]
                 num = self.closest_node(point_current.values,data_food.values,degree_freedom)
                 res = food.iloc[num]
                 result.append([parte,alimento,res['Nombre'],res['Energia(Kcal)'],res['Proteina(g)'],res['Carbohidratos(g)'],res['GrasaTotal(g)']])
+                res_diff2['proteinas'][parte]+=res['Proteina(g)']
+                res_diff2['carbohidratos'][parte]+=res['Carbohidratos(g)']
+                res_diff2['grasas'][parte]+=res['GrasaTotal(g)']
+        res_diff = {'proteinas':{'desayuno':0,'almuerzo':0,'comida':0},'carbohidratos':{'desayuno':0,'almuerzo':0,'comida':0},'grasas':{'desayuno':0,'almuerzo':0,'comida':0}}
+        for parte in self.partes_menu:
+            res_diff['proteinas'][parte] = res_diff2['proteinas'][parte]-res_diff1['proteinas'][parte]
+            res_diff['carbohidratos'][parte] = res_diff2['carbohidratos'][parte]-res_diff1['carbohidratos'][parte]
+            res_diff['grasas'][parte] = res_diff2['grasas'][parte]-res_diff1['grasas'][parte]
         df_res = pd.DataFrame(result,columns=['Parte','Alimento','Nombre','Energia(Kcal)','Proteina(g)','Carbohidratos(g)','GrasaTotal(g)'])
-        return df_res
+        return [df_res,res_diff]
+    
+    def howFar(self,data,food_data):
+        closest_index = distance.cdist(data, food_data.values)
+        aux_df = pd.DataFrame(closest_index[0]).sort_values(by=0)
+        print(aux_df)
 
 

@@ -85,71 +85,28 @@
     </h1>
     
     <div class="row" >
+      {% for parte_nombre,parte_valor in partes.items %}
       <div class="col-md-4 col_nutrition_card" >
         <div class="nutrition_card">
           <div class="img_comida">
-            <img ng-if="desayuno_img==0" src="{% static 'images/desayuno1.png' %}">
-            <img ng-if="desayuno_img==1" src="{% static 'images/desayuno2.png' %}">
+            <img ng-if="{{parte_nombre}}_img==0" src="{% static 'images/'|add:parte_nombre|add:'1.png' %}">
+            <img ng-if="{{parte_nombre}}_img==1" src="{% static 'images/'|add:parte_nombre|add:'2.png' %}">
           </div>
           <div class="nutrition_container">
             <table class="table table-hover" >
               <thead>
-                <th><h4><b>DESAYUNO</b></h4></th>
+                <th><h4><b>{{parte_nombre | mayus}}</b></h4></th>
               </thead>
-              {% for parte in partes %}
-              {% if parte.parte == "desayuno" %}
+              {% for parte in parte_valor.objects %}
               <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
               <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion>
-              {% endif %}
               {% endfor %}
           </table>
           </div>
         </div>
       </div>
-      <div class="col-md-4 col_nutrition_card" >
-        <div class="nutrition_card">
-          <div class="img_comida">
-            <img ng-if="almuerzo_img==0" src="{% static 'images/almuerzo1.png' %}">
-            <img ng-if="almuerzo_img==1" src="{% static 'images/almuerzo2.png' %}">
-          </div>
-          <div class="nutrition_container">
-            <table class="table table-hover" >
-              <thead>
-                <th><h4><b>ALMUERZO</b></h4></th>
-              </thead>
-              {% for parte in partes %}
-              {% if parte.parte == "almuerzo" %}
-              <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
-              <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion> 
-              {% endif %}
-              {% endfor %} 
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col_nutrition_card" >
-        <div class="nutrition_card">
-          <div class="img_comida">
-            <img ng-if="comida_img==0" src="{% static 'images/comida1.png' %}">
-            <img ng-if="comida_img==1" src="{% static 'images/comida2.png' %}">
-          </div>
-          <div class="nutrition_container">
-            <table class="table table-hover" >
-              <thead>
-                <th><h4><b>COMIDA</b></h4></th>
-              </thead>
-              {% for parte in partes %}
-              {% if parte.parte == "comida" %}
-              <tr onclick="$('#parte_{{parte.id}} .mensaje').modal()"><td>{{parte.nombre}}</td></tr>
-              <detalle-nutricion id="parte_{{parte.id}}" alimento="{{parte.nombre}}" tipo-alimento="{{parte.alimento}}" calorias="{{parte.calorias}}" proteinas="{{parte.proteinas}}" carbohidratos="{{parte.carbohidratos}}" grasas="{{parte.grasas}}"></detalle-nutricion>
-              {% endif %}
-              {% endfor %} 
-            </table>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
-    
   </div>
 
   <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>

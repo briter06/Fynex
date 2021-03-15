@@ -1846,13 +1846,14 @@ hr.solid {
 .nutrition_card .img_comida{
   height: 250px;
   padding-top:20px;
-  background-color: blueviolet;
+  background-color: #1659C1;
   border-radius: 25px;
   text-align: center;
 }
 
 .nutrition_card img{
   height: 90%;
+  max-width: 90%;
 }
 .nutrition_card p{
   overflow-wrap: break-word;
@@ -1866,6 +1867,15 @@ hr.solid {
 .nutrition_card tr{
   cursor: pointer;
 }
+
+.nutrition_card thead{
+  cursor: pointer;
+}
+
+.nutrition_card thead:hover{
+  background-color: #C2C2C2;
+}
+
 .col_nutrition_card{
   margin-bottom: 15px;
 }

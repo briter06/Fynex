@@ -13,6 +13,7 @@ from .classes.Paciente import PacienteHelper
 from .classes.Mensaje import MensajeHelper
 from .classes.tools import Tools
 from django.contrib.auth.forms import PasswordChangeForm
+from django.db.models import Sum
 import datetime
 import json
 from fynex_app.forms import CaptchaTestModelForm
@@ -515,16 +516,23 @@ def medico_generar_ejercicio(request,cod_paciente):
             weight = weight.valor
         age = medico.getEdad(cod_paciente)
         
-
-        hr = HybridRecommender()
-        result = hr.predictExercise(heartRate,glucose,height,weight,age)
-        
-        plan = medico.guardarRecomendacionEjercicio(result['recommendations'],cod_paciente)
-        #plan = medico.getMemoryRecommendation(cod_paciente)
-        if plan == None:
-            plan = medico.guardarRecomendacionEjercicio(result['recommendations'],cod_paciente)
-
+        content = False
+        plan = None
         context = {}
+        context['diseases'] = None
+        if content:
+            hr = HybridRecommender()
+            result = hr.predictExercise(heartRate,glucose,height,weight,age)
+            plan = medico.guardarRecomendacionEjercicio(result['recommendations'],cod_paciente)
+            context['diseases'] = result['diseases']
+        else:
+            plan = medico.getMemoryRecommendationExercise(cod_paciente)
+            if plan == None:
+                hr = HybridRecommender()
+                result = hr.predictExercise(heartRate,glucose,height,weight,age)
+                plan = medico.guardarRecomendacionEjercicio(result['recommendations'],cod_paciente)
+                context['diseases'] = result['diseases']
+        
         context['paciente'] = medico.getPaciente(cod_paciente)
         context['plan'] = plan
         context['heartRate'] = heartRate
@@ -533,7 +541,6 @@ def medico_generar_ejercicio(request,cod_paciente):
         context['weight'] = weight
         context['age'] = age
         context['nueva'] = True
-        context['diseases'] = result['diseases']
         return render(request,'fynex_app/medico/exercise_recommendations_generation.html',context)
     
 def medico_detail_ejercicio(request,cod_paciente,cod_plan):
@@ -603,26 +610,45 @@ def medico_generar_nutricion(request,cod_paciente):
             weight = weight.valor
         age = medico.getEdad(cod_paciente)
         
-
-        hr = HybridRecommender()
-        result = hr.predictNutrition(heartRate,glucose,height,weight,age)
-        
-        #plan = medico.guardarRecomendacionNutricion(result['recommendations'],cod_paciente)
-        plan = medico.getMemoryRecommendation(cod_paciente)
-        if plan == None:
-            plan = medico.guardarRecomendacionNutricion(result['recommendations'],cod_paciente)
-
+        content = False
+        plan = None
         context = {}
+        context['diseases'] = None
+        if content:
+            hr = HybridRecommender()
+            result = hr.predictNutrition(heartRate,glucose,height,weight,age)
+            
+            plan = medico.guardarRecomendacionNutricion(result['recommendations'],result['diff'],cod_paciente)
+            context['diseases'] = result['diseases']
+        else:
+            plan = medico.getMemoryRecommendationNutrition(cod_paciente)
+            if plan == None:
+                hr = HybridRecommender()
+                result = hr.predictNutrition(heartRate,glucose,height,weight,age)
+                
+                plan = medico.guardarRecomendacionNutricion(result['recommendations'],result['diff'],cod_paciente)
+                context['diseases'] = result['diseases']
+
         context['paciente'] = medico.getPaciente(cod_paciente)
         context['plan'] = plan
-        context['partes'] = medico.getPartesDePlanNutricional(plan)
+        partes = medico.getPartesDePlanNutricional(plan)
+        res = {}
+        totals_proteinas = json.loads(plan.dif_proteinas)
+        totals_carbohidratos = json.loads(plan.dif_carbohidratos)
+        totals_grasas = json.loads(plan.dif_grasas)
+        for x in partes:
+            if not x.parte in res:
+                res[x.parte] = {}
+                res[x.parte]['totals'] = {'proteinas':totals_proteinas[x.parte],'carbohidratos':totals_carbohidratos[x.parte],'grasas':totals_grasas[x.parte]}
+                res[x.parte]['objects'] = []
+            res[x.parte]['objects'].append(x)
+        context['partes'] = res
         context['heartRate'] = heartRate
         context['glucose'] = glucose
         context['height'] = height
         context['weight'] = weight
         context['age'] = age
         context['nueva'] = True
-        context['diseases'] = result['diseases']
         
         return render(request,'fynex_app/medico/nutrition_recommendations_generation.html',context)
 
@@ -647,7 +673,19 @@ def medico_detail_nutricion(request,cod_paciente,cod_plan):
         plan = medico.getPlanNutricional(cod_plan)
         context['paciente'] = medico.getPaciente(cod_paciente)
         context['plan'] = plan
-        context['partes'] = medico.getPartesDePlanNutricional(plan)
+        partes = medico.getPartesDePlanNutricional(plan)
+        res = {}
+        totals_proteinas = json.loads(plan.dif_proteinas)
+        totals_carbohidratos = json.loads(plan.dif_carbohidratos)
+        totals_grasas = json.loads(plan.dif_grasas)
+        for x in partes:
+            if not x.parte in res:
+                res[x.parte] = {}
+                res[x.parte]['totals'] = {'proteinas':totals_proteinas[x.parte],'carbohidratos':totals_carbohidratos[x.parte],'grasas':totals_grasas[x.parte]}
+                res[x.parte]['objects'] = []
+            res[x.parte]['objects'].append(x)
+        context['partes'] = res
+
         return render(request,'fynex_app/medico/nutrition_recommendations_generation.html',context)
 
 

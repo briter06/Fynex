@@ -15,7 +15,6 @@ class DiseasePredictor:
         pred_data = [[glucose,bmi,age]]
         # prediction = self.model_diabetes.predict(pred_data)
         prediction = self.model_diabetes.predict_proba(pred_data)
-        print(prediction)
         # return prediction[0][0]
         return prediction[0][1]
     def predict_hypertension(self,heartRate,bmi,age):

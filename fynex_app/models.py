@@ -23,7 +23,7 @@ class Paciente(models.Model):
     fecha_nacimiento = models.DateField(default=now, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 class Auditoria(models.Model):
-    fecha = models.DateField(auto_now_add=True)
+    fecha = models.DateField()
     descripcion = models.CharField(max_length=250)
     direccion_ip = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -49,9 +49,12 @@ class Examen(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class PlanNutricional(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
-    fecha = models.DateField(auto_now_add=True)
+    fecha = models.DateField()
     rating = models.FloatField()
     estado = models.CharField(max_length=1)
+    dif_proteinas = models.TextField()
+    dif_carbohidratos = models.TextField()
+    dif_grasas = models.TextField()
 class PartePlanNutricional(models.Model):
     plan_nutricional = models.ForeignKey(PlanNutricional,on_delete=models.CASCADE)
     parte = models.CharField(max_length=30)
@@ -63,7 +66,7 @@ class PartePlanNutricional(models.Model):
     grasas = models.FloatField()
 class PlanEjercicio(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
-    fecha = models.DateField(auto_now_add=True)
+    fecha = models.DateField()
     rating = models.FloatField()
     estado = models.CharField(max_length=1)
     tipo_ejercicio = models.CharField(max_length=50)
@@ -89,6 +92,7 @@ class RecomendadorMemoria(models.Model):
     user1 = models.IntegerField(primary_key=True)
     user2 = models.IntegerField()
     similitud = models.FloatField()
-    usado = models.BooleanField()
+    usado_nutricion = models.BooleanField()
+    usado_ejercicio = models.BooleanField()
     class Meta:
         unique_together = (('user1', 'user2'),)
