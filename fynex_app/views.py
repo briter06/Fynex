@@ -51,8 +51,6 @@ def server_error(request, *args, **argv):
 def privacy_policy(request):
     return render(request, 'fynex_app/privacy-policy.html')
 
-# Create your views here.
-
 def login_user(request, template_name):
     form = CaptchaTestModelForm(request.POST)
     if form.is_valid():
