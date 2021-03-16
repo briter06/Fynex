@@ -237,6 +237,34 @@ def medico_index(request):
         context['pacientes'] = medico.getPacientes()
         return render(request,'fynex_app/medico/medico_index.html',context)
 
+def medico_grafo(request,cod_paciente):
+    if not verify_auth(request,'medico') or not verify_paciente(request,cod_paciente):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        medico = MedicoHelper(request.user)
+
+        paciente = medico.getPaciente(cod_paciente)
+        similares = medico.getMostSimilar(cod_paciente,10)
+        result = []
+        info = {}
+        info[paciente.user.username] = {'nombre':paciente.user.first_name,'medico':{'nombre':paciente.medico.user.first_name}}
+        for s in similares:
+            aux = {}
+            p = medico.getPaciente(s.user2)
+            aux['from'] = paciente.user.username
+            aux['to'] = p.user.username
+            aux['weight'] = Tools.getPercentage(s.similitud,2)
+            info[p.user.username] = {'nombre':p.user.first_name,'medico':{'nombre':p.medico.user.first_name}}
+            result.append(aux)
+        context['paciente'] = paciente
+        context['data'] = result
+        context['info'] = info
+        return render(request,'fynex_app/medico/medico_graph.html',context)
+
+
 def verify_paciente(request,cod_paciente):
     medico = MedicoHelper(request.user)
     res = medico.verifyPaciente(cod_paciente)

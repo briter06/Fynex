@@ -403,4 +403,10 @@ class MedicoHelper:
 
         except:
             return None
-        
+    
+    def getMostSimilar(self,cod_paciente,limit):
+        try:
+            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado_ejercicio=False).order_by('-similitud')[:limit]
+            return similar
+        except:
+            return None

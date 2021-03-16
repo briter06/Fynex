@@ -26,6 +26,7 @@ urlpatterns = [
     path('Medico/<int:cod_paciente>/plan_ejercicio/<int:cod_plan>', views.medico_detail_ejercicio, name="Medico-exercise-plan-index"),
     path('Medico/<int:cod_paciente>/examenes', views.medico_examenes, name="Medico-examenes-index"),
     path('Medico/perfil', views.medico_perfil, name="Medico-perfil"),
+    path('Medico/<int:cod_paciente>/grafo', views.medico_grafo, name="Medico-grafo"),
 
     path('Paciente/info', views.paciente_index, name="Paciente-index"),
     path('Paciente/nutrition_recommendations', views.paciente_nutricion, name="Paciente-nutrition-index"),

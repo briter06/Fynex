@@ -25,6 +25,10 @@ class Tools:
     )
 
     @staticmethod
+    def getPercentage(x,dec):
+        return round(x*100,dec)
+
+    @staticmethod
     def getToday(time=False):
         date = datetime.datetime.now(pytz.timezone(settings.TIME_ZONE))
         if time:

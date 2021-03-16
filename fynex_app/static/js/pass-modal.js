@@ -22,8 +22,8 @@ var pass_modal =
       <input required type="password" minlength="8" id="new_password2" name="new_password2" maxlength = "128">
       <div id="content_edit" style="float:left">
         <ul>
-          <li style="float:left">Debe contener una mayuscula</li>
-          <li style="float:left">Debe contener una minuscula</li>
+          <li style="float:left">Debe contener una mayúscula</li>
+          <li style="float:left">Debe contener una minúscula</li>
           <li style="float:left">Debe contener un número</li>
         <ul>
       </div>
