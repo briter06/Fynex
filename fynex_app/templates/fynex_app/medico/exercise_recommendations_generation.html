@@ -127,12 +127,35 @@
           
       </form>
     </div>
-              
-      <h2>{{plan.tipo_ejercicio}}</h2>
-      <h2>{{plan.ejercicio}}</h2>
-      <h2>{{plan.info}}</h2>
-      <h2>{{plan.dias}}</h2>
-      <h2>{{plan.tiempo}}</h2>
+      <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4 col_nutrition_card" >
+          <div class="nutrition_card">
+            <div class="img_comida">
+              <img src="https://clipartart.com/images/free-clipart-pool.png">
+            </div>
+            <div class="nutrition_container">
+              <table class="table" >
+                <thead>
+                  <th><h4><b>ACTIVIDAD FISICA</b></h4></th>
+                </thead>
+                <tbody>
+                  <tr><td>{{plan.tipo_ejercicio}}</td></tr>
+                  <tr><td>{{plan.ejercicio}}</td></tr>
+                  <tr><td>{{plan.info}}</td></tr>
+                  <tr><td>{{plan.dias}}</td></tr>
+                  <tr><td>{{plan.tiempo}}</td></tr>
+                </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          
+        </div>
+      </div>
   </div>
 
   <div w3-include-html="{% static 'helpers/footer-big.html' %}"></div>

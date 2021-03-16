@@ -28,6 +28,7 @@ class CentroMedicoHelper:
             res = Tools.sendEmailUserAdded(user,password)
             return medico
         except Exception as e:
+            print(e)
             return None
     def modificar_medico(self,username,newusername,first_name,documento_identificacion,especialidad,telefono):
         try:

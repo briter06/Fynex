@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from datetimeutc.fields import DateTimeUTCField
+from django_cryptography.fields import encrypt
 
 #Falta -> PlaneActividadFisica
 
@@ -12,14 +13,14 @@ class CentroMedico(models.Model):
 
 class Medico(models.Model):
     centro_medico = models.ForeignKey(CentroMedico, on_delete=models.CASCADE)
-    documento_identificacion = models.CharField(max_length=30)
-    especialidad = models.CharField(max_length=250)
-    telefono = models.CharField(max_length=30)
+    documento_identificacion = encrypt(models.CharField(max_length=30))
+    especialidad = encrypt(models.CharField(max_length=250))
+    telefono = encrypt(models.CharField(max_length=30))
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 class Paciente(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
-    documento_identificacion = models.CharField(max_length=30)
-    telefono = models.CharField(max_length=30)
+    documento_identificacion = encrypt(models.CharField(max_length=30))
+    telefono = encrypt(models.CharField(max_length=30))
     fecha_nacimiento = models.DateField(default=now, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 class Auditoria(models.Model):
@@ -28,7 +29,7 @@ class Auditoria(models.Model):
     direccion_ip = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 class PreexistenciaMedica(models.Model):
-    descripcion = models.CharField(max_length=250)
+    descripcion = encrypt(models.TextField())
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class VariableSeguimiento(models.Model):
     nombre = models.CharField(max_length=50)
@@ -45,7 +46,7 @@ class Examen(models.Model):
     descripcion = models.CharField(max_length=500)
     fecha_peticion = models.DateField()
     fecha_entrega = models.DateField(default=None, blank=True, null=True)
-    documento_ruta = models.CharField(max_length=200)
+    documento_ruta = encrypt(models.CharField(max_length=200))
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 class PlanNutricional(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
@@ -77,7 +78,7 @@ class PlanEjercicio(models.Model):
 
 class Mensaje(models.Model):
     fecha = DateTimeUTCField()
-    mensaje = models.TextField()
+    mensaje = encrypt(models.TextField())
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
     paciente_emisor = models.IntegerField()
     notificado_email = models.BooleanField()

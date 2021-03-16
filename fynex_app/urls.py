@@ -7,8 +7,10 @@ urlpatterns = [
     path('privacy-policy', views.privacy_policy,name="Fynex-privacy-policy"),
     path('logout', views.logout_user, name="Logout-index"),
     path('administrator', views.administrator_index, name="Administrator-index"),
+    path('administrator/perfil', views.admin_perfil, name="Administrator-perfil"),
 
     path('CentroMedico', views.centroMedico_index, name="CentroMedico-index"),
+    path('CentroMedico/perfil', views.centro_perfil, name="CentroMedico-perfil"),
 
     path('Medico', views.medico_index, name="Medico-index"),
     path('Medico/<int:cod_paciente>/paciente', views.medico_paciente, name="Medico-paciente-index"),
@@ -23,6 +25,7 @@ urlpatterns = [
     path('Medico/<int:cod_paciente>/plan_nutricion/<int:cod_plan>', views.medico_detail_nutricion, name="Medico-nutrition-plan-index"),
     path('Medico/<int:cod_paciente>/plan_ejercicio/<int:cod_plan>', views.medico_detail_ejercicio, name="Medico-exercise-plan-index"),
     path('Medico/<int:cod_paciente>/examenes', views.medico_examenes, name="Medico-examenes-index"),
+    path('Medico/perfil', views.medico_perfil, name="Medico-perfil"),
 
     path('Paciente/info', views.paciente_index, name="Paciente-index"),
     path('Paciente/nutrition_recommendations', views.paciente_nutricion, name="Paciente-nutrition-index"),

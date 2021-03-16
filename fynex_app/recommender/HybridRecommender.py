@@ -28,6 +28,7 @@ class HybridRecommender:
     
     def predictExercise(self,heartRate, glucose, height, weight, age):
         diseases = self.predictDiseases(heartRate, glucose, height, weight, age)
+        diseases = ['normal'] if len(diseases) == 0 else diseases
         res = self.content_recommender_exercise.predict(diseases[0])
         return {'diseases':diseases,'recommendations':res}
 

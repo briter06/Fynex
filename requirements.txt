@@ -16,3 +16,4 @@ ibm-cos-sdk==2.9.0
 django-simple-captcha==0.5.13
 django-datetime-utc==1.0.3
 idna==2.5
+django-cryptography==1.0

@@ -725,17 +725,121 @@ def paciente_chat(request):
         'is_paciente' : True 
     })
 
+def admin_perfil(request):
+    if not verify_auth(request,'administrator'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        if 'pass' in request.POST:
+            curr_pass = request.POST['current_password']
+            new_pass = request.POST['new_password']
+            new_pass2 = request.POST['new_password2']
+            if new_pass!=new_pass2:
+                messages.error(request, 'Las contraseñas no coinciden')
+                return HttpResponseRedirect(reverse('Administrator-perfil'))
+            if request.user.check_password(curr_pass):
+                try:
+                    request.user.set_password(new_pass)
+                    request.user.save()
+                    messages.success(request, 'La contraseña ha sido modificada con éxito')
+                    return HttpResponseRedirect(reverse('Administrator-perfil'))
+                except:
+                    messages.error(request, 'Ha ocurrido un error')
+                    return HttpResponseRedirect(reverse('Administrator-perfil'))
+            else:
+                messages.error(request, 'La contraseña actual es incorrecta')
+                return HttpResponseRedirect(reverse('Administrator-perfil'))
+    else:
+        context = {}
+        admin = Administrator(request.user)
+        context['user'] = admin.user
+        return render(request,'fynex_app/administrator/administrator_perfil.html',context)
+
+def centro_perfil(request):
+    if not verify_auth(request,'centro_medico'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        if 'pass' in request.POST:
+            curr_pass = request.POST['current_password']
+            new_pass = request.POST['new_password']
+            new_pass2 = request.POST['new_password2']
+            if new_pass!=new_pass2:
+                messages.error(request, 'Las contraseñas no coinciden')
+                return HttpResponseRedirect(reverse('CentroMedico-perfil'))
+            if request.user.check_password(curr_pass):
+                try:
+                    request.user.set_password(new_pass)
+                    request.user.save()
+                    messages.success(request, 'La contraseña ha sido modificada con éxito')
+                    return HttpResponseRedirect(reverse('CentroMedico-perfil'))
+                except:
+                    messages.error(request, 'Ha ocurrido un error')
+                    return HttpResponseRedirect(reverse('CentroMedico-perfil'))
+            else:
+                messages.error(request, 'La contraseña actual es incorrecta')
+                return HttpResponseRedirect(reverse('CentroMedico-perfil'))
+    else:
+        context = {}
+        centroHelper = CentroMedicoHelper(request.user)
+        context['centro'] = centroHelper.centro
+        return render(request,'fynex_app/centro_medico/centro_perfil.html',context)
+
+def medico_perfil(request):
+    if not verify_auth(request,'medico'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        if 'pass' in request.POST:
+            curr_pass = request.POST['current_password']
+            new_pass = request.POST['new_password']
+            new_pass2 = request.POST['new_password2']
+            if new_pass!=new_pass2:
+                messages.error(request, 'Las contraseñas no coinciden')
+                return HttpResponseRedirect(reverse('Medico-perfil'))
+            if request.user.check_password(curr_pass):
+                try:
+                    request.user.set_password(new_pass)
+                    request.user.save()
+                    messages.success(request, 'La contraseña ha sido modificada con éxito')
+                    return HttpResponseRedirect(reverse('Medico-perfil'))
+                except:
+                    messages.error(request, 'Ha ocurrido un error')
+                    return HttpResponseRedirect(reverse('Medico-perfil'))
+            else:
+                messages.error(request, 'La contraseña actual es incorrecta')
+                return HttpResponseRedirect(reverse('Medico-perfil'))
+    else:
+        context = {}
+        medicoHelper = MedicoHelper(request.user)
+        context['medico'] = medicoHelper.medico
+        return render(request,'fynex_app/medico/medico_perfil.html',context)
+
 
 def paciente_index(request):
     if not verify_auth(request,'paciente'):
         return HttpResponseRedirect(reverse('Fynex-index'))
     if request.method == 'POST':
-        pass
+        if 'pass' in request.POST:
+            curr_pass = request.POST['current_password']
+            new_pass = request.POST['new_password']
+            new_pass2 = request.POST['new_password2']
+            if new_pass!=new_pass2:
+                messages.error(request, 'Las contraseñas no coinciden')
+                return HttpResponseRedirect(reverse('Paciente-index'))
+            if request.user.check_password(curr_pass):
+                try:
+                    request.user.set_password(new_pass)
+                    request.user.save()
+                    messages.success(request, 'La contraseña ha sido modificada con éxito')
+                    return HttpResponseRedirect(reverse('Paciente-index'))
+                except:
+                    messages.error(request, 'Ha ocurrido un error')
+                    return HttpResponseRedirect(reverse('Paciente-index'))
+            else:
+                messages.error(request, 'La contraseña actual es incorrecta')
+                return HttpResponseRedirect(reverse('Paciente-index'))
     else:
         context = {}
         pacienteHelper = PacienteHelper(request.user)
         context['paciente'] = pacienteHelper.paciente
-        context['form'] = PasswordChangeForm(request.user)
         return render(request,'fynex_app/paciente/paciente_index.html',context)
 
 def paciente_nutricion(request):
