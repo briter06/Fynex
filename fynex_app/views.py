@@ -250,14 +250,14 @@ def medico_grafo(request,cod_paciente):
         similares = medico.getMostSimilar(cod_paciente,10)
         result = []
         info = {}
-        info[paciente.user.username] = {'nombre':paciente.user.first_name,'medico':{'nombre':paciente.medico.user.first_name}}
+        info[paciente.user.username] = {'nombre':paciente.user.first_name,'medico':{'nombre':paciente.medico.user.first_name,'correo':paciente.medico.user.username}}
         for s in similares:
             aux = {}
             p = medico.getPaciente(s.user2)
             aux['from'] = paciente.user.username
             aux['to'] = p.user.username
             aux['weight'] = Tools.getPercentage(s.similitud,2)
-            info[p.user.username] = {'nombre':p.user.first_name,'medico':{'nombre':p.medico.user.first_name}}
+            info[p.user.username] = {'nombre':p.user.first_name,'medico':{'nombre':p.medico.user.first_name,'correo':p.medico.user.username}}
             result.append(aux)
         context['paciente'] = paciente
         context['data'] = result

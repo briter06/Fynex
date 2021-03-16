@@ -62,23 +62,23 @@ var app = angular.module("app", []);
         <h4> <strong>CAMBIO EN GRASAS:</strong> {[{round(grasas)}]} gramos</h4>
       </div>
       </div></div></div>`,
-    link: function(scope, element, attrs) {
-      scope.esconder=function(){
-        $('#'+scope.id+' .mensaje').modal('hide')
-      }
-      scope.round = function(num_t){
-        try{
-          var num = parseFloat(num_t);
-          num = num.toFixed(2);
-          var res = ""+num;
-          if (num>0){
-            res = "+"+res;
+      link: function(scope, element, attrs) {
+        scope.esconder=function(){
+          $('#'+scope.id+' .mensaje').modal('hide')
+        }
+        scope.round = function(num_t){
+          try{
+            var num = parseFloat(num_t);
+            num = num.toFixed(2);
+            var res = ""+num;
+            if (num>0){
+              res = "+"+res;
+            }
+            return res;
+          }catch(err){
+            return 0;
           }
-          return res;
-        }catch(err){
-          return 0;
         }
       }
-    }
     }
   });
