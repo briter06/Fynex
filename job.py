@@ -34,13 +34,12 @@ df_s.columns = df_s.columns.get_level_values(1)
 df_s = df_s.transpose()
 
 df_corr = df_s.corr()
-
-RecomendadorMemoria.objects.all().delete()
+SistemaMemoria.objects.all().delete()
 
 for i,r in df_corr.iterrows():
     for n,x in r.iteritems():
         if int(n) != int(i):
-            rec_reg = RecomendadorMemoria()
+            rec_reg = SistemaMemoria()
             rec_reg.user1 = int(i)
             rec_reg.user2 = int(n)
             rec_reg.similitud = x

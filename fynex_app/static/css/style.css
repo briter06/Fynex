@@ -1879,3 +1879,7 @@ hr.solid {
 .col_nutrition_card{
   margin-bottom: 15px;
 }
+
+.highcharts-credits{
+  display: none !important;
+}

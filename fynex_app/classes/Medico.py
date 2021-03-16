@@ -5,7 +5,7 @@ from ..models import HistorialVariableSeguimiento
 from ..models import PlanNutricional
 from ..models import PartePlanNutricional
 from ..models import PlanEjercicio
-from ..models import RecomendadorMemoria
+from ..models import SistemaMemoria
 from ..models import Examen
 from django.db.models import Max
 from django.contrib.auth.models import User
@@ -342,7 +342,7 @@ class MedicoHelper:
 
     def getMemoryRecommendationNutrition(self,cod_paciente):
         try:
-            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado_nutricion=False).order_by('-similitud').first()
+            similar = SistemaMemoria.objects.filter(user1=cod_paciente,usado_nutricion=False).order_by('-similitud').first()
             if similar==None:
                 return None
             plan_prev = PlanNutricional.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
@@ -379,7 +379,7 @@ class MedicoHelper:
     
     def getMemoryRecommendationExercise(self,cod_paciente):
         try:
-            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado_ejercicio=False).order_by('-similitud').first()
+            similar = SistemaMemoria.objects.filter(user1=cod_paciente,usado_ejercicio=False).order_by('-similitud').first()
             if similar==None:
                 return None
             plan_prev = PlanEjercicio.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
@@ -406,7 +406,7 @@ class MedicoHelper:
     
     def getMostSimilar(self,cod_paciente,limit):
         try:
-            similar = RecomendadorMemoria.objects.filter(user1=cod_paciente,usado_ejercicio=False).order_by('-similitud')[:limit]
+            similar = SistemaMemoria.objects.filter(user1=cod_paciente,usado_ejercicio=False).order_by('-similitud')[:limit]
             return similar
         except:
             return None

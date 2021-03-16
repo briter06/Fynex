@@ -89,11 +89,9 @@ class Solicitud(models.Model):
     estado = models.CharField(max_length=1)
 
 
-class RecomendadorMemoria(models.Model):
-    user1 = models.IntegerField(primary_key=True)
+class SistemaMemoria(models.Model):
+    user1 = models.IntegerField()
     user2 = models.IntegerField()
     similitud = models.FloatField()
     usado_nutricion = models.BooleanField()
     usado_ejercicio = models.BooleanField()
-    class Meta:
-        unique_together = (('user1', 'user2'),)
