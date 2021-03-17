@@ -42,7 +42,7 @@ for i,r in df_corr.iterrows():
             rec_reg = SistemaMemoria()
             rec_reg.user1 = int(i)
             rec_reg.user2 = int(n)
-            rec_reg.similitud = x
+            rec_reg.similitud = max(x,0.0)
             rec_reg.usado_nutricion = False
             rec_reg.usado_ejercicio = False
             rec_reg.save()
