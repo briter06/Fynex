@@ -25,4 +25,4 @@ urlpatterns = [
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = 'fynex_app.views.page_not_found'
-#handler500 = 'fynex_app.views.server_error'
+handler500 = 'fynex_app.views.server_error'

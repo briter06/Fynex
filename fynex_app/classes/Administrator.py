@@ -9,6 +9,7 @@ class Administrator:
     def __init__(self,user):
         self.user = user
     
+
     def registrar_centro(self,username,password,first_name,direccion,telefono):
         try:
             user = User.objects.create_user(username, username, password)

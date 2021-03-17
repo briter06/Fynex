@@ -1635,8 +1635,9 @@ hr.solid {
 /*Captcha*/
 
 #captcha_div img{
-  width:50%;
+  width:100%;
   margin-bottom: 10px;
+  border-style: groove;
 }
 #captcha_div input[text]{
   -moz-appearance: none;

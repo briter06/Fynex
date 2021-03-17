@@ -4,6 +4,7 @@ from .classes.tools import Tools
 
 urlpatterns = [
     path('', views.index, name="Fynex-index"),
+    path('recuperar', views.recuperar_clave, name="Fynex-recuperar"),
     path('privacy-policy', views.privacy_policy,name="Fynex-privacy-policy"),
     path('logout', views.logout_user, name="Logout-index"),
     path('administrator', views.administrator_index, name="Administrator-index"),

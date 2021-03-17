@@ -78,10 +78,49 @@ def verify_auth(request,group_name):
     ##Tools.sendEmailUserPasswd(username)
     ##return 
 
+
+def recuperar_clave(request):
+    if request.method == 'POST':
+        if 'recuperar' in request.POST:
+            email = request.POST['email']
+            usuario = Tools.getUser(email)
+            if usuario is None:
+                messages.error(request, 'El correo no se encuentra registrado')
+            else:
+                try:
+                    Tools.recuperarClave(usuario)
+                    messages.success(request, f'Se ha envíado una contraseña temporal al correo {email}')
+                except:
+                    messages.error(request, 'Ha ocurrido un error')
+
+            return HttpResponseRedirect(reverse('Fynex-recuperar')) 
+    else:
+        if request.user.is_authenticated:
+            if request.user.groups.filter(name='administrator').exists():
+                return HttpResponseRedirect(reverse('Administrator-index'))
+            elif request.user.groups.filter(name='centro_medico').exists():
+                return HttpResponseRedirect(reverse('CentroMedico-index'))
+            elif request.user.groups.filter(name='medico').exists():
+                return HttpResponseRedirect(reverse('Medico-index'))
+            elif request.user.groups.filter(name='paciente').exists():
+                return HttpResponseRedirect(reverse('Paciente-index'))
+            else:
+                return logout_user(request)
+        else:
+            return render(request, 'fynex_app/forgot_password.html')
+
 def index(request):
     if request.method == 'POST':
         if 'login' in request.POST:
             return login_user(request, 'Fynex-index')
+        if 'solicitar' in request.POST:
+            try:
+                email = request.POST['email']
+                Tools.sendInformacion(email)
+                messages.success(request, f'Se ha envíado información sobre Fynex al correo {email}')
+            except:
+                messages.error(request, 'Ha ocurrido un error')
+            return HttpResponseRedirect(reverse('Fynex-index'))
     else:
         if request.user.is_authenticated:
             if request.user.groups.filter(name='administrator').exists():
@@ -124,7 +163,7 @@ def administrator_index(request):
             first_name = request.POST['first_name']
             direccion = request.POST['direccion']
             telefono = request.POST['telefono']
-            centro = admin.registrar_centro(username,username.split('@')[0],first_name,direccion,telefono)
+            centro = admin.registrar_centro(username,Tools.get_random_string(10),first_name,direccion,telefono)
             if centro == None:
                 messages.error(request, 'El centro médico no se ha agregado correctamente')
             else:
@@ -169,7 +208,7 @@ def centroMedico_index(request):
             documento_identificacion = request.POST['identificacion']
             especialidad = request.POST['especialidad']
             telefono = request.POST['telefono']
-            medico = centro.registrar_medico(username,username.split('@')[0],first_name,documento_identificacion,especialidad,telefono)
+            medico = centro.registrar_medico(username,Tools.get_random_string(10),first_name,documento_identificacion,especialidad,telefono)
             if medico == None:
                 messages.error(request, 'El médico no se ha agregado correctamente')
             else:
@@ -216,7 +255,7 @@ def medico_index(request):
             fecha_nacimiento = datetime.datetime.strptime(fecha_nac, "%Y-%m-%d").date()
             documento_identificacion = request.POST['identificacion']
             telefono = request.POST['telefono']
-            paciente = medico.registrar_paciente(username,username.split('@')[0],first_name,fecha_nacimiento,documento_identificacion,telefono)
+            paciente = medico.registrar_paciente(username,Tools.get_random_string(10),first_name,fecha_nacimiento,documento_identificacion,telefono)
             if paciente == None:
                 messages.error(request, 'El paciente no se ha agregado correctamente')
             else:

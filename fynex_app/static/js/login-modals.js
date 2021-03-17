@@ -19,7 +19,7 @@ var login_modal =
       '<input required type="password" id="password" name="password" maxlength = "128">' +
       '<div class="row">' +
       '<a href="' + $('#login_script').attr('forgot_url') + '">¿Olvidó su contraseña?</a>' +
-      '</div><div class="row"><div class="column-md-12 mx-auto">' +
+      '</div><div class="row"><div class="col-md-12 mx-auto">' +
       '<div id="captcha_div">'+
       $('#login_script').attr('captcha') +
       '</div>'+
@@ -28,6 +28,7 @@ var login_modal =
       '</form>' +
       '</div>' +
       '</div></div></div>'
+      
     );
 
     return {
@@ -61,6 +62,21 @@ var login_modal =
             settings.onHide.call($dialog);
           });
         }
+
+        var cap_div = $dialog.find('#captcha_div');
+        var captcha_img = $(`<div class="col-md-4" id="captcha_img_custom">
+        </div>`);
+        var captcha_input = $(`<div class="col-md-8" id="captcha_input_custom">
+        </div>
+        `)
+        var captcha_row = $(`<div class="row">
+        </div>`)
+        captcha_row.append(captcha_img);
+        captcha_row.append(captcha_input);
+        cap_div.find('img[class="captcha"]').appendTo(captcha_img); 
+        cap_div.find('input[type="text"]').appendTo(captcha_input); 
+        cap_div.append(captcha_row)
+
         // Opening dialog
         $dialog.modal();
       },

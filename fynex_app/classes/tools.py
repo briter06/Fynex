@@ -8,6 +8,7 @@ from django.templatetags.static import static
 from django.conf import settings
 import pytz
 import datetime
+from django.contrib.auth.models import User
 
 class Tools:
 
@@ -23,6 +24,20 @@ class Tools:
         config=Config(signature_version="oauth"),
         endpoint_url=settings.COS_ENDPOINT
     )
+    
+    @staticmethod
+    def getUser(email):
+        try:
+            return User.objects.all().get(username=email)
+        except:
+            return None
+    
+    @staticmethod
+    def recuperarClave(user):
+        new_pass = Tools.get_random_string(10)
+        user.set_password(new_pass)
+        user.save()
+        Tools.sendEmailUserPasswd(user,new_pass)
 
     @staticmethod
     def getPercentage(x,dec):
@@ -60,7 +75,16 @@ class Tools:
             return True
         except:
             return False
-    
+    @staticmethod
+    def sendEmailRaw(email,subject, body):
+        try:
+            email = EmailMessage(
+                subject, body,from_email=settings.DEFAULT_FROM_EMAIL, to=[email])
+            email.content_subtype = "html"
+            email.send()
+            return True
+        except:
+            return False
     @staticmethod
     def sendEmailUserAdded(user,password):
         subject = 'Bienvenido - Fynex'
@@ -90,7 +114,7 @@ class Tools:
         return res
 
     @staticmethod
-    def sendEmailUserPasswd(user):
+    def sendEmailUserPasswd(user,new_pass):
         subject = 'Recuperar contraseña'
         body = f'''
              <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
@@ -103,8 +127,8 @@ class Tools:
                     Su correo es: <br>
                     <font font="verdana"><i><b>{user.username}</b></i></font>
                     <br>
-                    La contraseña de se cuenta es :  <br>
-                    <strong style="color:#5178EC"><i>{user.password}</i></strong><br></h2>
+                    La nueva contraseña de su cuenta es :  <br>
+                    <strong style="color:#5178EC"><i>{new_pass}</i></strong><br></h2>
                     <br>
                     <br>
                     <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
@@ -177,4 +201,24 @@ class Tools:
 
             '''
         res = Tools.sendEmail(paciente.medico.user,subject,body)
+        return res
+    
+    @staticmethod
+    def sendInformacion(email):
+        subject = 'FYNEX'
+        body = f'''
+                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
+                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
+                    <br>
+                    <br>
+                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>FYNEX</b></i></font></strong><br><br></h1>
+                    <br>
+                    <h4>Fynex es la mejor app del mundo</h4>
+                    <br>
+                    <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
+                    <br>
+                </div>
+
+            '''
+        res = Tools.sendEmailRaw(email,subject,body)
         return res

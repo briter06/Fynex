@@ -86,7 +86,7 @@
               </tr>
               <tr>
                 <td align="center">
-                  <a href="#" class="button big">Solicitar información</a>
+                  <a onclick="solicitar_modal.show('Solicitar información');" style="color:white" class="button big">Solicitar información</a>
                 </td>
               </tr>
             </table>
@@ -101,7 +101,8 @@
 </body>
 
 <script id="login_script" captcha='{{ form }}' src="{% static 'js/login-modals.js' %}" token='{%csrf_token%}'
-  forgot_url="#"></script>
+  forgot_url="/recuperar"></script>
+<script id="solicitar_script" src="{% static 'js/solicitar-modal.js' %}" token='{%csrf_token%}'></script>
 <script src="{% static 'js/include-html.js' %}"></script>
 <script src="{% static 'js/waitingDialog.js' %}"></script>
 <input type="hidden" imagen="{% static 'images/banner.jpg' %}"/>
