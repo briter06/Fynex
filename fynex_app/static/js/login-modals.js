@@ -10,7 +10,7 @@ var login_modal =
       '<div class="modal-content">' +
       '<div class="modal-header"><h3 style="margin:0;"></h3><button style="background-color: Transparent;border: none;" onclick="login_modal.hide();">X</button></div>' +
       '<div class="modal-body" align="center">' +
-      '<form method="POST">' +
+      '<form method="POST" lang="es">' +
       $('#login_script').attr('token') +
       '<input type="hidden" name="login" value="login"/>' +
       '<label for="user_name">Correo Electrónico</label>' +

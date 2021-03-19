@@ -425,6 +425,7 @@ input[type="number"]:invalid,
 input[type="date"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
+input[type="file"]:invalid,
 select:invalid,
 textarea:invalid {
   box-shadow: none;
@@ -435,6 +436,7 @@ input[type="number"]:focus,
 input[type="date"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
+input[type="file"]:focus,
 select:focus,
 textarea:focus {
   border-color: #383b43;
@@ -1883,4 +1885,8 @@ hr.solid {
 
 .highcharts-credits{
   display: none !important;
+}
+
+.left-margin{
+  margin-left: 15px;
 }

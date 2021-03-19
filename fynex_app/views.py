@@ -993,10 +993,13 @@ def paciente_examenes(request):
         if 'file' in request.POST:
             try:
                 file = request.FILES['myfile']
-                contents = ['application/pdf','image/png','image/jpeg']
+                contents = ['application/pdf','image/png','image/jpeg','image/jpg']
                 if file.content_type in contents:
                     exten = (file._name).split('.')
                     id_prev = request.POST['id']
+                    if file.size > 15728640:
+                        messages.error(request, 'El límite de tamaño del archivo es de 15 MB')
+                        return HttpResponseRedirect(reverse('Paciente-examenes-index'))
                     file_content = file.read()
                     key = f'Fynex_{id_prev}_{paciente.paciente.documento_identificacion}.{exten[len(exten)-1]}'
                     Tools.cos_upload.put_object(Body=file_content,Bucket='fynex',Key=str(key))
@@ -1007,7 +1010,7 @@ def paciente_examenes(request):
                         messages.success(request, 'El examen se ha subido correctamente')
                     return HttpResponseRedirect(reverse('Paciente-examenes-index'))
                 else:
-                    messages.error(request, 'Solo se aceptan imagenes PNG, JEPG o archivos PDF')
+                    messages.error(request, 'Solo se aceptan imagenes PNG, JEPG, JPG o archivos PDF')
                     return HttpResponseRedirect(reverse('Paciente-examenes-index'))
             except:
                 messages.success(request, 'El examen se ha subido correctamente')

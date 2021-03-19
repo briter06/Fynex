@@ -14,7 +14,7 @@ var file_modal =
       '<form method="POST" enctype="multipart/form-data">' +
       $('#file_script').attr('token') +
       '<input type="hidden" name="file" value="file"/>' +
-      '<input type="file" name="myfile" id="myfile" accept="application/pdf, image/png, image/jpeg"/>' +
+      '<input type="file" class="filestyle" name="myfile" id="myfile" accept="application/pdf, image/png, image/jpeg, image/jpg"/>' +
       '<div id="content_edit">'+
       '</div>'+
       '<div class="row">' +
@@ -61,6 +61,12 @@ var file_modal =
             settings.onHide.call($dialog);
           });
         }
+        $dialog.find(":file").filestyle({
+          'text' :'Seleccionar archivo',
+          'size' :'nr',
+          'placeholder':'Sin selección',
+          'btnClass' :'btn-secondary left-margin'
+        });
         // Opening dialog
         $dialog.modal();
       },
