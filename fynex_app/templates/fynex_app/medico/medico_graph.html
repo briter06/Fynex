@@ -77,6 +77,16 @@
 
   <div class="container-fluid main_section">
     <!-- <h1 style="margin-bottom: 50px;">PACIENTES</h1> -->
+    <div class="row" style="width: 50%;">
+      <div class="col-md-6 row">
+        <div style="background-color: {{color_m}};width:60px;height:25px"></div>
+        <h4>Sus pacientes</h4>
+      </div>
+      <div class="col-md-6 row">
+        <div style="background-color: {{color_n_m}};width:60px;height:25px"></div>
+        <h4>Pacientes de otros</h4>
+      </div>
+    </div>
     <div style="width: 100%;height: 80vh;" id="container_graph"></div>
   </div>
 
@@ -94,10 +104,17 @@
 
   var data = {{data | safe}}
   var info = {{info | safe}}
+  var nodos = {{nodos | safe}}
 
   Highcharts.chart('container_graph', {
   chart: {
-    type: 'networkgraph'
+    type: 'networkgraph',
+    events: {
+      render() {
+        chart = this;
+        console.log(chart.series[0]);
+      }
+    }
   },
   title: {
     text: 'Pacientes más similares a {{paciente.user.first_name}}'
@@ -105,7 +122,7 @@
   plotOptions: {
     networkgraph: {
       layoutAlgorithm: {
-        linkLength:65,
+        // linkLength:60,
         enableSimulation: true
       }
     },
@@ -135,13 +152,7 @@
         return info[this.key]['nombre'];
       }
     },
-    marker: {
-      radius: 40
-    },
-    nodes: [{
-      id: '{{paciente.user.username}}',
-      color: '#90ed7d'
-    }],
+    nodes: nodos,
     data: data
   }]
 });

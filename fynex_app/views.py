@@ -17,6 +17,7 @@ from django.db.models import Sum
 import datetime
 import json
 from fynex_app.forms import CaptchaTestModelForm
+import math
 
 def upload_test(request):
     if request.method == 'POST':
@@ -289,6 +290,11 @@ def medico_grafo(request,cod_paciente):
         similares = medico.getMostSimilar(cod_paciente,10)
         result = []
         info = {}
+        max_radious = 50
+        color_p = '#008712'
+        color_m = '#FFCA5F'
+        color_n_m = '#8FB8FF'
+        nodos = [{'id':paciente.user.username,'color':color_p,'marker':{'radius':max_radious}}]
         info[paciente.user.username] = {'nombre':paciente.user.first_name,'medico':{'nombre':paciente.medico.user.first_name,'correo':paciente.medico.user.username}}
         for s in similares:
             aux = {}
@@ -297,10 +303,20 @@ def medico_grafo(request,cod_paciente):
             aux['to'] = p.user.username
             aux['weight'] = Tools.getPercentage(s.similitud,2)
             info[p.user.username] = {'nombre':p.user.first_name,'medico':{'nombre':p.medico.user.first_name,'correo':p.medico.user.username}}
+            color_nodo = color_n_m
+            if p.medico == paciente.medico:
+                color_nodo = color_m
+            section_size = 4
+            residuo = Tools.getPercentage(s.similitud,0)/(100/section_size)
+            residuo = max(math.ceil(residuo),1)
+            nodos.append({'id':p.user.username,'color':color_nodo,'marker':{'radius':int(max_radious*(residuo/section_size))}})
             result.append(aux)
         context['paciente'] = paciente
         context['data'] = result
         context['info'] = info
+        context['nodos'] = nodos
+        context['color_m'] = color_m
+        context['color_n_m'] = color_n_m
         return render(request,'fynex_app/medico/medico_graph.html',context)
 
 
@@ -362,6 +378,7 @@ def medico_grafico_variables(request,cod_paciente):
                 dates.append(str(h.fecha))
             vars[v.nombre] = [values,dates,v.unidad]
         context['variables'] = vars
+        print(vars)
         context['is_medico'] = True
         return render(request,'fynex_app/grafico_variables.html',context)
 

@@ -6,13 +6,23 @@ django.setup()
 from fynex_app.models import *
 import pandas as pd
 
+# res = VariableSeguimiento.objects.raw('''
+# SELECT DISTINCT ON (id) id,nombre,paciente_id,valor FROM (
+# SELECT fynex_app_variableseguimiento.id,nombre,paciente_id,valor,fecha FROM fynex_app_variableseguimiento, fynex_app_historialvariableseguimiento
+# WHERE fynex_app_variableseguimiento.id = fynex_app_historialvariableseguimiento.variable_seguimiento_id
+# ORDER BY fecha desc) AS c2
+
+
+# ''')
+
 res = VariableSeguimiento.objects.raw('''
 SELECT DISTINCT ON (id) id,nombre,paciente_id,valor FROM (
 SELECT fynex_app_variableseguimiento.id,nombre,paciente_id,valor,fecha FROM fynex_app_variableseguimiento, fynex_app_historialvariableseguimiento
 WHERE fynex_app_variableseguimiento.id = fynex_app_historialvariableseguimiento.variable_seguimiento_id
 ORDER BY fecha desc) AS c2
-
-
+UNION
+SELECT 0 AS id, 'Edad' AS nombre,id as paciente_id,
+DATE_PART('year', AGE(NOW(), fecha_nacimiento)) AS valor FROM fynex_app_paciente
 ''')
 
 results = []
@@ -32,7 +42,6 @@ df_s = pd.DataFrame(df['valor'].values,index=pd.MultiIndex.from_tuples(indexes, 
 df_s = df_s.unstack()
 df_s.columns = df_s.columns.get_level_values(1)
 df_s = df_s.transpose()
-
 df_corr = df_s.corr()
 SistemaMemoria.objects.all().delete()
 
