@@ -98,8 +98,16 @@
 
       </div><br>
     {% endlanguage %}
-        <input id="chat-message-input" type="text" size="100"><br>
-        <input id="chat-message-submit" type="button" value="Enviar">
+      <div class="row" style="margin-bottom: 40px;">
+        <div class="col-md-11">
+          <input id="chat-message-input" type="text" size="100" placeholder="Escriba su mensaje...">
+        </div>
+        <div class="col-md-1">
+          <div>
+            <img id="chat-message-submit" class="send_img" src="{% static 'images/send.png' %}"/>
+          </div>
+        </div>
+      </div>
         {{ room_name|json_script:"room-name" }}
 
 

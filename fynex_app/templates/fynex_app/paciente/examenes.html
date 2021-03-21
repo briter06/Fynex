@@ -1,6 +1,7 @@
 {% load static %}
 {% load replace_email %}
 {% load date_get %}
+{% load none_examen %}
 <!DOCTYPE html>
 <!--
 	Transit by TEMPLATED
@@ -91,7 +92,7 @@
               <td>{{examen.nombre}}</td>
               <td>{{examen.descripcion}}</td>
               <td>{{examen.fecha_peticion | date_get}}</td>
-              <td>{{examen.fecha_entrega | date_get}}</td>
+              <td>{{examen.fecha_entrega | date_get | none_examen}}</td>
               <td>
                 {% if examen.fecha_entrega is None %}
                 <input type="image" src="{% static 'images/upload.png' %}" width="40" onclick="file_modal.show('Subir resultados','{{examen.id}}');"/>

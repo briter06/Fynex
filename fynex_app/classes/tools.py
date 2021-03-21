@@ -24,7 +24,29 @@ class Tools:
         config=Config(signature_version="oauth"),
         endpoint_url=settings.COS_ENDPOINT
     )
-    
+
+    data_ejercicio = {
+        'Cicla elíptica':'clica_eliptica', #Listo
+        'Cicla estática' : 'cicla_estatica', #Listo
+        'Caminadora':'caminadora', #Listo
+        'Caminar':'caminar', #Listo
+        'Cicla':'cicla', #Listo
+        'Correr':'correr', #Listo
+        'Patinar':'patinar', #Listo
+        'Nadar':'nadar', #Listo
+        'Saltar cuerda' : 'cuerda', #Listo
+        'Baile aeróbico' : 'baile_aerobico', #Listo
+        'Aeróbicos acuáticos' : 'aerobico_acuatico',
+        'Yoga':'yoga' #Yoga
+    }
+
+    @staticmethod
+    def getEjercicioImg(ejercicio):
+        try:
+            return Tools.data_ejercicio[ejercicio]
+        except:
+            return 'defecto'
+
     @staticmethod
     def getUser(email):
         try:

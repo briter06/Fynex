@@ -291,9 +291,9 @@ def medico_grafo(request,cod_paciente):
         result = []
         info = {}
         max_radious = 50
-        color_p = '#008712'
-        color_m = '#FFCA5F'
-        color_n_m = '#8FB8FF'
+        color_p = '#DF7600'
+        color_m = '#1B6697'
+        color_n_m = '#47C36F'
         nodos = [{'id':paciente.user.username,'color':color_p,'marker':{'radius':max_radious}}]
         info[paciente.user.username] = {'nombre':paciente.user.first_name,'medico':{'nombre':paciente.medico.user.first_name,'correo':paciente.medico.user.username}}
         for s in similares:
@@ -623,6 +623,7 @@ def medico_generar_ejercicio(request,cod_paciente):
         context['weight'] = weight
         context['age'] = age
         context['nueva'] = True
+        context['imagen'] = Tools.getEjercicioImg(plan.ejercicio)
         return render(request,'fynex_app/medico/exercise_recommendations_generation.html',context)
     
 def medico_detail_ejercicio(request,cod_paciente,cod_plan):
@@ -646,6 +647,7 @@ def medico_detail_ejercicio(request,cod_paciente,cod_plan):
         plan = medico.getPlanEjercicio(cod_plan)
         context['paciente'] = medico.getPaciente(cod_paciente)
         context['plan'] = plan
+        context['imagen'] = Tools.getEjercicioImg(plan.ejercicio)
         return render(request,'fynex_app/medico/exercise_recommendations_generation.html',context)
 
 def medico_generar_nutricion(request,cod_paciente):
@@ -1057,6 +1059,7 @@ def paciente_detail_ejercicio(request,cod_plan):
             return HttpResponseRedirect(reverse('Fynex-index'))
         context['paciente'] = paciente
         context['plan'] = plan
+        context['imagen'] = Tools.getEjercicioImg(plan.ejercicio)
         return render(request,'fynex_app/paciente/exercise_recommendations_generation.html',context)
 
 def paciente_nueva_ejercicio(request):

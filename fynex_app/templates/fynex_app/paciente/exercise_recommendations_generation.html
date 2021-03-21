@@ -1,5 +1,8 @@
 {% load static %}
 {% load disease %}
+{% load tipo_ejercicio %}
+{% load dias_ejercicio %}
+{% load tiempo_ejercicio %}
 <!DOCTYPE html>
 <!--
 	Transit by TEMPLATED
@@ -83,33 +86,27 @@
   <div class="container-fluid main_section">
     <h1 style="margin-bottom: 50px;">Tu plan 
     </h1>              
-    <div class="row">
-      <div class="col-md-4">
-
-      </div>
-      <div class="col-md-4 col_nutrition_card" >
-        <div class="nutrition_card">
-          <div class="img_comida">
-            <img src="https://clipartart.com/images/free-clipart-pool.png">
+    <div class="row mx-auto"  style="width: 60%;">
+      <div class="col-md-12 col_exercise_card" style="margin: auto auto">
+        <div class="exercise_card row">
+          <div class="img_ejercicio col-md-5">
+            <img src="{% static 'images/ejercicios/'|add:imagen|add:'.png' %}">
           </div>
-          <div class="nutrition_container">
+          <div class="exercise_container col-md-7">
             <table class="table" >
               <thead>
                 <th><h4><b>ACTIVIDAD FISICA</b></h4></th>
               </thead>
               <tbody>
-                <tr><td>{{plan.tipo_ejercicio}}</td></tr>
-                <tr><td>{{plan.ejercicio}}</td></tr>
-                <tr><td>{{plan.info}}</td></tr>
-                <tr><td>{{plan.dias}}</td></tr>
-                <tr><td>{{plan.tiempo}}</td></tr>
+                <tr><td><b>Tipo de ejercicio: </b>{{plan.tipo_ejercicio | tipo_ejercicio}}</td></tr>
+                <tr><td><b>Actividad: </b>{{plan.ejercicio}}</td></tr>
+                <tr><td><b>Descripción: </b>{{plan.info}}</td></tr>
+                <tr><td><b>Días por semana: </b>{{plan.dias | dias_ejercicio}}</td></tr>
+                <tr><td><b>Tiempo: </b>{{plan.tiempo | tiempo_ejercicio}}</td></tr>
               </tbody>
           </table>
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        
       </div>
     </div>
   </div>
