@@ -148,7 +148,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-CAPTCHA = True
+CAPTCHA = os.environ['fynex_captcha'] in ['True','true', '1']
 
 
 # Static files (CSS, JavaScript, Images)

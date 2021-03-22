@@ -36,7 +36,7 @@ class Tools:
         'Nadar':'nadar', #Listo
         'Saltar cuerda' : 'cuerda', #Listo
         'Baile aeróbico' : 'baile_aerobico', #Listo
-        'Aeróbicos acuáticos' : 'aerobico_acuatico',
+        'Aeróbicos acuáticos' : 'aerobico_acuatico', #Listo
         'Yoga':'yoga' #Yoga
     }
 
