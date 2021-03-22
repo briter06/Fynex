@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -109,7 +110,7 @@ DATABASES = {
 
         'HOST': os.environ['db_host_fynex'],
 
-        'PORT': os.environ['db_port_fynex'],
+        'PORT': os.environ['db_port_fynex']
 
     }
 }
@@ -146,6 +147,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+CAPTCHA = True
 
 
 # Static files (CSS, JavaScript, Images)

@@ -5,3 +5,7 @@ fynex_app/__pycache__
 fynex_app/migrations/__pycache__
 __pycache__
 .env
+Fynex/settings_run_test.py
+Fynex/settings_test.py
+functional_tests
+d5vjr8gsosiu3d

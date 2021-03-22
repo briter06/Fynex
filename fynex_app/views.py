@@ -18,6 +18,7 @@ import datetime
 import json
 from fynex_app.forms import CaptchaTestModelForm
 import math
+from django.conf import settings
 
 def upload_test(request):
     if request.method == 'POST':
@@ -54,7 +55,7 @@ def privacy_policy(request):
 
 def login_user(request, template_name):
     form = CaptchaTestModelForm(request.POST)
-    if form.is_valid():
+    if form.is_valid() or not settings.CAPTCHA:
         username = request.POST['user_name']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -73,11 +74,6 @@ def verify_auth(request,group_name):
     if not request.user.groups.filter(name=group_name).exists():
         return False
     return True
-
-##def passwd(request):
-  ##  username = request.POST['user_name']
-    ##Tools.sendEmailUserPasswd(username)
-    ##return 
 
 
 def recuperar_clave(request):
@@ -135,7 +131,7 @@ def index(request):
             else:
                 return logout_user(request)
         else:
-            form = CaptchaTestModelForm()
+            form = CaptchaTestModelForm(use_required_attribute=settings.CAPTCHA)
             return render(request, 'fynex_app/index.html', {'form': form})
 
 def logout_user(request):

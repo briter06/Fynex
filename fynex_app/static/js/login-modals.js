@@ -10,7 +10,7 @@ var login_modal =
       '<div class="modal-content">' +
       '<div class="modal-header"><h3 style="margin:0;"></h3><button style="background-color: Transparent;border: none;" onclick="login_modal.hide();">X</button></div>' +
       '<div class="modal-body" align="center">' +
-      '<form method="POST" lang="es">' +
+      '<form id="login_modal" method="POST" lang="es">' +
       $('#login_script').attr('token') +
       '<input type="hidden" name="login" value="login"/>' +
       '<label for="user_name">Correo Electrónico</label>' +
@@ -23,7 +23,7 @@ var login_modal =
       '<div id="captcha_div">'+
       $('#login_script').attr('captcha') +
       '</div>'+
-      '<input style="margin-top:20px" type="submit" value="Entrar"></input>' +
+      '<input id="submit_login" style="margin-top:20px" type="submit" value="Entrar"></input>' +
       '</div></div>' +
       '</form>' +
       '</div>' +
