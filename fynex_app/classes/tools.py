@@ -57,7 +57,7 @@ class Tools:
     
     @staticmethod
     def getAuditoria():
-        return Auditoria.objects.all()
+        return Auditoria.objects.all().order_by('-fecha')
     
     @staticmethod
     def get_client_ip(request):
