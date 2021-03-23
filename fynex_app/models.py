@@ -24,13 +24,11 @@ class Paciente(models.Model):
     fecha_nacimiento = models.DateField(default=now, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 class Auditoria(models.Model):
-    fecha = models.DateField()
+    fecha = DateTimeUTCField()
     descripcion = models.CharField(max_length=250)
     direccion_ip = models.CharField(max_length=50)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-class PreexistenciaMedica(models.Model):
-    descripcion = encrypt(models.TextField())
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    correo_usuario = models.CharField(max_length=50)
+    tipo_usuario = models.CharField(max_length=50)
 class VariableSeguimiento(models.Model):
     nombre = models.CharField(max_length=50)
     intervalo_referencia = models.CharField(max_length=150)
@@ -82,11 +80,6 @@ class Mensaje(models.Model):
     paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
     paciente_emisor = models.IntegerField()
     notificado_email = models.BooleanField()
-
-class Solicitud(models.Model):
-    paciente = models.ForeignKey(Paciente,on_delete=models.CASCADE)
-    tipo_solicitud = models.CharField(max_length=1)
-    estado = models.CharField(max_length=1)
 
 
 class SistemaMemoria(models.Model):

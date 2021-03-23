@@ -1931,3 +1931,16 @@ hr.solid {
   width: 60px;
   cursor:pointer;
 }
+
+.data_button{
+  border: none !important;
+  background: none !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  width:35px !important;
+}
+
+.img_data_buttons{
+  height:35px;
+  width:35px;
+}

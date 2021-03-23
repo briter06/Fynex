@@ -31,6 +31,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css">
+  <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 
   <script>
     var v_style = "{% static 'css/style.css' %}";
@@ -81,8 +87,6 @@
       <thead>
           <tr id="titulos">
               <th>Fecha</th>
-              <th>Rating</th>
-              <th>Estado</th>
               <th>Acciones</th>
           </tr>
       </thead>
@@ -90,8 +94,6 @@
         {% for plan in planes reversed %}
           <tr id="{{plan.id}}">
               <td>{{plan.fecha | date_get}}</td>
-              <td>{{plan.rating}}</td>
-              <td>{{plan.estado | state_n}}</td>
               <td>
                 <input type="image" src="{% static 'images/lupa.png' %}" width="40" onclick="location.href = 'plan_ejercicio/{{plan.id}}';"/>
               </td>
@@ -109,7 +111,7 @@
 
 <script src="{% static 'js/include-html.js' %}"></script>
 <script src="{% static 'js/sidenav_js.js' %}"></script>
-<script src="{% static 'js/datatable.js' %}"></script>
+<script id="datatable_script" title="Planes de ejercicio" src="{% static 'js/datatable.js' %}"></script>
 
 
 </html>

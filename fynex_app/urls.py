@@ -9,6 +9,7 @@ urlpatterns = [
     path('logout', views.logout_user, name="Logout-index"),
     path('administrator', views.administrator_index, name="Administrator-index"),
     path('administrator/perfil', views.admin_perfil, name="Administrator-perfil"),
+    path('administrator/auditoria', views.administrator_auditoria, name="Administrator-auditoria"),
 
     path('CentroMedico', views.centroMedico_index, name="CentroMedico-index"),
     path('CentroMedico/perfil', views.centro_perfil, name="CentroMedico-perfil"),

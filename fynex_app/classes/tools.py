@@ -9,6 +9,7 @@ from django.conf import settings
 import pytz
 import datetime
 from django.contrib.auth.models import User
+from ..models import Auditoria
 
 class Tools:
 
@@ -39,6 +40,33 @@ class Tools:
         'Aeróbicos acuáticos' : 'aerobico_acuatico', #Listo
         'Yoga':'yoga' #Yoga
     }
+
+    @staticmethod
+    def auditar(request,descripcion):
+        try:
+            audit = Auditoria()
+            audit.fecha = Tools.getToday(time=True)
+            audit.descripcion = descripcion
+            audit.direccion_ip = Tools.get_client_ip(request)
+            audit.correo_usuario = request.user.username
+            audit.tipo_usuario = request.user.groups.first()
+            audit.save()
+        except Exception as e:
+            print(e)
+            pass
+    
+    @staticmethod
+    def getAuditoria():
+        return Auditoria.objects.all()
+    
+    @staticmethod
+    def get_client_ip(request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
 
     @staticmethod
     def getEjercicioImg(ejercicio):

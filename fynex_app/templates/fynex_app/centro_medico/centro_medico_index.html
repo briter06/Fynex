@@ -30,6 +30,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css">
+  <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 
   <script>
     var v_style = "{% static 'css/style.css' %}";
@@ -112,7 +118,7 @@
 
 <script src="{% static 'js/include-html.js' %}"></script>
 <script src="{% static 'js/sidenav_js.js' %}"></script>
-<script src="{% static 'js/datatable.js' %}"></script>
+<script id="datatable_script" title="Médicos" src="{% static 'js/datatable.js' %}"></script>
 
 
 </html>

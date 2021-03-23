@@ -59,5 +59,5 @@ class PacienteHelper:
             return None
     
     def getPlanesEjercicio(self):
-        planes = PlanEjercicio.objects.all().filter(paciente=self.paciente).order_by('id')
+        planes = PlanEjercicio.objects.all().filter(paciente=self.paciente,estado='A').order_by('id')
         return planes

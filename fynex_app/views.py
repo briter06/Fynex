@@ -20,14 +20,6 @@ from fynex_app.forms import CaptchaTestModelForm
 import math
 from django.conf import settings
 
-def upload_test(request):
-    if request.method == 'POST':
-        file = request.FILES['myfile']
-        file_content = file.read()
-        Tools.cos_upload.put_object(Body=file_content,Bucket='fynex',Key=str(file))
-        return render(request, 'fynex_app/file_upload.html')
-    else:
-        return render(request, 'fynex_app/file_upload.html')
 
 def download_test(request,file_name):
     nom = file_name.split('.')[0]
@@ -153,6 +145,7 @@ def administrator_index(request):
             if centro == None:
                 messages.error(request, 'El centro médico no se ha editado correctamente')
             else:
+                Tools.auditar(request,f'Se ha editado el centro médico {username}')
                 messages.success(request, 'El centro médico se ha editado correctamente')
             return HttpResponseRedirect(reverse('Administrator-index'))
         elif 'add' in request.POST:
@@ -164,6 +157,7 @@ def administrator_index(request):
             if centro == None:
                 messages.error(request, 'El centro médico no se ha agregado correctamente')
             else:
+                Tools.auditar(request,f'Se ha creado el centro médico: {username}')
                 messages.success(request, 'El centro médico se ha agregado correctamente')
             return HttpResponseRedirect(reverse('Administrator-index'))
         elif 'delete' in request.POST:
@@ -172,6 +166,7 @@ def administrator_index(request):
             if centro == False:
                 messages.error(request, 'El centro médico no se ha eliminado correctamente')
             else:
+                Tools.auditar(request,f'Se ha eliminado el centro médico {id_prev}')
                 messages.success(request, 'El centro médico se ha eliminado correctamente')
             return HttpResponseRedirect(reverse('Administrator-index'))
     else:
@@ -180,6 +175,15 @@ def administrator_index(request):
         context['centros'] = admin.getCentrosMedicos()
         return render(request,'fynex_app/administrator/administrator_index.html',context)
 
+def administrator_auditoria(request):
+    if not verify_auth(request,'administrator'):
+        return HttpResponseRedirect(reverse('Fynex-index'))
+    if request.method == 'POST':
+        pass
+    else:
+        context = {}
+        context['auditoria'] = Tools.getAuditoria()
+        return render(request,'fynex_app/administrator/auditoria.html',context)
 
 def centroMedico_index(request):
     if not verify_auth(request,'centro_medico'):
@@ -197,6 +201,7 @@ def centroMedico_index(request):
             if medico == None:
                 messages.error(request, 'El médico no se ha editado correctamente')
             else:
+                Tools.auditar(request,f'Se ha editado el médico: {username}')
                 messages.success(request, 'El médico se ha editado correctamente')
             return HttpResponseRedirect(reverse('CentroMedico-index'))
         elif 'add' in request.POST:
@@ -209,6 +214,7 @@ def centroMedico_index(request):
             if medico == None:
                 messages.error(request, 'El médico no se ha agregado correctamente')
             else:
+                Tools.auditar(request,f'Se ha creado el médico: {username}')
                 messages.success(request, 'El médico se ha agregado correctamente')
             return HttpResponseRedirect(reverse('CentroMedico-index'))
         elif 'delete' in request.POST:
@@ -217,6 +223,7 @@ def centroMedico_index(request):
             if medico == False:
                 messages.error(request, 'El médico no se ha eliminado correctamente')
             else:
+                Tools.auditar(request,f'Se ha eliminado el médico {id_prev}')
                 messages.success(request, 'El médico se ha eliminado correctamente')
             return HttpResponseRedirect(reverse('CentroMedico-index'))
     else:
@@ -243,6 +250,7 @@ def medico_index(request):
             if paciente == None:
                 messages.error(request, 'El paciente no se ha editado correctamente')
             else:
+                Tools.auditar(request,f'Se ha editado el paciente: {username}')
                 messages.success(request, 'El paciente se ha editado correctamente')
             return HttpResponseRedirect(reverse('Medico-index'))
         elif 'add' in request.POST:
@@ -256,6 +264,7 @@ def medico_index(request):
             if paciente == None:
                 messages.error(request, 'El paciente no se ha agregado correctamente')
             else:
+                Tools.auditar(request,f'Se ha creado el paciente: {username}')
                 messages.success(request, 'El paciente se ha agregado correctamente')
             return HttpResponseRedirect(reverse('Medico-index'))
         elif 'delete' in request.POST:
@@ -264,6 +273,7 @@ def medico_index(request):
             if paciente == False:
                 messages.error(request, 'El paciente no se ha eliminado correctamente')
             else:
+                Tools.auditar(request,f'Se ha eliminado el paciente: {id_prev}')
                 messages.success(request, 'El paciente se ha eliminado correctamente')
             return HttpResponseRedirect(reverse('Medico-index'))
     else:
@@ -393,6 +403,7 @@ def medico_variables(request,cod_paciente):
             if paciente == None:
                 messages.error(request, 'La variable no se ha editado correctamente')
             else:
+                Tools.auditar(request,f'Se ha editado la variable {nombre} para {paciente.user.username}')
                 messages.success(request, 'La variable se ha editado correctamente')
             return HttpResponseRedirect(reverse('Medico-variables-index', kwargs={'cod_paciente': cod_paciente}))
         elif 'add' in request.POST:
@@ -404,14 +415,17 @@ def medico_variables(request,cod_paciente):
             if variable == None:
                 messages.error(request, 'La variable no se ha agregado correctamente')
             else:
+                Tools.auditar(request,f'Se ha creado la variable {nombre} para {paciente.user.username}')
                 messages.success(request, 'La variable se ha agregado correctamente')
             return HttpResponseRedirect(reverse('Medico-variables-index', kwargs={'cod_paciente': cod_paciente}))
         elif 'delete' in request.POST:
             id_prev = request.POST['id']
+            paciente = medico.getPaciente(cod_paciente)
             variable = medico.eliminarVariable(id_prev)
             if variable == False:
                 messages.error(request, 'La variable no se ha eliminado correctamente')
             else:
+                Tools.auditar(request,f'Se ha eliminado una variable para {paciente.user.username}')
                 messages.success(request, 'La variable se ha eliminado correctamente')
             return HttpResponseRedirect(reverse('Medico-variables-index', kwargs={'cod_paciente': cod_paciente}))
     else:
@@ -436,6 +450,7 @@ def medico_examenes(request,cod_paciente):
             if examen == None:
                 messages.error(request, 'El examen no se ha editado correctamente')
             else:
+                Tools.auditar(request,f'Se ha editado el exámen {nombre} para {paciente.user.username}')
                 messages.success(request, 'El examen se ha editado correctamente')
             return HttpResponseRedirect(reverse('Medico-examenes-index', kwargs={'cod_paciente': cod_paciente}))
         elif 'add' in request.POST:
@@ -447,14 +462,17 @@ def medico_examenes(request,cod_paciente):
             if examen == None:
                 messages.error(request, 'El examen no se ha agregado correctamente')
             else:
+                Tools.auditar(request,f'Se ha creado el exámen {nombre} para {paciente.user.username}')
                 messages.success(request, 'El examen se ha agregado correctamente')
             return HttpResponseRedirect(reverse('Medico-examenes-index', kwargs={'cod_paciente': cod_paciente}))
         elif 'delete' in request.POST:
             id_prev = request.POST['id']
+            paciente = medico.getPaciente(cod_paciente)
             examen = medico.eliminarExamen(id_prev)
             if examen == False:
                 messages.error(request, 'El examen no se ha eliminado correctamente')
             else:
+                Tools.auditar(request,f'Se ha eliminado un exámen para {paciente.user.username}')
                 messages.success(request, 'El examen se ha eliminado correctamente')
             return HttpResponseRedirect(reverse('Medico-examenes-index', kwargs={'cod_paciente': cod_paciente}))
     else:
@@ -479,6 +497,7 @@ def medico_variable_historico(request,cod_paciente,cod_variable):
             if historico == None:
                 messages.error(request, 'El valor no se ha editado correctamente')
             else:
+                Tools.auditar(request,f'Se ha editado un valor de la variable {variable.nombre} para {variable.paciente.user.username}')
                 messages.success(request, 'El valor se ha editado correctamente')
             return HttpResponseRedirect(reverse('Medico-variables-historial-index', kwargs={'cod_paciente': cod_paciente,'cod_variable':cod_variable}))
         elif 'add' in request.POST:
@@ -490,14 +509,17 @@ def medico_variable_historico(request,cod_paciente,cod_variable):
             if historico == None:
                 messages.error(request, 'El valor no se ha agregado correctamente')
             else:
+                Tools.auditar(request,f'Se ha creado un valor a la variable {variable.nombre} para {variable.paciente.user.username}')
                 messages.success(request, 'El valor se ha agregado correctamente')
             return HttpResponseRedirect(reverse('Medico-variables-historial-index', kwargs={'cod_paciente': cod_paciente,'cod_variable':cod_variable}))
         elif 'delete' in request.POST:
             id_prev = request.POST['id']
+            paciente = medico.getPaciente(cod_paciente)
             historico = medico.eliminarHistorialVariable(id_prev)
             if historico == False:
                 messages.error(request, 'El valor no se ha eliminado correctamente')
             else:
+                Tools.auditar(request,f'Se ha eliminado el valor de una variable para {paciente.user.username}')
                 messages.success(request, 'El valor se ha eliminado correctamente')
             return HttpResponseRedirect(reverse('Medico-variables-historial-index', kwargs={'cod_paciente': cod_paciente,'cod_variable':cod_variable}))
     else:
@@ -517,10 +539,12 @@ def medico_nutricion(request,cod_paciente):
         medico = MedicoHelper(request.user)
         if 'delete' in request.POST:
             id_prev = request.POST['id']
+            paciente = medico.getPaciente(cod_paciente)
             plan = medico.eliminarPlanNutricional(id_prev)
             if plan == False:
                 messages.error(request, 'El plan nutricional no se ha eliminado correctamente')
             else:
+                Tools.auditar(request,f'Se ha eliminado un plan nutricional para {paciente.user.username}')
                 messages.success(request, 'El plan nutricional se ha eliminado correctamente')
             return HttpResponseRedirect(reverse('Medico-nutricion-index', kwargs={'cod_paciente': cod_paciente}))
     else:
@@ -537,10 +561,12 @@ def medico_ejercicio(request,cod_paciente):
         medico = MedicoHelper(request.user)
         if 'delete' in request.POST:
             id_prev = request.POST['id']
+            paciente = medico.getPaciente(cod_paciente)
             plan = medico.eliminarPlanEjercicio(id_prev)
             if plan == False:
                 messages.error(request, 'El plan de ejercicio no se ha eliminado correctamente')
             else:
+                Tools.auditar(request,f'Se ha eliminado un plan de ejercicio para {paciente.user.username}')
                 messages.success(request, 'El plan de ejercicio se ha eliminado correctamente')
             return HttpResponseRedirect(reverse('Medico-ejercicio-index', kwargs={'cod_paciente': cod_paciente}))
     else:
@@ -611,7 +637,8 @@ def medico_generar_ejercicio(request,cod_paciente):
                 plan = medico.guardarRecomendacionEjercicio(result['recommendations'],cod_paciente)
                 context['diseases'] = result['diseases']
         
-        context['paciente'] = medico.getPaciente(cod_paciente)
+        paciente = medico.getPaciente(cod_paciente)
+        context['paciente'] = paciente
         context['plan'] = plan
         context['heartRate'] = heartRate
         context['glucose'] = glucose
@@ -620,6 +647,7 @@ def medico_generar_ejercicio(request,cod_paciente):
         context['age'] = age
         context['nueva'] = True
         context['imagen'] = Tools.getEjercicioImg(plan.ejercicio)
+        Tools.auditar(request,f'Se ha generado un nuevo plan de ejercicio para {paciente.user.username}')
         return render(request,'fynex_app/medico/exercise_recommendations_generation.html',context)
     
 def medico_detail_ejercicio(request,cod_paciente,cod_plan):
@@ -709,7 +737,8 @@ def medico_generar_nutricion(request,cod_paciente):
                 plan = medico.guardarRecomendacionNutricion(result['recommendations'],result['diff'],cod_paciente)
                 context['diseases'] = result['diseases']
 
-        context['paciente'] = medico.getPaciente(cod_paciente)
+        paciente = medico.getPaciente(cod_paciente)
+        context['paciente'] = paciente
         context['plan'] = plan
         partes = medico.getPartesDePlanNutricional(plan)
         res = {}
@@ -729,7 +758,7 @@ def medico_generar_nutricion(request,cod_paciente):
         context['weight'] = weight
         context['age'] = age
         context['nueva'] = True
-        
+        Tools.auditar(request,f'Se ha generado un nuevo plan de nutrición para {paciente.user.username}')
         return render(request,'fynex_app/medico/nutrition_recommendations_generation.html',context)
 
 def medico_detail_nutricion(request,cod_paciente,cod_plan):
@@ -1005,13 +1034,14 @@ def paciente_examenes(request):
                     if examen == None:
                         messages.error(request, 'El examen no se ha subido correctamente')
                     else:
+                        Tools.auditar(request,f'Se ha subido un exámen {paciente.paciente.user.username}')
                         messages.success(request, 'El examen se ha subido correctamente')
                     return HttpResponseRedirect(reverse('Paciente-examenes-index'))
                 else:
                     messages.error(request, 'Solo se aceptan imagenes PNG, JEPG, JPG o archivos PDF')
                     return HttpResponseRedirect(reverse('Paciente-examenes-index'))
             except:
-                messages.success(request, 'El examen se ha subido correctamente')
+                messages.success(request, 'El examen no se ha subido correctamente')
                 return HttpResponseRedirect(reverse('Paciente-examenes-index'))
     else:
         context = {}
