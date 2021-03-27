@@ -308,10 +308,11 @@ def medico_grafo(request,cod_paciente):
             aux['from'] = paciente.user.username
             aux['to'] = p.user.username
             aux['weight'] = Tools.getPercentage(s.similitud,2)
-            info[p.user.username] = {'nombre':p.user.first_name,'medico':{'nombre':p.medico.user.first_name,'correo':p.medico.user.username}}
+            info[p.user.username] = {'propio':0,'id':p.id,'nombre':p.user.first_name,'medico':{'nombre':p.medico.user.first_name,'correo':p.medico.user.username}}
             color_nodo = color_n_m
             if p.medico == paciente.medico:
                 color_nodo = color_m
+                info[p.user.username]['propio'] = 1
             section_size = 4
             residuo = Tools.getPercentage(s.similitud,0)/(100/section_size)
             residuo = max(math.ceil(residuo),1)

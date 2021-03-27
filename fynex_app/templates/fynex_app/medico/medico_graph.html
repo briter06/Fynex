@@ -94,6 +94,13 @@
   <script id="edit_script" src="{% static 'js/edit-modal.js' %}" token='{%csrf_token%}'></script>
   <script id="add_script" src="{% static 'js/add-modal.js' %}" token='{%csrf_token%}'></script>
   <script id="delete_script" src="{% static 'js/delete-modal.js' %}" token='{%csrf_token%}'></script>
+  <div id="div-context-menu" class="cls-context-menu">
+    <ul>
+      <li><a href="#to=0">link-to=0 -item-1 </a></li>
+      <li><a href="#to=0">link-to=0 -item-2 </a></li>
+      <li><a href="#to=0">link-to=0 -item-3 </a></li>
+    </ul>
+  </div>
 </body>
 
 <script src="{% static 'js/include-html.js' %}"></script>
@@ -112,7 +119,6 @@
     events: {
       render() {
         chart = this;
-        console.log(chart.series[0]);
       }
     }
   },
@@ -149,7 +155,14 @@
       style:{fontSize: '15px'},
       linkFormat: '{point.weight} %',
       formatter:function(){
-        return info[this.key]['nombre'];
+        aux1=""
+        aux2=""
+        image_url = "{% static 'images/redirect.png' %}"
+        if(info[this.key].propio){
+          aux1 = '<a style="text-align:center;" href="/Medico/'+info[this.key].id+'/paciente">';
+          aux2='</a>';
+        }
+        return aux1+info[this.key]['nombre']+aux2;
       }
     },
     nodes: nodos,
