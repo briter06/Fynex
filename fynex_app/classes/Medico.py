@@ -203,6 +203,8 @@ class MedicoHelper:
     def modificarVariable(self,cod_variable,nombre,intervalo_referencia,unidad):
         try:
             variable = VariableSeguimiento.objects.all().get(pk=cod_variable)
+            if variable.obligatorio == 1:
+                return None
             variable.nombre = nombre
             variable.intervalo_referencia = intervalo_referencia
             variable.unidad = unidad
@@ -213,6 +215,8 @@ class MedicoHelper:
     def eliminarVariable(self,cod_variable):
         try:
             variable = VariableSeguimiento.objects.all().get(pk=cod_variable)
+            if variable.obligatorio == 1:
+                return False
             variable.delete()
             return True
         except:
@@ -305,7 +309,7 @@ class MedicoHelper:
         return res
     def getVariablesSeguimiento(self,cod_paciente):
         paciente = Paciente.objects.all().get(pk=cod_paciente)
-        res = VariableSeguimiento.objects.all().filter(paciente=paciente)
+        res = VariableSeguimiento.objects.all().filter(paciente=paciente).order_by('id')
         return res
     
     def getExamenes(self,cod_paciente):

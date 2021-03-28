@@ -161,15 +161,16 @@
       $('#fin').val(hoy);
       $('#inicio').val(antes);
       var first = Object.keys(data)[0];
+      var second = Object.keys(data)[1];
       $scope.font_series = 25;
       $scope.chart_l = {};
       $scope.chart_r = {};
       $scope.chart_l.selected = first;
-      $scope.chart_r.selected = first;
+      $scope.chart_r.selected = second;
       $scope.chart_l.colors = ['#45b7cd'];
       $scope.chart_r.colors = ['#ff6384'];
       $scope.chart_l.series = [first];
-      $scope.chart_r.series = [first];
+      $scope.chart_r.series = [second];
       $scope.getData = getDataOut;
       $scope.chart_l.def_type = function(){
         if($scope.chart_l.labels.length>1){

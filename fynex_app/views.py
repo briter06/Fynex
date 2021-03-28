@@ -400,8 +400,8 @@ def medico_variables(request,cod_paciente):
             intervalo_referencia = request.POST['intervalo_referencia']
             unidad = request.POST['unidad']
             paciente = medico.getPaciente(cod_paciente)
-            paciente = medico.modificarVariable(id_prev,nombre,intervalo_referencia,unidad)
-            if paciente == None:
+            variable = medico.modificarVariable(id_prev,nombre,intervalo_referencia,unidad)
+            if variable == None:
                 messages.error(request, 'La variable no se ha editado correctamente')
             else:
                 Tools.auditar(request,f'Se ha editado la variable {nombre} para {paciente.user.username}')
