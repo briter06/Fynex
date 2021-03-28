@@ -113,6 +113,7 @@ class MedicoHelper:
             plan.dif_proteinas = json.dumps(diff['proteinas'])
             plan.dif_carbohidratos = json.dumps(diff['carbohidratos'])
             plan.dif_grasas = json.dumps(diff['grasas'])
+            plan.generador = 'content'
             plan.save()
             for i,row in df.iterrows():
                 parte = PartePlanNutricional()
@@ -141,6 +142,7 @@ class MedicoHelper:
             plan.info = df['info'][0]
             plan.dias = df['days'][0]
             plan.tiempo = df['time'][0]
+            plan.generador = 'content'
             plan.save()
             return plan
         except Exception as e:
@@ -346,6 +348,7 @@ class MedicoHelper:
             if similar==None:
                 return None
             plan_prev = PlanNutricional.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
+            print(plan_prev)
             if plan_prev is None:
                 return None
             partes = self.getPartesDePlanNutricional(plan_prev)
@@ -358,6 +361,7 @@ class MedicoHelper:
             plan.dif_proteinas = plan_prev.dif_proteinas
             plan.dif_carbohidratos = plan_prev.dif_carbohidratos
             plan.dif_grasas = plan_prev.dif_grasas
+            plan.generador = 'memory'
             plan.save()
 
             for p in partes:
@@ -395,6 +399,7 @@ class MedicoHelper:
             plan.info = plan_prev.info
             plan.dias = plan_prev.dias
             plan.tiempo = plan_prev.tiempo
+            plan.generador = 'memory'
             plan.save()
 
             similar.usado_ejercicio = True
@@ -410,3 +415,19 @@ class MedicoHelper:
             return similar
         except:
             return None
+    
+    def getMemoryOrContentNutri(self,cod_paciente):
+        try:
+            paciente = Paciente.objects.all().get(pk=cod_paciente)
+            planes = PlanNutricional.objects.all().filter(paciente=paciente).order_by('-id').first()
+            return planes.generador == 'memory'
+        except:
+            return True
+    
+    def getMemoryOrContentExe(self,cod_paciente):
+        try:
+            paciente = Paciente.objects.all().get(pk=cod_paciente)
+            planes = PlanEjercicio.objects.all().filter(paciente=paciente).order_by('-id').first()
+            return planes.generador == 'memory'
+        except:
+            return True

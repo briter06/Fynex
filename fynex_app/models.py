@@ -54,6 +54,7 @@ class PlanNutricional(models.Model):
     dif_proteinas = models.TextField()
     dif_carbohidratos = models.TextField()
     dif_grasas = models.TextField()
+    generador = models.TextField()
 class PartePlanNutricional(models.Model):
     plan_nutricional = models.ForeignKey(PlanNutricional,on_delete=models.CASCADE)
     parte = models.CharField(max_length=30)
@@ -73,6 +74,7 @@ class PlanEjercicio(models.Model):
     info = models.CharField(max_length=200)
     dias = models.CharField(max_length=50)
     tiempo = models.CharField(max_length=50)
+    generador = models.TextField()
 
 class Mensaje(models.Model):
     fecha = DateTimeUTCField()

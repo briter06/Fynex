@@ -1,4 +1,11 @@
 $(document).ready(function() {
+    function getToday(){
+        var d = new Date();
+        var anio = d.getFullYear();
+        var mes = ("0"+(d.getMonth()+1)).slice(-2);
+        var dia = ("0"+(d.getDate())).slice(-2);
+        return anio+'-'+mes+'-'+dia;
+    }
     var table = $('#example').DataTable( {
         responsive: true,
         dom: '<"#toolbar_container.row dom_wrapper fh-fixedHeader"Blf>tip',
@@ -6,7 +13,7 @@ $(document).ready(function() {
         buttons: [
             {
                 extend:'print',
-                title : $('#datatable_script').attr('title'),
+                title : function (){return $('#datatable_script').attr('title')+" "+getToday();},
                 className: 'data_button',
                 text:'<img class="img_data_buttons" src="https://iconarchive.com/download/i47276/avosoft/warm-toolbar/print.ico"/>',
                 titleAttr: 'IMPRIMIR',
@@ -16,7 +23,7 @@ $(document).ready(function() {
             },
             {
                 extend:'excelHtml5',
-                title : $('#datatable_script').attr('title'),
+                title : function (){return $('#datatable_script').attr('title')+" "+getToday();},
                 className: 'data_button',
                 text:'<img class="img_data_buttons" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Microsoft_Excel_2013_logo.svg/1043px-Microsoft_Excel_2013_logo.svg.png"/>',
                 titleAttr: 'EXCEL',

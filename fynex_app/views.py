@@ -621,7 +621,7 @@ def medico_generar_ejercicio(request,cod_paciente):
             weight = weight.valor
         age = medico.getEdad(cod_paciente)
         
-        content = False
+        content = medico.getMemoryOrContentExe(cod_paciente)
         plan = None
         context = {}
         context['diseases'] = None
@@ -719,7 +719,7 @@ def medico_generar_nutricion(request,cod_paciente):
             weight = weight.valor
         age = medico.getEdad(cod_paciente)
         
-        content = False
+        content = medico.getMemoryOrContentNutri(cod_paciente)
         plan = None
         context = {}
         context['diseases'] = None
