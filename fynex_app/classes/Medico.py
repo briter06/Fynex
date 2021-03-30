@@ -314,7 +314,7 @@ class MedicoHelper:
     
     def getExamenes(self,cod_paciente):
         paciente = Paciente.objects.all().get(pk=cod_paciente)
-        res = Examen.objects.all().filter(paciente=paciente)
+        res = Examen.objects.all().filter(paciente=paciente).order_by('-fecha_peticion')
         return res
     def addExamen(self,nombre,descripcion,fecha_peticion,paciente):
         try:

@@ -46,7 +46,7 @@ class PacienteHelper:
         return res
     
     def getExamenes(self):
-        res = Examen.objects.all().filter(paciente=self.paciente)
+        res = Examen.objects.all().filter(paciente=self.paciente).order_by('-fecha_peticion')
         return res
     def subirArchivo(self,cod_examen,ruta):
         try:
