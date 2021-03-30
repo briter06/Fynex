@@ -1007,7 +1007,7 @@ def paciente_variables(request):
             for h in historico:
                 values.append(h.valor)
                 dates.append(str(h.fecha))
-            vars[v.nombre] = [values,dates]
+            vars[v.nombre] = [values,dates,v.unidad]
         context['variables'] = vars
         context['is_medico'] = False
         return render(request,'fynex_app/grafico_variables.html',context)
