@@ -385,7 +385,6 @@ def medico_grafico_variables(request,cod_paciente):
                 dates.append(str(h.fecha))
             vars[v.nombre] = [values,dates,v.unidad]
         context['variables'] = vars
-        print(vars)
         context['is_medico'] = True
         return render(request,'fynex_app/grafico_variables.html',context)
 

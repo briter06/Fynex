@@ -35,7 +35,7 @@ class PacienteHelper:
             return None
 
     def getVariablesSeguimiento(self):
-        res = VariableSeguimiento.objects.all().filter(paciente=self.paciente)
+        res = VariableSeguimiento.objects.all().filter(paciente=self.paciente).order_by('id')
         return res
     
     def getHistoricoVariable(self,variable):
