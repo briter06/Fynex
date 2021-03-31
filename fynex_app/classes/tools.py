@@ -45,7 +45,7 @@ class Tools:
     @staticmethod
     def checkPassword(password):
         rgx = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?!.* ).{8,}')
-        return rgx.match(password) and len(password) >= 8
+        return rgx.fullmatch(password) and len(password) >= 8
 
     @staticmethod
     def auditar(request,descripcion):
