@@ -20,15 +20,15 @@ var pass_modal =
       <input required type="password" minlength="8" id="new_password" name="new_password" maxlength = "128">
       <label for="new_password2">Verificar contraseña</label>
       <input required type="password" minlength="8" id="new_password2" name="new_password2" maxlength = "128">
-      <div id="content_edit" style="float:left">
-        <ul>
-          <li style="float:left">Debe contener una mayúscula</li>
-          <li style="float:left">Debe contener una minúscula</li>
-          <li style="float:left">Debe contener un número</li>
-        <ul>
+      <div id="content_edit">
+      <ul style="text-align:left">
+        <li>Debe contener una mayúscula</li>
+        <li>Debe contener una minúscula</li>
+        <li>Debe contener un número</li>
+        <li>No debe tener espacios</li>
+      </ul>
       </div>
-      <div class="row">
-      </div><div class="row"><div class="column-md-12 mx-auto">
+      <div class="row"><div class="col-md-12 mx-auto">
       <input style="margin-top:20px" type="submit" value="Cambiar"></input>
       </div></div>
       </form>

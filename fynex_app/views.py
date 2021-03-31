@@ -845,6 +845,9 @@ def admin_perfil(request):
             if new_pass!=new_pass2:
                 messages.error(request, 'Las contraseñas no coinciden')
                 return HttpResponseRedirect(reverse('Administrator-perfil'))
+            if not Tools.checkPassword(new_pass):
+                messages.error(request, 'La contraseña no cumple con las reglas definidas')
+                return HttpResponseRedirect(reverse('Administrator-perfil'))
             if request.user.check_password(curr_pass):
                 try:
                     request.user.set_password(new_pass)
@@ -873,6 +876,9 @@ def centro_perfil(request):
             new_pass2 = request.POST['new_password2']
             if new_pass!=new_pass2:
                 messages.error(request, 'Las contraseñas no coinciden')
+                return HttpResponseRedirect(reverse('CentroMedico-perfil'))
+            if not Tools.checkPassword(new_pass):
+                messages.error(request, 'La contraseña no cumple con las reglas definidas')
                 return HttpResponseRedirect(reverse('CentroMedico-perfil'))
             if request.user.check_password(curr_pass):
                 try:
@@ -903,6 +909,9 @@ def medico_perfil(request):
             if new_pass!=new_pass2:
                 messages.error(request, 'Las contraseñas no coinciden')
                 return HttpResponseRedirect(reverse('Medico-perfil'))
+            if not Tools.checkPassword(new_pass):
+                messages.error(request, 'La contraseña no cumple con las reglas definidas')
+                return HttpResponseRedirect(reverse('Medico-perfil'))
             if request.user.check_password(curr_pass):
                 try:
                     request.user.set_password(new_pass)
@@ -932,6 +941,9 @@ def paciente_index(request):
             new_pass2 = request.POST['new_password2']
             if new_pass!=new_pass2:
                 messages.error(request, 'Las contraseñas no coinciden')
+                return HttpResponseRedirect(reverse('Paciente-index'))
+            if not Tools.checkPassword(new_pass):
+                messages.error(request, 'La contraseña no cumple con las reglas definidas')
                 return HttpResponseRedirect(reverse('Paciente-index'))
             if request.user.check_password(curr_pass):
                 try:

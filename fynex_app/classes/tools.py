@@ -10,6 +10,7 @@ import pytz
 import datetime
 from django.contrib.auth.models import User
 from ..models import Auditoria
+import re
 
 class Tools:
 
@@ -40,6 +41,11 @@ class Tools:
         'Aeróbicos acuáticos' : 'aerobico_acuatico', #Listo
         'Yoga':'yoga' #Yoga
     }
+
+    @staticmethod
+    def checkPassword(password):
+        rgx = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?!.* ).{8,}')
+        return rgx.match(password) and len(password) >= 8
 
     @staticmethod
     def auditar(request,descripcion):
