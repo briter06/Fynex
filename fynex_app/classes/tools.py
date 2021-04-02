@@ -145,26 +145,29 @@ class Tools:
     def sendEmailUserAdded(user,password):
         subject = 'Bienvenido - Fynex'
         body = f'''
-                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
-                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
-                    <br>
-                    <br>
-                    <h1><strong>Bienvenido</strong><br></h1>
-                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.first_name}</b></i></font></strong><br><br></h1>
-                    <br>
-                    Su correo es: <br>
-                    <font font="verdana"><i><b>{user.username}</b></i></font>
-                    <br>
-                    La contraseña temporal que ha sido asignada es :  <br>
-                    <strong style="color:#5178EC"><i>{password}</i></strong><br></h2>
-                    <br>
-                   <h2>Cuando inicie sesión podrá modificar la contraseña a la que desee.<h2>
-                    <br>
-                    <br>
-                    <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
-                    <br>
-                </div>
+                <div style="width:100%;background-color:#D5D5D5;padding-top: 30px;padding-bottom: 30px;">
+                    <div style="width: 500px;margin: auto auto;background-color:white;border-style: double;">
+                        <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" style="width: 100%" align="left">
+                        <br>
+                        <br><br><br><br>
+                        <h1><strong style="color:#1C54F7"><font font="verdana"><i><b><p align="center">Bienvenido {user.first_name}</b></i></font></strong></h1></p>
+                        <div style="width:100%;text-align:center">
+                            <img src="https://i.pinimg.com/originals/7e/69/ec/7e69eca344ca1465da94d698ded08e8e.gif" width="200">
+                        </div>
+                        <h3><p align="center">
+                            Su correo es: <br>
+                            <font font="verdana"><i><b>{user.username}</b></i></font>
+                        </p></h3>
 
+                        <h3><p align="center">
+                            La contraseña temporal que ha sido asignada es :  <br>
+                            <strong style="color:#5178EC"><i>{password}</i></strong>
+                        </p></h3>
+                        <h3 align="center">Cuando inicie sesión podrá modificar la contraseña a la que desee.<h3>
+                        <p align="center"><a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a> </p>
+                        <br>
+                    </div>
+                </div>
             '''
         res = Tools.sendEmail(user,subject,body)
         return res
@@ -173,24 +176,28 @@ class Tools:
     def sendEmailUserPasswd(user,new_pass):
         subject = 'Recuperar contraseña'
         body = f'''
-             <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
-                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
+             <div style="width:100%;background-color:#D5D5D5;padding-top: 30px;padding-bottom: 30px;">
+                <div style="width: 500px;margin: auto auto;background-color:white;border-style: double;">
+                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" style="width: 100%" align="left">
                     <br>
-                    <br>
-                    <h1><strong>Recuperar contraseña</strong><br></h1>
-                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>{user.first_name}</b></i></font></strong><br><br></h1>
-                    <br>
-                    Su correo es: <br>
-                    <font font="verdana"><i><b>{user.username}</b></i></font>
-                    <br>
-                    La nueva contraseña de su cuenta es :  <br>
-                    <strong style="color:#5178EC"><i>{new_pass}</i></strong><br></h2>
-                    <br>
-                    <br>
-                    <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
+                    <br><br><br><br>
+                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b><p align="center">Recuperar contraseña</b></i></font></strong></h1></p>
+                    <div style="width:100%;text-align:center">
+                        <img src="https://i.pinimg.com/originals/7e/69/ec/7e69eca344ca1465da94d698ded08e8e.gif" width="200">
+                    </div>
+                    <h3><p align="center">
+                        Su correo es: <br>
+                        <font font="verdana"><i><b>{user.username}</b></i></font>
+                    </p></h3>
+
+                    <h3><p align="center">
+                        La nueva contraseña de su cuenta es :  <br>
+                        <strong style="color:#5178EC"><i>{new_pass}</i></strong>
+                    </p></h3>
+                    <p align="center"><a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a> </p>
                     <br>
                 </div>
-
+            </div>
             '''
         res = Tools.sendEmail(user,subject,body)
         return res
@@ -206,17 +213,20 @@ class Tools:
             url = f'https://fynexapp.herokuapp.com/Medico/{paciente.id}/chat'
             enviar_a = paciente.medico.user
         body = f'''
-                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
-                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
-                    <br>
-                    <br>
-                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>Nuevos Mensajes</b></i></font></strong><br><br></h1>
-                    <br>
-                    <h3>Tienes nuevos mensajes de tu '''+tipo+'''.</h3> <br>
-                    <a href="'''+url+'''"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ir al chat</button></a>
-                    <br>
+                <div style="width:100%;background-color:#D5D5D5;padding-top: 30px;padding-bottom: 30px;">
+                    <div style="width: 500px;margin: auto auto;background-color:white;border-style: double;">
+                        <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" style="width: 100%" align="left">
+                        <br>
+                        <br><br><br><br>
+                        <h1><strong style="color:#1C54F7"><font font="verdana"><i><b><p align="center">Tienes una nueva notificación</b></i></font></strong></h1></p>
+                        <div style="width:100%;text-align:center">
+                            <img src="https://i.pinimg.com/originals/7e/69/ec/7e69eca344ca1465da94d698ded08e8e.gif" width="200">
+                        </div>
+                        <h3><p align="center"> Tienes un nuevo mensaje de tu '''+tipo+'''.</p></h3> <br>
+                        <p align="center"><a href="'''+url+'''"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ir al chat</button></a></p>
+                        <br>
+                    </div>
                 </div>
-
             '''
         res = Tools.sendEmail(enviar_a,subject,body)
         return res
@@ -225,17 +235,22 @@ class Tools:
     def sendEmailNewRecommendationFood(paciente):
         subject = 'Solicitud de nueva recomendación nutricional'
         body = f'''
-                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
-                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
-                    <br>
-                    <br>
-                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>Nueva recomendación</b></i></font></strong><br><br></h1>
-                    <br>
-                    <h3>El paciente {paciente.user.first_name} desea una nueva recomendación nutricional</h3> <br>
-                    <a href="https://fynexapp.herokuapp.com/Medico/{paciente.id}/nutrition_recommendations"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
-                    <br>
+                <div style="width:100%;background-color:#D5D5D5;padding-top: 30px;padding-bottom: 30px;">
+                    <div style="width: 500px;margin: auto auto;background-color:white;border-style: double;">
+                        <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" style="width: 100%" align="left">
+                        <br>
+                        <br><br><br><br>
+                        <h1><strong style="color:#1C54F7"><font font="verdana"><i><b><p align="center">Nueva recomendación</b></i></font></strong></h1></p>
+                        <div style="width:100%;text-align:center">
+                            <img src="https://i.pinimg.com/originals/7e/69/ec/7e69eca344ca1465da94d698ded08e8e.gif" width="200">
+                        </div>
+                        <h3><p align="center">
+                            El paciente {paciente.user.first_name} desea una nueva recomendación nutricional
+                        </p></h3>
+                        <p align="center"><a href="https://fynexapp.herokuapp.com/Medico/{paciente.id}/nutrition_recommendations"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a></p>
+                        <br>
+                    </div>
                 </div>
-
             '''
         res = Tools.sendEmail(paciente.medico.user,subject,body)
         return res
@@ -244,37 +259,47 @@ class Tools:
     def sendEmailNewRecommendationExercise(paciente):
         subject = 'Solicitud de nueva recomendación de ejercicio'
         body = f'''
-                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
-                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
-                    <br>
-                    <br>
-                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>Nueva recomendación</b></i></font></strong><br><br></h1>
-                    <br>
-                    <h3>El paciente {paciente.user.first_name} desea una nueva recomendación de actividad física</h3> <br>
-                    <a href="https://fynexapp.herokuapp.com/Medico/{paciente.id}/exercise_recommendations"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
-                    <br>
+                <div style="width:100%;background-color:#D5D5D5;padding-top: 30px;padding-bottom: 30px;">
+                    <div style="width: 500px;margin: auto auto;background-color:white;border-style: double;">
+                        <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" style="width: 100%" align="left">
+                        <br>
+                        <br><br><br><br>
+                        <h1><strong style="color:#1C54F7"><font font="verdana"><i><b><p align="center">Nueva recomendación</b></i></font></strong></h1></p>
+                        <div style="width:100%;text-align:center">
+                            <img src="https://i.pinimg.com/originals/7e/69/ec/7e69eca344ca1465da94d698ded08e8e.gif" width="200">
+                        </div>
+                        <h3><p align="center">
+                            El paciente {paciente.user.first_name} desea una nueva recomendación de actividad física
+                        </p></h3>
+                        <p align="center"><a href="https://fynexapp.herokuapp.com/Medico/{paciente.id}/exercise_recommendations"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a></p>
+                        <br>
+                    </div>
                 </div>
-
             '''
         res = Tools.sendEmail(paciente.medico.user,subject,body)
         return res
     
     @staticmethod
     def sendInformacion(email):
-        subject = 'FYNEX'
+        subject = 'Fynex'
         body = f'''
-                <div style="align-content: center;margin: auto auto;width: 100%;text-align: center">
-                    <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" align="center" width="500">
-                    <br>
-                    <br>
-                    <h1><strong style="color:#1C54F7"><font font="verdana"><i><b>FYNEX</b></i></font></strong><br><br></h1>
-                    <br>
-                    <h4>Fynex es la mejor app del mundo</h4>
-                    <br>
-                    <a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a>
-                    <br>
+                <div style="width:100%;background-color:#D5D5D5;padding-top: 30px;padding-bottom: 30px;">
+                    <div style="width: 500px;margin: auto auto;background-color:white;border-style: double;">
+                        <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" style="width: 100%" align="left">
+                        <br>
+                        <br><br><br><br>
+                        <h1><strong style="color:#1C54F7"><font font="verdana"><i><b><p align="center">Fynex</b></i></font></strong></h1></p>
+                        <div style="width:100%;text-align:center">
+                            <img src="https://i.pinimg.com/originals/7e/69/ec/7e69eca344ca1465da94d698ded08e8e.gif" width="200">
+                        </div>
+                        <p align="center">
+                            Fynex es una aplicación que ayuda a la prevención y tratamiento de enfermedades basadas en trastornos alimenticios, ofreciendo planes nutricionales y planes de actividad física. Además, ofrece un seguimiento personalizado a los pacientes, al disponer de funcionalidades gráficas y de comunicación como un chat de mensajería.<br><br>
+                            Para mayor información, comunicarse con <a href="mailto:fynexhealth@gmail.com">fynexhealth@gmail.com</a>
+                        </p>
+                        <p align="center"><a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a></p>
+                        <br>
+                    </div>
                 </div>
-
             '''
         res = Tools.sendEmailRaw(email,subject,body)
         return res
