@@ -42,7 +42,11 @@ class ContentRecommenderNutrition:
     def closest_node(self,node, nodes,degree_freedom):
         closest_index = distance.cdist(node, nodes)
         aux_df = pd.DataFrame(closest_index[0]).sort_values(by=0)
-        num = random.randrange(int(len(closest_index[0])*degree_freedom))
+        num = 0
+        try:
+            num = random.randrange(int(len(closest_index[0])*degree_freedom))
+        except:
+            pass
         return aux_df.iloc[[num]].index.values[0]
     def getFood(self,menu):
         partes = menu.split('/')
