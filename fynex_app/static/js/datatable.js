@@ -15,7 +15,7 @@ $(document).ready(function() {
                 extend:'print',
                 title : function (){return $('#datatable_script').attr('title')+" "+getToday();},
                 className: 'data_button',
-                text:'<img class="img_data_buttons" src="https://iconarchive.com/download/i47276/avosoft/warm-toolbar/print.ico"/>',
+                text:'<img class="img_data_buttons" src="/static/images/print.png"/>',
                 titleAttr: 'IMPRIMIR',
                 exportOptions: {
                     columns: ':not(:last-child)',
@@ -25,7 +25,7 @@ $(document).ready(function() {
                 extend:'excelHtml5',
                 title : function (){return $('#datatable_script').attr('title')+" "+getToday();},
                 className: 'data_button',
-                text:'<img class="img_data_buttons" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Microsoft_Excel_2013_logo.svg/1043px-Microsoft_Excel_2013_logo.svg.png"/>',
+                text:'<img class="img_data_buttons" src="/static/images/excel.png"/>',
                 titleAttr: 'EXCEL',
                 exportData: { decodeEntities: true },
                 exportOptions: {
