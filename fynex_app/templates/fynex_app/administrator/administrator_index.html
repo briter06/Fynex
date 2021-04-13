@@ -79,7 +79,7 @@
   <div class="container-fluid main_section">
     <h1 style="margin-bottom: 50px;">CENTROS MÉDICOS</h1>
     <div style="width: 100%; text-align: right;">
-      <button onclick="add_modal.show('Agregar Centro Medico');" style="margin-bottom: 20px;" class="button">Agregar centro médico</button>
+      <button onclick="add_modal.show('Agregar Centro Médico');" style="margin-bottom: 20px;" class="button">Agregar centro médico</button>
     </div>
     <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
       <thead>
@@ -99,8 +99,8 @@
               <td>{{centro.direccion}}</td>
               <td>{{centro.telefono}}</td>
               <td>
-                <input type="image" class="edit_button" src="{% static 'images/edit.png' %}" width="40" onclick="edit_modal.show('Editar Centro Medico','{{centro.user.username | replace_email}}');"/>
-                <input type="image" src="{% static 'images/delete.png' %}" width="40" onclick="delete_modal.show('Eliminar Centro Medico','{{centro.user.username | replace_email}}');"/>
+                <input type="image" class="edit_button" src="{% static 'images/edit.png' %}" width="40" onclick="edit_modal.show('Editar Centro Médico','{{centro.user.username | replace_email}}');"/>
+                <input type="image" src="{% static 'images/delete.png' %}" width="40" onclick="delete_modal.show('Eliminar Centro Médico','{{centro.user.username | replace_email}}');"/>
               </td>
           </tr>
           {% endfor %}
