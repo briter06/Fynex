@@ -8,9 +8,9 @@ class Pruebas:
     def pruebasMedico(self):
         self.entrarAPaciente()
         self.entrarAPlanesNutricionales()
-        # self.generarPlanNutricional()
+        self.generarPlanNutricional()
         self.entrarAPlanesEjercicio()
-        # self.generarPlanEjercicio()
+        self.generarPlanEjercicio()
         self.entrarSeguimiento()
         self.entrarExamenes()
         self.entrarChat()
