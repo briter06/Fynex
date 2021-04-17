@@ -113,12 +113,18 @@
                 <input {% if plan.rating == 1.0 %} checked {% endif %} type="radio" id="star1" name="rate" value="1" />
                 <label for="star1" title="text">1 star</label>
               </div>
+              <a style="margin-left: 15px;" data-placement="bottom" data-toggle="popover" title="Calificación:"
+          data-content="Califique esta recomendación de 0 a 5 estrellas, donde 0 estrellas significa que la recomendación no es para nada útil, y 5 estrellas si la recomendación es completamente útil."><i
+            class="fa fa-question-circle"></i></a> 
             </td>
             
           </tr>
           <tr style="width: 100%; padding-top: 10px;">
             <td style="width: 100%;">
               <input name="estado" type="checkbox" {% if plan.estado == "A" %} checked {% endif %} data-toggle="toggle" data-on="Activo" data-off="Inactivo" data-onstyle="success" data-offstyle="danger">
+              <a style="margin-left: 15px;" data-placement="bottom" data-toggle="popover" title="Estado:"
+          data-content="Defina el estado como <b>Activo</b> si desea que su paciente pueda ver esta recomendación, de lo contrario, defina el estado como <b>Inactivo</b>"><i
+            class="fa fa-question-circle"></i></a> 
             </td>
             <td style="width: 100%;">
               <input type="submit" style="margin-bottom: 20px;" class="button" value="Guardar"/>

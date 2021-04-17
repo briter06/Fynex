@@ -191,7 +191,7 @@ class MedicoHelper:
             return False
 
     def getHistoricoVariable(self,variable):
-        return HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=variable).order_by('fecha')
+        return HistorialVariableSeguimiento.objects.all().filter(variable_seguimiento=variable).order_by('-fecha')
 
     def getVariable(self,cod_variable):
         try:
