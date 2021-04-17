@@ -6,10 +6,15 @@ $(document).ready(function() {
         var dia = ("0"+(d.getDate())).slice(-2);
         return anio+'-'+mes+'-'+dia;
     }
+
+    var order = $('#datatable_script').attr('order')||'';
+    var order_o = order.split(',');
+    var order_o = order_o.length !=2 ? [] : order_o;
+
     var table = $('#example').DataTable( {
         responsive: true,
         dom: '<"#toolbar_container.row dom_wrapper fh-fixedHeader"Blf>tip',
-        "order": [] ,
+        "order": order_o ,
         buttons: [
             {
                 extend:'print',
