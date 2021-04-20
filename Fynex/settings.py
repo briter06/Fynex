@@ -176,7 +176,29 @@ CHANNEL_LAYERS = {
     },
 }
 
-CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+# CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+# import random
+# def captcha():
+#     a = random.randint(1,10)
+#     b = random.randint(1,10)
+#     c = random.randint(0,1)
+#     txt = ""
+#     res = 0
+#     if c==1:
+#         a2 = max(a,b)
+#         b2 = min(a,b)
+#         txt = f'{a2}-{b2}'
+#         res = a2-b2
+#     else:
+#         txt = f'{a}+{b}'
+#         res = a + b
+#     return (txt,str(res))
+
+
+
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
+CAPTCHA_LETTER_ROTATION = (-20,20)
 
 TIME_ZONE = 'America/Bogota'
 USE_TZ = True

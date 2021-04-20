@@ -59,7 +59,7 @@ def login_user(request, template_name):
         return HttpResponseRedirect(reverse(template_name))
     else:
         messages.error(
-                request, 'Por favor complete el Captcha')
+                request, 'Captcha incorrecto. Vuelva a intentar.')
         return HttpResponseRedirect(reverse(template_name))
 
 def verify_auth(request,group_name):
