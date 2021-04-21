@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import sys
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -22,14 +26,14 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'fynexhealth@gmail.com'
 EMAIL_DISPLAY_NAME = 'Fynex'
 DEFAULT_FROM_EMAIL = EMAIL_DISPLAY_NAME+' <'+EMAIL_HOST_USER+'>'
-EMAIL_HOST_PASSWORD = os.environ['FYNEX_EMAIL_PASSWORD']
+EMAIL_HOST_PASSWORD = env('FYNEX_EMAIL_PASSWORD')
 
 
 
 
-COS_ENDPOINT = os.environ['COS_ENDPOINT']
-COS_API_KEY_ID = os.environ['COS_API_KEY_ID']
-COS_INSTANCE_CRN = os.environ['COS_INSTANCE_CRN']
+COS_ENDPOINT = env('COS_ENDPOINT')
+COS_API_KEY_ID = env('COS_API_KEY_ID')
+COS_INSTANCE_CRN = env('COS_INSTANCE_CRN')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,10 +43,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['secret_key_fynex']
+SECRET_KEY = env('secret_key_fynex')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env('DEBUG') in ['True','true', '1']
 
 ALLOWED_HOSTS = ['fynexapp.herokuapp.com','localhost','*']
 
@@ -102,15 +106,15 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql',
 
-        'NAME': os.environ['db_name_fynex'],
+        'NAME': env('db_name_fynex'),
 
-        'USER': os.environ['db_user_fynex'],
+        'USER': env('db_user_fynex'),
 
-        'PASSWORD': os.environ['db_password_fynex'],
+        'PASSWORD': env('db_password_fynex'),
 
-        'HOST': os.environ['db_host_fynex'],
+        'HOST': env('db_host_fynex'),
 
-        'PORT': os.environ['db_port_fynex']
+        'PORT': env('db_port_fynex')
 
     }
 }
@@ -148,7 +152,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-CAPTCHA = os.environ['fynex_captcha'] in ['True','true', '1']
+CAPTCHA = env('fynex_captcha') in ['True','true', '1']
 
 
 # Static files (CSS, JavaScript, Images)

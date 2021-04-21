@@ -5,3 +5,4 @@ fynex_app/__pycache__
 fynex_app/migrations/__pycache__
 __pycache__
 functional_tests/chromedriver.exe
+*.env
