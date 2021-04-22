@@ -2,5 +2,5 @@
 normal;4,5;aerobic;30,inf
 diabetes;4,5;aerobic;30,inf
 hypertension;5,7;aerobic;30,inf
-anorexy;5,6;aerobic;30,inf
-obesity;5,6;aerobic;45,inf
+anorexy;4,5;aerobic;15,inf
+obesity;5,7;aerobic;45,inf
