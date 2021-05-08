@@ -76,10 +76,10 @@
   <div w3-include-html="{% static 'helpers/SideNavs/medico-paciente.html' %}"></div>
   {% endif %}
 
-  <div class="container-fluid main_section">
+  <div class="container-fluid main_section chat_main">  
     <h1 style="margin-bottom: 50px;">Chat con {{receiver_name}}</h1>
     {% language 'es' %}
-      <div id="chat-log" class="chat_div">  
+      <div id="chat-log" class="chat_div chat_main">  
         {% for mensaje in mensajes %}
           <div {% if is_paciente and mensaje.paciente_emisor or not is_paciente and not mensaje.paciente_emisor %} class="message_container_right" {% else %} class="message_container_left" {% endif %}>
             <div class="arrow">
@@ -99,13 +99,11 @@
       </div><br>
     {% endlanguage %}
       <div class="row" style="margin-bottom: 40px;">
-        <div class="col-md-11">
-          <input id="chat-message-input" type="text" size="100" placeholder="Escriba su mensaje...">
+        <div class="col-md-11 col-sm-10 col-10">
+          <input id="chat-message-input" type="text" placeholder="Escriba su mensaje...">
         </div>
-        <div class="col-md-1">
-          <div>
+        <div class="col-md-1 col-sm-1 col-1">
             <img id="chat-message-submit" class="send_img" src="{% static 'images/send.png' %}"/>
-          </div>
         </div>
       </div>
         {{ room_name|json_script:"room-name" }}
