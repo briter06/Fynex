@@ -42,6 +42,9 @@
     margin-bottom: 10px;
     border-style: groove;
   }
+  .message-body{
+    max-width: 50%;
+  }
 }
 
 @media all and (min-width: 800px) and (max-width: 1400px) {
@@ -81,6 +84,9 @@
     width:100%;
     margin-bottom: 10px;
     border-style: groove;
+  }
+  .message-body{
+    max-width: 50%;
   }
 }
 
@@ -145,6 +151,9 @@
   .chat_div.chat_main{
     margin: 0 0 0 0 !important;
     padding: 0 0 0 0 !important;
+  }
+  .message-body{
+    max-width: 90%;
   }
 
   /* #chat-message-input{
@@ -1719,14 +1728,14 @@ hr.solid {
 /*Chat Cards*/
 .message_container_left {
   clear: both;
-  margin-left: 20px !important;
   position: relative;
+  width: 100% !important;
 }
 
 .message_container_right {
   clear: both;
-  margin-right: 20px !important;
   position: relative;
+  width: 100% !important;
 }
 
 .message_container_right, .message_container_left{
@@ -1799,7 +1808,8 @@ hr.solid {
 
 .message_container_left .message-body {
   float: left;
-  width: 300px;
+  /* width: 100%; */
+  /* max-width: 100%; */
   height: auto;
   border: 1px solid #CCC;
   background-color: #ffffff;
@@ -1811,9 +1821,10 @@ hr.solid {
   border-radius: 5px;
 }
 
+
+
 .message_container_right .message-body {
   float: right;
-  width: 300px;
   height: auto;
   border: 1px solid #CCC;
   background-color: #ffffff;
