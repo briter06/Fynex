@@ -11,15 +11,15 @@ var file_modal =
       '<div class="modal-content">' +
       '<div class="modal-header"><h3 style="margin:0;"></h3><button style="background-color: Transparent;border: none;" onclick="file_modal.hide();">X</button></div>' +
       '<div class="modal-body" align="center">' +
-      '<form method="POST" enctype="multipart/form-data">' +
+      '<form method="POST" enctype="multipart/form-data" onsubmit="$(\'#submit_file\').attr(\'disabled\',true)">' +
       $('#file_script').attr('token') +
       '<input type="hidden" name="file" value="file"/>' +
-      '<input type="file" class="filestyle" name="myfile" id="myfile" accept="application/pdf, image/png, image/jpeg, image/jpg"/>' +
+      '<input required type="file" class="filestyle" name="myfile" id="myfile" accept="application/pdf, image/png, image/jpeg, image/jpg"/>' +
       '<div id="content_edit">'+
       '</div>'+
       '<div class="row">' +
       '</div><div class="row"><div class="column-md-12 mx-auto">' +
-      '<input style="margin-top:20px" type="submit" value="Subir"></input>' +
+      '<input style="margin-top:20px" id="submit_file" type="submit" value="Subir"></input>' +
       '</div></div>' +
       '</form>' +
       '</div>' +
