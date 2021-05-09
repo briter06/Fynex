@@ -1046,6 +1046,8 @@ def paciente_examenes(request):
                     if examen == None:
                         messages.error(request, 'El examen no se ha subido correctamente')
                     else:
+                        #Enviar correo
+                        Tools.sendEmailNuevoExamen(paciente.paciente,examen)
                         Tools.auditar(request,f'Se ha subido un exámen {paciente.paciente.user.username}')
                         messages.success(request, 'El examen se ha subido correctamente')
                     return HttpResponseRedirect(reverse('Paciente-examenes-index'))

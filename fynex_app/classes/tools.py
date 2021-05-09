@@ -303,3 +303,27 @@ class Tools:
             '''
         res = Tools.sendEmailRaw(email,subject,body)
         return res
+    
+    @staticmethod
+    def sendEmailNuevoExamen(paciente,examen):
+        subject = 'Nuevo resultado de examen'
+        body = f'''
+                <div style="width:100%;background-color:#D5D5D5;padding-top: 30px;padding-bottom: 30px;">
+                    <div style="width: 500px;margin: auto auto;background-color:white;border-style: double;">
+                        <img src="https://fynexapp.herokuapp.com/static/images/banner.jpg" style="width: 100%" align="left">
+                        <br>
+                        <br><br><br><br>
+                        <h1><strong style="color:#1C54F7"><font font="verdana"><i><b><p align="center">Nuevo resultado</b></i></font></strong></h1></p>
+                        <div style="width:100%;text-align:center">
+                            <img src="https://i.pinimg.com/originals/7e/69/ec/7e69eca344ca1465da94d698ded08e8e.gif" width="200">
+                        </div>
+                        <h3><p align="center">
+                            El paciente {paciente.user.first_name} ha subido el resultado del examen: <b>{examen.nombre}</b>
+                        </p></h3>
+                        <p align="center"><a href="https://fynexapp.herokuapp.com/Medico/{paciente.id}/examenes"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ver examenes</button></a></p>
+                        <br>
+                    </div>
+                </div>
+            '''
+        res = Tools.sendEmail(paciente.medico.user,subject,body)
+        return res

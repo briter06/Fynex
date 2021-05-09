@@ -348,11 +348,16 @@ class MedicoHelper:
 
     def getMemoryRecommendationNutrition(self,cod_paciente):
         try:
-            similar = SistemaMemoria.objects.filter(user1=cod_paciente,usado_nutricion=False).order_by('-similitud').first()
+            similar = SistemaMemoria.objects.filter(user1=cod_paciente,usado_nutricion=False).order_by('-similitud')
             if similar==None:
                 return None
-            plan_prev = PlanNutricional.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
-            print(plan_prev)
+            plan_prev = None
+            similar_usado = None
+            for pac in similar:
+                plan_prev = PlanNutricional.objects.filter(paciente__id=pac.user2).order_by('-rating').first()
+                if plan_prev is not None:
+                    similar_usado = pac
+                    break
             if plan_prev is None:
                 return None
             partes = self.getPartesDePlanNutricional(plan_prev)
@@ -379,20 +384,27 @@ class MedicoHelper:
                 parte.carbohidratos = p.carbohidratos
                 parte.grasas = p.grasas
                 parte.save()
-            similar.usado_nutricion = True
-            similar.save()
+            similar_usado.usado_nutricion = True
+            similar_usado.save()
             return plan
-        except:
+        except Exception as e:
             return None
     
     def getMemoryRecommendationExercise(self,cod_paciente):
         try:
-            similar = SistemaMemoria.objects.filter(user1=cod_paciente,usado_ejercicio=False).order_by('-similitud').first()
+            similar = SistemaMemoria.objects.filter(user1=cod_paciente,usado_ejercicio=False).order_by('-similitud')
             if similar==None:
                 return None
-            plan_prev = PlanEjercicio.objects.filter(paciente__id=similar.user2).order_by('-rating').first()
+            plan_prev = None
+            similar_usado = None
+            for pac in similar:
+                plan_prev = PlanEjercicio.objects.filter(paciente__id=pac.user2).order_by('-rating').first()
+                if plan_prev is not None:
+                    similar_usado = pac
+                    break
             if plan_prev is None:
                 return None
+            
             plan = PlanEjercicio()
             plan.paciente = Paciente.objects.all().get(pk=cod_paciente)
             plan.rating = 0
@@ -406,11 +418,12 @@ class MedicoHelper:
             plan.generador = 'memory'
             plan.save()
 
-            similar.usado_ejercicio = True
-            similar.save()
+            similar_usado.usado_ejercicio = True
+            similar_usado.save()
             return plan
 
-        except:
+        except Exception as e:
+            pritn(e)
             return None
     
     def getMostSimilar(self,cod_paciente,limit):
