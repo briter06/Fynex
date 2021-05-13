@@ -293,7 +293,7 @@ class Tools:
                             <img src="https://i.pinimg.com/originals/7e/69/ec/7e69eca344ca1465da94d698ded08e8e.gif" width="200">
                         </div>
                         <p align="center">
-                            Fynex es una aplicación que ayuda a la prevención y tratamiento de enfermedades basadas en trastornos alimenticios, ofreciendo planes nutricionales y planes de actividad física. Además, ofrece un seguimiento personalizado a los pacientes, al disponer de funcionalidades gráficas y de comunicación como un chat de mensajería.<br><br>
+                            Fynex es una aplicación que ayuda a médicos y pacientes que participan en un proceso de prevención y tratamiento de enfermedades basadas en trastornos alimenticios, ofreciendo planes nutricionales y planes de actividad física, generados a partir de inteligencia artificial y modelos estadísticos predictivos. Además, ofrece un seguimiento personalizado a los pacientes, al disponer de funcionalidades gráficas y de comunicación como un chat de mensajería.<br><br>
                             Para mayor información, comunicarse con <a href="mailto:fynexhealth@gmail.com">fynexhealth@gmail.com</a>
                         </p>
                         <p align="center"><a href="https://fynexapp.herokuapp.com"><button style="border-radius: 12px;font-size: 25px;background-color: #125570;color:white">Ingresar</button></a></p>
