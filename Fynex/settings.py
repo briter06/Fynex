@@ -15,8 +15,14 @@ import os
 import sys
 import environ
 
-env = environ.Env()
-environ.Env.read_env()
+env = environ.Env(
+    DJANGO_READ_DOT_ENV_FILE=(bool,True)
+)
+
+if env('DJANGO_READ_DOT_ENV_FILE'):
+    environ.Env.read_env(env_file='.env')
+
+# environ.Env.read_env()
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
