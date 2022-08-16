@@ -12,7 +12,6 @@ import pandas as pd
 # WHERE fynex_app_variableseguimiento.id = fynex_app_historialvariableseguimiento.variable_seguimiento_id
 # ORDER BY fecha desc) AS c2
 
-
 # ''')
 
 res = VariableSeguimiento.objects.raw('''
